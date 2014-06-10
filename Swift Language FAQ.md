@@ -343,7 +343,7 @@ However, sometimes semicolons are still used in Swift, such as in for statements
 ```
 for var index = 0; index < 3; ++index { ... }
 ```
-
+/***********紫夜行者***************/
 ##What’s Next?
 
 ###What is the future of Swift?
