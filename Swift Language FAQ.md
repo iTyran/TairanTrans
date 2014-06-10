@@ -1,3 +1,4 @@
+/*********bruce0505(大熊)************/
 #Swift Language FAQ
 
 Swift is Apple’s entirely new, modern, type-safe programming language for Cocoa development. Swift has been in development for 4 years, and was just announced this year at WWDC.
@@ -103,6 +104,7 @@ The long answer:
 
 - **Some surprises…**: We also have a few surprises up our sleeve – stay tuned! :]
 
+/***********NickYang(街坊)*************/
 ##Diving Right In
 
 ###Is there anything that Swift can do that Objective-C can’t, and vice-versa?
@@ -221,6 +223,7 @@ var employee : Dictionary<String, AnyObject> = ["FirstName" : "Larry", "LastName
 
 This dictionary contains two keys with `String` values and one key with a `Double` value. Although this is achievable, you should opt to create first class model objects to represent your data rather than relying on Dictionaries when possible.
 
+/***************evachen1984(数羊)******************/
 ##The Nitty Gritty
 
 ###Is there an equivalent to id in Swift?
@@ -340,7 +343,7 @@ However, sometimes semicolons are still used in Swift, such as in for statements
 ```
 for var index = 0; index < 3; ++index { ... }
 ```
-
+/***********紫夜行者***************/
 ##What’s Next?
 
 ###What is the future of Swift?
