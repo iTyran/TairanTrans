@@ -1,3 +1,4 @@
+/*********bruce0505(大熊)************/
 #Swift Language FAQ
 
 Swift is Apple’s entirely new, modern, type-safe programming language for Cocoa development. Swift has been in development for 4 years, and was just announced this year at WWDC.
@@ -103,6 +104,7 @@ The long answer:
 
 - **Some surprises…**: We also have a few surprises up our sleeve – stay tuned! :]
 
+/***********NickYang(街坊)*************/
 ##Diving Right In
 
 ###Is there anything that Swift can do that Objective-C can’t, and vice-versa?
@@ -221,6 +223,7 @@ var employee : Dictionary<String, AnyObject> = ["FirstName" : "Larry", "LastName
 
 This dictionary contains two keys with `String` values and one key with a `Double` value. Although this is achievable, you should opt to create first class model objects to represent your data rather than relying on Dictionaries when possible.
 
+/***************evachen1984(数羊)******************/
 ##The Nitty Gritty
 
 ###Is there an equivalent to id in Swift?
@@ -340,25 +343,39 @@ However, sometimes semicolons are still used in Swift, such as in for statements
 ```
 for var index = 0; index < 3; ++index { ... }
 ```
-
+/***********紫夜行者***************/
 ##What’s Next?
-
+译:下一步是什么？
 ###What is the future of Swift?
+译:Swift下一步有何打算？
 
 This is only version 1, Apple’s intentions are [clear](https://twitter.com/clattner_llvm/status/474774351024107520) that they will be iterating on this language.
+译:当前是版本1，对于这门语言苹果的意图遍历他们是明确简洁的。
 
 So be sure to [report bugs and request features](http://bugreport.apple.com/)! There is a lot of room to see improvements before version 1 is officially released.
+译：所以一定要报告错误信息并请求特征。在正式版本1发布我们看到有很多地方得到改进。
 
 ###How will CocoaPods adapt to swift?
+译：CocoaPods响应swift速度如何？
 
 Likely in a similar way. Swift projects still work as Xcode projects and support multiple targets. There is however potential room for improvement with the ability to create modules and custom frameworks.
+译：几乎一样的使用方法。Swift项目仍然使用xcode开发并且支持多个targets。在自定义模块和框架时它还有很多潜在提高的地方。
 
 It is possible that CocoaPods will be reworked to utilize this feature. There are people who have CocoaPods [working with Swift projects](https://medium.com/swift-programming/cocoapods-with-swift-e6f8ba8f0afc) and the smart people who work on CocoaPods are already [discussing this topic](https://github.com/CocoaPods/CocoaPods/issues/2218).
 
+译:为了使用此特性CocosPods被重写是可行的。用CocoaPods与Swift项目工作的人和少部分使用CocoaPods工作的人已经讨论这个问题了。
+
 ##More Questions?
+译:更多问题？
 
 If you have any questions that were not covered here (I know you do!) please post a comment. I will pick out some of the best ones and update the post with the question and answer – and also give you attribution for asking!
 
+译：如果你有任何问题请提交你们疑问。我会挑选一些好的问题并更新问题和回复。-- 和给你回馈！
+
 Also, as mentioned earlier, please chime in with any comments or clarifications on the answers listed here and I’ll update as appropriate.
 
+译:另外，正如前面提到的，请在这里列出的你的答案或者任何意见或澄清，我会及时更新。
+
 Thanks all, and happy Swift’ing!
+
+译:非常感谢大家，并祝大家使用Swift愉快！^_^
