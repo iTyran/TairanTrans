@@ -1,108 +1,110 @@
 /*********bruce0505(大熊)************/
-#Swift Language FAQ
 
-Swift is Apple’s entirely new, modern, type-safe programming language for Cocoa development. Swift has been in development for 4 years, and was just announced this year at WWDC.
+#Swift常见问题解答
 
-Swift takes different constructs that are loved from many languages including Objective-C, Rust, Haskell, Ruby, Python, C#, CLU and more.
+Swift 是Apple发布的一种全新的、现代化的、类型安全的编程语言，它针对Cocoa开发。Swift已经被研发了4年之久，在今年刚刚过去的WWDC大会上发布。
 
-Check out tairan’s recent post on some of the [Swift language highlights](http://www.tairan.com/archives/6624) for more details.
+Swift采用了许多语言中很受欢迎的结构特点，这些语言包括Objective-C, Rust, Haskell, Ruby, Python, C#, CLU等等。
 
-The syntax is much simpler and concise, which lowers the the barrier of entry to iOS development, and makes the process more delightful.
+可以去看看泰然论坛最近发表的关于[Swift语言亮点](http://www.tairan.com/archives/6624)的文章，那里有详细的描述。
 
-In this Swift Language FAQ, we will answer many frequently asked questions that we have seen around our forums, Twitter, email, and StackOverflow. We will also periodically update this FAQ with new questions that come along the way.
+Swift的语言更加简单和简洁，降低了iOS开发的门槛，而且让开发过程更舒服。
 
-Note that some of these answers are opinions or speculation, so take them with a grain of salt. We’d also like to hear your opinions/comments, and we will update this FAQ appropriately based on your feedback.
+在这篇关于Swift的FAQ中，我们将解答很多提问频率很高的问题，这些问题我们经常在论坛、Twitter、邮件和StackOverflow网站上看到。按照这个模式我们也将定期的在这篇FAQ中更新一些新问题。
 
-##The Basics
+注意这里面有些答案只是一些意见或者推测，因此对它们要持怀疑态度。我们很欢迎看到你自己的一些想法或者意见，并且基于你的反馈我们将对应的来更新这个FAQ。
 
-###I’m a beginner. Should I learn Objective-C, Swift, or both?
+##基础知识
 
-In our opinion, it depends if you’re planning on working with another iOS company, or as an indie.
+###我是一个初学者，我应该学Objective-C，还是Swift，或者两者都学？
 
-- **If with an iOS company as a full-time iOS developer or consultant**: It will be best if you learn both. This is because many iOS companies have existing code in Objective-C that you will need to understand, and some companies will not be transitioning to Swift right away. There are also tons of iOS libraries, tutorials, and sample projects written in Objective-C that you’ll need to understand. You’ll also need to learn Swift as things will be transitioning to Swift over time.
+在我们看来，这取决于你打算做一个独立开发者，还是去另一家iOS公司去工作。
 
-- **If you’re an indie**: If you only intend to use Swift from the start, you can theoretically get by only knowing Swift. But if you can spare the time, it is still a good idea to get an understanding of Objective-C so you can make use of the huge library of existing Objective-C resources.
+- **如果你打算去一个iOS公司做全职开发或者顾问**：两者都学习是最好的，这是因为很多iOS公司都有基于Objective-C的已有代码，这些都需要你去了解和学习，而且有些公司不会马上就过渡到Swift。你需要去弄明白大量用Objective-C写的iOS库、教程和例子代码。长远来看你需要去学习Swift并且慢慢过渡到Swift。
 
-This answer may change over the years as the landscape develops and Swift adoption grows. Eventually, knowing Objective-C may be akin to knowing COBOL ;]
+- **如果你是一个独立开发者**：如果一开始你只打算用Swift，从理论上讲你只要了解Swift就可以。但是如果你能抽出一些时间，深入理解一下Objective-C是非常好的，这样你就能使用现有Objective-C资源中包含的大量的API库。
 
-###I’ve been an Objective-C developer for YEARS. Am I now a beginner?
+多年后随着前景的发展和Swift接受度的增长，这些答案可能会改变。最后，知道Objective-C可能就类似于知道COBOL(可能意味Objective-C会像COBOL一样变成一门古老的语言)。
 
-Yes and no. If you have been developing for Apple platforms for a while you still have a huge upper hand, since you are already familiar with Xcode and the Cocoa/Cocoa Touch APIs. Since learning Xcode and the thousands of Cocoa/Cocoa Touch APIs is much more time consuming than learning Swift, you should be in good shape.
+###我已经做了多年的Objective-C开发。我现在要重新开始学么？
 
-Long story short, you will feel back at home once you are familiar with writing Swift code – and you should be able to pick up Swift fairly quickly.
+是和不是，如果你一直在Apple平台发展，你仍然有着巨大的优势，因为你已经熟悉了Xcode和Cocoa/Cocoa Touch相关的API。跟学习Swift相比，学习Xcode和数量庞大的Cocoa/Cocoa Touch 相关API要耗费更多的时间，因此你应该在处于比较良好的状态。
 
-###Will iOS 8 and OS X Yosemite apps only use Swift?
+长话短说，一旦你写Swift代码熟练了，你回感觉到很舒适自在—而且对于你来说，应该会很快的就学会Swift。
 
-No. Apple has built Swift in such a way that it fluently interoperates with Objective-C, and vice versa! Apple has not fully converted their Objective-C APIs and Frameworks to Swift, but you can still make use of them from your Swift code.
+###iOS和OS X Yosemite应用程序会只使用Swift开发么？
 
-Only time will tell, but it is likely that many iOS and OS X shops will continue to rely on Objective-C for multiple years while adopting Swift.
+不会，Apple已经将Swift进行了构造，让Swift可以和Objective-C流利的进行互操作，反之亦然！对于Objective-C的API和框架，Apple还未完全将其转换成Swift，但是仍然可以在你自己的Swift代码中使用。
 
-###Does Swift work with other versions of iOS and OS X?
+这些只有时间来证明，但是在Swift慢慢被采纳的过程中，可能许多iOS和OS X应用商店还会持续的依赖Objective-C很多年。
 
-Yes! Xcode 6 can compile Swift code for deployment targets of iOS 7 and higher as well as OS X 10.9 and higher. Apple actually developed the WWDC app in Swift which you can download from the App Store right now!
+###Swift可以在其它版本的iOS和OS X下运行么？
 
-However, keep in mind that Apple does not permit builds to be submitted to the App Store from beta versions of Xcode. Therefore you will need to wait until the final version of Xcode 6 is released before getting your Swift code in the App Store.
 
-###Is Swift meant to replace Objective-C, or supplement it?
+是的！Xcode 6可以编译Swift代码并在iOS 7及以上或者OS X 10.9及以上部署生成目标。Apple其实已经用Swift开发了一个WWDC app，你现在就可以从App Store下载试用！
 
-To quote Apple, “Objective-C is not going away, both Swift and Objective-C are first class citizens for doing Cocoa and Cocoa Touch development.”
+不过要记住Apple不允许从Xcode的测试版本构建的app发布到App Store。因此你需要等到Xcode 6的最终版本发布之后，再将你用Swift写得app提交到App Store。
 
-So you can still use Objective-C. However, Apple seems to be encouraging you to use Swift for any new development, while not expecting you to go back and re-write all of your Objective-C code.
+###Swift是要取代Objective-C，还是对Objective-C的补充？
 
-Although this is pure speculation, we are guessing Apple will also be moving away from Objective-C for future Framework and API development, and some day Objective-C may even be deprecated. So, hop aboard with the rest of the raywenderlich.com Team on the Swift train :]
 
-###What is a playground?
+引述Apple的话，“Objective-C不会消失，Swift和Objective-C两者都是做Cocoa和Cocoa Touch开发的最好工具”。
 
-A playground is a file where you can write code and see the results immediately. They are really great for learning Swift or new APIs, for prototyping code, or for developing algorithms.
+所以你可以继续使用Objective-C。然而Apple似乎在鼓励用Swift来开发新的应用，而不希望你回去将你之前的Objective-C代码重新写一遍。
 
-Be careful around your kids when you say that you’re going to the playground though. As Chris LaPollo learned, this is likely to make your kids cry after you sit down at the computer instead of taking them to the park!
+然而这完全是推测，大家都在猜测在将来的框架和API开发中，Apple会逐渐减少Objective-C的使用，甚至有一天Objective-C可能会被废弃。因此，赶紧跳上Swift的火车加入raywenderlich.com的团队来吧:)
 
-###Is the NDA lifted yet?
+###什么是playground？
 
-This is unclear to us at the moment. Recently the iOS developer agreement terms had this new update:
+playground是一个你可以进行实时代码效果预览的文件，这对于学习Swift或者新的API，编写原型代码或者开发算法是非常棒的功能。
+
+当你要说你将要去playground的时候小心你的孩子。就像Chris LaPollo所学到的，由于你没带孩子们去公园，当你坐到电脑前的时候，孩子们可能会在你身后大哭！
+
+###开发者保密协议(NDA)解除了么？
+
+现在还不清楚这方面的情况。最近iOS开发者协议条款中有了这样的更新：
 
 **
-Further, Apple agrees that You will not be bound by the foregoing confidentiality terms with regard to technical information about pre-release Apple Software and services disclosed by Apple at WWDC (Apple’s Worldwide Developers Conference), except that You may not post screen shots, write public reviews or redistribute any pre-release Apple Software or services.
+此外，关于Apple在WWDC(Apple全球开发者大会)预发布的Apple软件和服务的技术信息，Apple同意您不会受上述保密条款约束，但是您不可以屏幕截图，写公众评论或者重新发布任何预发布版的Apple软件或服务。
 **
 
-In addition, Apple released a [Swift Programming book](https://itunes.apple.com/us/book/swift-programming-language/id881256329?mt=11&uo=8&at=11ld4k&uo=8&at=11ld4k&uo=8&at=11ld4k) to the public, and the iOS 8 SDK docs are public. This is a departure from previous years where information like this was not made public until the new version of iOS was released.
+另外，Apple公开发布了一本[Swift编程](https://itunes.apple.com/us/book/swift-programming-language/id881256329?mt=11&uo=8&at=11ld4k&uo=8&at=11ld4k&uo=8&at=11ld4k)的书，而且iOS 8 的SDK文档也是公开的。在往年，这样的信息直到新版本的iOS发布之后才会被公开。
 
-It’s unclear what this means as far as writing tutorials goes. There’s a strong/popular argument that says you can write tutorials [as long as you don’t post screenshots](http://oleb.net/blog/2014/06/apple-lifted-beta-nda/). But even that is unclear to us, as [Chris Adamson points out](http://www.subfurther.com/blog/2014/06/04/dub-dub-disclosure-conference/).
+就编写教程来说还不清楚这意味着什么。现在有种影响力较大/较流行的说法是[只要不提交截图](http://oleb.net/blog/2014/06/apple-lifted-beta-nda/)你就可以写教程。但这也不是很确定，就像[Chris Adamson指出的](http://www.subfurther.com/blog/2014/06/04/dub-dub-disclosure-conference/)。
 
-In our opinion, since the Swift book is public it seems the Swift language itself is fair game, but we’re not sure about screenshots from Xcode 6 or some of the other questions Chris brought up, which are pretty necessary for tutorials.
+在我们看来，由于Swift编程教程是公开的，看上去Swift语言本身是公平的游戏，但是对于Xcode 6的截图或者Chris提出的其它一些问题我们还不确定，这些对于编写教程来说都是很必要的。
 
-We are trying to get to the bottom of this with a clarification from Apple, and we will update this post if/when we find out.
+我们正试着从Apple得到一些解释，然后弄清楚这些，如果/当我们查清楚我们会更新这个帖子。
 
-###How can I learn Swift?
+###怎样学Swift？
 
-There are some great resources on learning Swift already:
+这里已经有学习Swift的一些非常好的资源：
 
-- Apple’s [Swift Programming book](https://itunes.apple.com/us/book/swift-programming-language/id881256329?mt=11&uo=8&at=11ld4k&uo=8&at=11ld4k&uo=8&at=11ld4k)
+- Apple的[Swift编程](https://itunes.apple.com/us/book/swift-programming-language/id881256329?mt=11&uo=8&at=11ld4k&uo=8&at=11ld4k&uo=8&at=11ld4k)
 
-- You can also read the book as an interactive playground in Xcode (Help\Documentation and API Reference\New Features in Xcode 6 Beta\Swift Language\The 
-Swift Programming Language\A Swift Tour\Open Playground
+- 你也可以像Xcode中playground那样边实践边读这些书(Help\Documentation and API Reference\New Features in Xcode 6 Beta\Swift Language\The Swift Programming Language\A Swift Tour\Open Playground)
 
-- Swift videos from [WWDC 2014](https://developer.apple.com/videos/wwdc/2014/)
+- [WWDC2014](https://developer.apple.com/videos/wwdc/2014/)大会的Swift视频
 
-- This [Swift Language Cheat Sheet and Quick Reference](http://www.raywenderlich.com/73967/swift-cheat-sheet-and-quick-reference) may be helpful for your transition
+- Swift[速查和参考](http://www.raywenderlich.com/73967/swift-cheat-sheet-and-quick-reference)或许会有助于你向Swift的过渡
 
-We’ll also be coming out with a bunch of additional resources soon – check out the next question!
+很快我们也会发布大量的额外资源 – 有关这方面请查看下一个问题！
 
-###Will your future books and tutorials use Swift?
+###你们将来的书或者教程是否会使用Swift？
 
-The short answer – yes! We’re fully committed to helping everyone transition to Swift.
+简短回答—是的！我们正尽最大力帮助大家过渡到Swift。
 
-The long answer:
+详细回答：
 
-- **iOS 8 by Tutorials**: This will be written in Swift, to help everyone transition to this new language. We will also be providing the sample projects in Objective-C for those who are not quite ready to transition to Swift, and to aid those who wish to compare the two languages.
+- **iOS8教程(iOS 8 by Tutorials)**:这本书会用Swift来写，帮助大家过渡到这种新语言。我们也将为那些还没准备好过渡到Swift的小伙伴提供Objective-C写的示例项目，以帮助他们对比两种语言。
 
-- **iOS Games by Tutorials**: We will also be updating iOS Games by Tutorials to Swift – along with another major exciting update/change which we will announce soon.
+- **iOS游戏教程(iOS Games by Tutorials)**:我们也将更新iOS游戏教程(Swift开发) — 同时我们还将很快宣布另一个激动人心的更新/变化。
 
-- **Written tutorials**: We will be using Swift in our future written tutorials once the NDA is clearly lifted. We will also be updating many of our older written tutorials to Swift. More on this later.
+- **书面教程(Written tutorials)**:一旦开发者保密协议(NDA)解除了，我们将会在未来的书面教程中使用Swift。我们也将会把我们许多老的书面教程更新为Swift。后面将详细讨论。
 
-- **Video tutorials**: We’ll be having a lot of video tutorials on Swift/iOS 8 soon, and also updating many of our video tutorials to Swift!
+- **视频教程(Video tutorials)**:很快我们将会发布很多关于Swift/iOS 8的视频教程，并且将我们的许多视频教程更新为Swift！
 
-- **Some surprises…**: We also have a few surprises up our sleeve – stay tuned! :]
+- **一些惊喜…**:我们还有一些惊喜来吸引你 – 敬请关注!:)
 
 /***********NickYang(街坊)*************/
 ##Diving Right In
