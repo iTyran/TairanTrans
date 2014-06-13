@@ -108,24 +108,41 @@ playground是一个你可以进行实时代码效果预览的文件，这对于�
 
 /***********NickYang(街坊)*************/
 ##Diving Right In
-
+译：马上行动
 ###Is there anything that Swift can do that Objective-C can’t, and vice-versa?
+译：Swift是否能做一些Objective-C做不了的事情，又或者Objective-C能做的Swift做不了？
 
 Yes! Swift is a modern language that introduces many things that Objective-C does not support. Some of the big things include namespacing, optionals, tuples, generics, type inference and many more.
 
+译：答案是肯定的！Swift是一门提供了许多Objective-C并不支持的特性的现代语言。其中一些大的特性包括命名空间(namespacing), 可选择（optionals）, 元组（tuples），泛型（generic），类型推导（type inference）等。
+
 Objective-C also has some “features” that are not available in Swift like messaging nil.
+
+译：Objective-C也拥有一些特性是Swift并不支持的，例如给一个nil值发送消息(messaging nil).
 
 It would be in your best interest to read the [Using Swift with Cocoa and Objective-C Guide](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/index.html#//apple_ref/doc/uid/TP40014216-CH2-XID_0) by Apple for more details – after reading this post of course!
 
+译：在看完这帖子之后，读者如果有兴趣获取更多细节的话可以阅读由苹果公司提供的指南：[Using Swift with Cocoa and Objective-C Guide](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/index.html#//apple_ref/doc/uid/TP40014216-CH2-XID_0)
 ###Are there any APIs that don’t work with Swift?
 
+译：是否有些库接口（APIs）是Swift不支持的？
+
 At the time of writing this post, I am not aware of any. There are however some caveats on how to move things between Objective-C and Swift APIs. Here are some examples:
+译：在写这个帖子的时候，我还没有发现有不支持的。 但是，在Objective-C和Swift的接口之间进行移植的时候需要注意一些问题，例如：
 
 - When an Objective-C API returns an `id`, Swift will receive `AnyObject`.
 
+译： 当一个Objective-C接口返回一个‘id’类型的时候，Swift收到的将是‘AnyObject’类型。
+
+
 - When an Objective-C API returns `nil`, Swift will receive an `Optional` set to the value `NONE` which is Swift’s way of saying a variable is `nil`. Because Swift variables must always contain a value, it uses the `Optional` enum for any object returned from an Objective-C API being that there is no guarantee that an Objective-C method won’t return `nil`.
 
+译：当Objective-C接口返回‘nil’时，Swift返回的值将是一个值为‘None’的‘Optional’（这是Swift表示一个变量是nil的方式）。因为Swift变量必须总是有值，由于不能保证一个Objective-C方法不返回nil值，所以它使用了‘Optional’枚举所有从一个Objective-C接口返回的对象。
+
 - When an Objective-C API returns a collection it will be typed to `AnyObject` due to the inability to infer what type an `NSArray` or `NSDictionary` stores. It is a good practice to downcast your collections when they are returned based on what you know of the API. Consider an Objective-C method that returns an array of `NSString `instances. Because you know that the returned array contains strings, you can safely downcast in the following manner.
+
+译：当一个Objective-C接口返回一个容器的时候，Swift将会返回‘AnyObject’，只是由于它无法推导出一个‘NSArray’或者‘NSDictionary’存放的是什么类型的数据。 当被返回的容器是基于你所知道的接口，一个很好的方式就是把容器类型向下类型转换。想想一个Objective-C方法返回一个NSString实例数组。因为你知道返回的数组包含的是一些字符串，所以你可以很安全的使用以下方式进行向下类型转换。
+
 
 ```
 let fruits : AnyObject[] = // some Objective-C API that returns NSArray of NSStrings
@@ -136,38 +153,48 @@ for fruit in fruits as String[] {
 ```
 
 - When a Swift API returns a Tuple, Objective-C will receive… nothing! Since tuples are not supported in Objective-C, the method won’t be available to Objective-C code. There are a number of Swift constructs that Objective-C cannot support. These include…
- 
+
+译：当一个Swift接口返回一个元组的时候，Objective-C将不会接收到任何东西。因为元组在Objective-C中是不被支持的，在Objective-C代码中元组相关的方法是无法被利用的。下面有一些是Objective-C不支持的Swift结构：
+
 	- Generics
-	
+	译：泛型
 	- Tuples
-
+	译：元组
 	- Enumerations defined in Swift
-
+	译：定义在Swift的枚举类型
 	- Structures defined in Swift
-
+	译：定义在Swift的结构体
 	- Top-level functions defined in Swift
-
+	译：定义在Swift的顶层函数
 	- Global variables defined in Swift
-
+	译：定义在Swift的全局变量
 	- Typealiases defined in Swift
-
+	译：定义在Swift的类型别名
 	- Swift-style variadics
-
+	译：Swift风格的可变参数
 	- Nested types
-
+	译：嵌套的类型
 	- Curried functions
+	译：柯里化函数
 	
 ###Where are my println() results in my Playground?
+译：println()结果显示在PlayGround的什么地方？
 
 You must turn on the Assistant Editor to see your console output. Do this via **View > Assistant Editor > Show Assistant Editor** or by the keystroke **Option + Command + Return**.
 
+译：为了能看到控制台的输出，你必须打开Assistant Editor。 你可以通过选择**View > Assistant Editor > Show Assistant Editor** 或者按 **Option + Command + Return**键来打开Assistant Editor。
+
 Thanks to [Chris LaPollo](http://www.raywenderlich.com/u/clapollo) for providing insight on this one!
 
+译：感谢[Chris LaPollo](http://www.raywenderlich.com/u/clapollo) 提供了关于这方面的信息
 ###How do I see those cool graphs of values in Playgrounds?
+译：在Playgrounds如何查看那些很酷的值图
 
 You can graph the results of values over time in Playgrounds, which can be really handy for visualizing algorithms.
 
 To do this, enter some code that produces values over time like this in a playground:
+
+译：你可以在Playgrounds上图形化显示一个值在不同时间的结果，这对算法的可视化十分便利。你可以在PlayGround里面通过输入一些代码实现在不同时间产生一些值，譬如：
 
 ```
 for x in 1..10 {
@@ -177,9 +204,15 @@ for x in 1..10 {
 
 In the sidebar, you’ll see something like “9 times”. Move your mouse over this line, and a + button will appear. Click this button (and make sure your Assistant Editor is open) and you should see the graph.
 
+译：在边栏上，你可以看到一些内容，例如“9 times”。 把鼠标移动到这一行上面，将会有一个“+”按钮出现。点击这个按钮（保证你的Assistant Editor是打开的），然后你就可以看到这个图了
+
 ###How do you run the REPL?
 
+译：如何运行REPL(Read-Eval-Print-Loop: 读验证打印循环)？
+
 Run the following command in Terminal to tell it to use Xcode 6′s command line tools.
+
+译：在终端上执行以下命令来让使用Xcode 6的命令行工具
 
 ```
 sudo xcode-select -s /Applications/Xcode6-Beta.app/Contents/Developer/
@@ -187,29 +220,47 @@ sudo xcode-select -s /Applications/Xcode6-Beta.app/Contents/Developer/
 
 Then run the following to start the Swift REPL.
 
+译：然后执行下面的命令来开启Swift REPL
+
 ```
 xcrun swift
 ```
 
 When you are ready to exit you can type `:exit` or `:quit`. You can also use the **CTRL+D** keystroke.
 
+译：当你想退出REPL的时候你可以输入 `:exit` 或者 `:quit`来退出。你也可以使用快捷键 **CTRL+D** 
+
 ###Can you use Swift to call your own Objective-C code or a third party library? If so, how?
+
+译：你能使用Swift来调用你自己的Objective-C代码或者第三方库么？如果可以，该怎么实现？
 
 Yes! When you add your first .swift file to your Xcode Project you will be prompted to let Xcode create a bridging header file. In that header file you can import the Objective-C headers that you want to be visible to your Swift code.
 
+译：可以的！当你添加你的第一个.swift文件到你的Xcode工程的时候你将收到让Xcode创建一个桥接头文件的提示。在那个头文件里面你可以导入要被你的Swift代码访问的Objective-C头文件。
+
 Then, all of those classes will be available to your Swift code without further imports. You can use your custom Objective-C code with the same Swift syntax you use with system classes.
+
+译：接着，你不必再进行import，就可以在你的Swift代码使用这些类。你可以用Swift调用系统类同样的语法来使用你的自定义Objective-C代码。
+
 
 ###So, arrays can only contain one type of object? What if I want varied types?
 
+译：那么数组只能包含一种对象类型？那如果我想要包含多个对象类型，该怎么做？
+
 In Swift you are highly encouraged to make strongly typed arrays that contain only one type of object, with syntax like this:
 
+译：在Swift中，鼓励开发者使用只包含一种对象类型的强类型数组，语句可以想这样：
 ```
 var goodArray: String[] = ["foo", "bar"]
 ```
 
 That said, technically you can still create arrays that contain multiple types of objects. However, before you do this you should be asking yourself `why` you want to do this. In most cases it does not make the best sense and you can likely engineer your solution to be cleaner.
 
+译：那就是说，从技术上你仍可以创建包含多个对象类型的数组。然而，在你这样做的时候你应该问问自己“为什么”你要这样做。在大多数情况下这种方式并不是最好的，或许你可以设计更加简洁的方案来代替。
+
 With that said, here’s how you can create a Swift array with varying types of objects within it by using `AnyObject`:
+
+译：按照这种说法，下面告诉你使用‘AnyObject’创建一个具有不同对象类型的Swift数组:
 
 ```
 var brokenArray: AnyObject[] = ["foo", 1, 12.23, true]
@@ -217,13 +268,18 @@ var brokenArray: AnyObject[] = ["foo", 1, 12.23, true]
 
 ###Is the same true for dictionaries? Are dictionaries also strongly typed?
 
+译：对于字典类型（dictionaries）是否也是这样？字典类型是否也应该是强类型？
 Yes, but again you can get around this by using `AnyObject`. For dictionaries it often might make sense that not all of the values in your dictionary are of the same type. Consider a JSON response from a server that is represented as a dictionary:
+
+译：是的！但是同样你可以使用‘AnyObject’来避免它。对于字典类型，它常常可能并不是所有的值都是同一种类型。想想由服务端发送过来的一个以字典类型表现的Json格式的响应：
 
 ```
 var employee : Dictionary<String, AnyObject> = ["FirstName" : "Larry", "LastName" : "Rodgers", "Salary" : 65_000.00]
 ```
 
 This dictionary contains two keys with `String` values and one key with a `Double` value. Although this is achievable, you should opt to create first class model objects to represent your data rather than relying on Dictionaries when possible.
+
+译：这个字典包含了两个‘String’类型的键值和一个‘Double’类型的键值。虽然这种方式实现没有问题，但是你应该选择创建第一类模型对象（first classs model objects）来表示你的数据，而尽量不依赖字典。
 
 /***************evachen1984(数羊)******************/
 ##The Nitty Gritty
