@@ -282,15 +282,17 @@ This dictionary contains two keys with `String` values and one key with a `Doubl
 译：这个字典包含了两个‘String’类型的键值和一个‘Double’类型的键值。虽然这种方式实现没有问题，但是你应该选择创建第一类模型对象（first classs model objects）来表示你的数据，而尽量不依赖字典。
 
 /***************evachen1984(数羊)******************/
-##The Nitty Gritty
+##追根溯源
 
-###Is there an equivalent to id in Swift?
 
-Yes. As mentioned above when an Objective-C API returns `id` Swift will substitute with `AnyObject`. The `AnyObject` type can represent an instance of any class type. There is also `Any` which can represent an instance of any type at all (apart from function types).
+###Swift是否有等价于id的东西？
 
-###How do you do introspection in Swift? (e.g. equivalent of if ([obj isKindOfClass:[Foo class]]) { … })?
+是的。正如前文所说，Objective-C API返回id，在Swift中用AnyObject代替。AnyObject类型可以代替任意类类型的实例。同样Any可以代替任意类型的实例（除了函数类型）。
 
-You can check the type of a variable or constant using the `is` keyword. The compiler is smart enough to let you know if using `is` would be redundant. Thanks to type safety in Swift, it is not possible to later assign a different type to the same reference, which makes this possible.
+###Swift的内省机制是怎样的？（例如与if ([obj isKindOfClass:[Foo class]]) { … }等价的）？
+
+你可以用 is关键字来检查变量和常量的类型。编译器足够聪明能让你知道使用 is是否多此一举。这都要归功于Swift的类型安全机制让这一切成为可能，已经不再能够将不同的类型分配给同一个引用。
+
 
 ```
 var someValue : AnyObject?
@@ -304,7 +306,7 @@ if someValue is String {
 }
 ```
 
-Notice if you try to write…
+注意如果你尝试写...
 
 ```
 var someValue = "String"
@@ -316,16 +318,18 @@ if someValue is String {
 }
 ```
 
-You will receive a compiler warning:
+你会收到一条编译器报警：
+
 
 ```
 Playground execution failed: error: <REPL>:7:14: error: 'is' test is always true
 if someValue is String {
 ```
 
-###How do you put bitshifted values inside an enum in Swift? (i.e. MyVal = 1<<5)
+###在Swift里怎样把位移操作结果放入一个枚举中？（例如：MyVal = 1<<5）
 
-Unfortunately this is a bit confusing and definitely **not** as succinct as the C variant. Rather than using an `enum` you will be using a `struct` as shown below.
+不幸的是这里有一点让人糊涂的地方，而且毫无疑问没有c的变种那么简单明了。你将使用如下展示的一个struct而不是enum。
+
 
 ```
 struct MyOptions : RawOptionSet {
@@ -348,11 +352,11 @@ func & (lhs: MyOptions, rhs: MyOptions) -> MyOptions { return MyOptions(lhs.valu
 func ^ (lhs: MyOptions, rhs: MyOptions) -> MyOptions { return MyOptions(lhs.value ^ rhs.value) }
 ```
 
-Credit goes to [Nate Cook](http://stackoverflow.com/users/59541/nate-cook) for this one, check out [his answer on Stack Overflow](http://stackoverflow.com/a/24066171) with more details.
+[Nate Cook](http://stackoverflow.com/users/59541/nate-cook)授权，需要更多细节请查看[his answer on Stack Overflow](http://stackoverflow.com/a/24066171)
 
-###How does Swift work with Grand Central Dispatch?
+###Swift怎么进行GCD?
 
-The same way, you can use the C APIs as you did in Objective-C.
+相同的方式，你可以使用C API正如你在Objective-C中那样。
 
 ```
 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
@@ -360,43 +364,47 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),
 });
 ```
 
-You can also use the higher level `NSOperationQueue` as prescribed by Apple when dealing with concurrency.
+你同样可以使用更高级的苹果公司处理并发的NSOperationQueue。
 
-###What about the internationalization macros from Objective-C?
+###那么Objective-C本地化的宏定义呢？
 
-Similar to the NSLocalizedString set of macros from Objective-C you can prepare for internationalization in Swift code by using the **NSLocalizedString(key:tableName:bundle:value:comment:)** method. The `tableName`, `bundle`, and `value` arguments all have default values. So if you’re used to using `NSLocalizedString` you can write the following.
+
+类似Objective-C中的NSLocalizedString宏集合，在Swift中你可以使用 NSLocalizedString(key:tableName:bundle:value:comment:)为本地化做好准备。 tableName, bundle, value这些参数都有默认值。如果你过去习惯使用NSLocalizedString那么你可以像下面这样写：
 
 ```
 NSLocalizedString("Hello", comment: "standard greeting")
 ```
 
-###Do I need to worry about reference cycles?
+###我是否还需要为循环引用而担心？
 
-Absolutely! It is still possible to create a retain cycle when two objects have a `strong` reference to each other. To break retain cycles you would use a similar approach that you use in Objective-C. There are three keywords for declaring reference types which are described below; `weak` and `unowned` will allow you to resolve reference cycles.
 
-###When should I use strong vs. weak vs. unowned references?
+当然！当两个对象彼此强引用的时候还是有可能创建出一个retain的循环。打破这个循环你还是需要使用类似Objective-C中的方法。有三个关键字来声明如下所述引用类型；弱引用和无主引用可以解决循环引用的问题。
 
-- **strong**: You should use `strong` for things you own.
-Strong references cause ARC to retain instances until they are no longer needed. When all `strong` references are removed the referenced instance is deallocated.
+###我什么时候使用强引用，弱引用和无主引用？
 
-	Note that the `strong` reference is implied by default, so you do not explicitly declare it.
+- **strong**: 在你拥有这个东西的时候可以使用强引用。 强引用使得ARC保存retain的实例直到不再需要这些实例为止。当所有的强引用都被移除的时候，被引用的实例也会被释放。
 
-- **weak**: You should use `weak` for references among objects with independent lifetimes.
+
+        注意默认情况下是使用强引用的，所以你不需要明确的声明它。
+
+
+- **weak**: 你需要在拥有独立生命周期的对象中使用弱引用。
 	
-	When you set a `weak` reference to an object, you’re saying that it’s OK with you if the object is deallocated due to memory pressure. Weak values must always be a variable, defined with `var` and must also be Optional using the `?` operator.
+	当你在一个对象中使用弱引用时，你要在对象因为内存压力而自动释放的时候做好心里准备。弱引用通常是变量。用 `var`定义同时可选使用`?`操作符。
 
-	Since weak references are optional, you will never end up with a reference to an invalid instance that no longer exists. ARC will automatically set the reference to nil when the referenced instance is deallocated.
 
-- **unowned**: You should use unowned for objects with the same lifetime; such as when an object points back to its owner and you wish to avoid a retain cycle.
-The `unowned` reference is used whenever a reference will always have a value but when you need to tell ARC to not set the reference to nil.
+	既然弱引用是可选的，你将永远无法结束对一个不再存在的无效实例的引用。ARC在被引用实例被释放后自动将引用设置为空。
 
-	`unowned` behaves similarly to `unsafe_unretained` in Objective-C. You are responsible for ensuring that you do not access the reference after the referenced object is deallocated, doing so will result in your app crashing. Unowned references must **not** be optional and cannot be set to `nil`. Unowned references are also implicitly unwrapped.
+- **unowned**:你需要在有同样生命周期的对象中使用无主引用；例如当一个对象回指它的拥有者并且你希望避免循环引用的时候。 无主引用总是有一个值，你需要告诉ARC不要设置引用为空。
+
+
+无主引用的行为类似于Objective-C中的 `unsafe_unretained`。你有责任确保当你释放掉被引用的对象后，不再访问该对象，否则你的程序会崩溃。无主引用必须是不可选并且不能被设置为空的。无主引用也是隐式解析的。
 	
-###Where are the semi-colons?!
+###分号在哪里？！
 
-Semi-colons are optional in Swift and Apple suggests you stop using them for readability purposes.
 
-However, sometimes semicolons are still used in Swift, such as in for statements:
+分号在Swift中是可选的，为了可读性，苹果建议你不要再使用它们。
+可是，分号有些时候还是继续在Swift中使用，比如在for语句：
 
 ```
 for var index = 0; index < 3; ++index { ... }
