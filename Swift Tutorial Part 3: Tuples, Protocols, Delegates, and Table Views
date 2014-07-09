@@ -23,7 +23,7 @@
 
 在Objective-C中，如果你要创建一个具有两个返回值的方法，你要么需要创建一个返回值有两个属性的Objective-C对象，要么你需要返回一个包含两个值的字典。在Swift中，还有一个可选的途径：元组。
 
-现在我们开始耍耍元组感受一下它是如何运作的。在Xcode中创建一个Playground（或者如果你采纳我在[第一篇Swift教程](http://www.raywenderlich.com/74438/swift-tutorial-a-quick-start)中的建议，就只要点击已经保存到dock上的Playground）。在你的Playground中删除所有东西以便我们从一个干净的环境下开始。
+现在我们开始耍耍元组感受一下它是如何运作的。在Xcode中创建一个Playground（或者如果你采纳我在[第一篇Swift教程](http://www.raywenderlich.com/74438/swift-tutorial-a-quick-start)中的建议，就只要点击已经保存到dock上的Playground）。在你的Playground中删除所有东西以便我们从一个干净的板块下开始。
 
 ##未命名元组
 
@@ -67,3 +67,21 @@ let tipAndTotalNamed:(tipAmt:Double, total:Double) = (4.00, 25.19)
 注意当你使用显式语法的时候，在右手边命名变量是可选的。
 
 ##返回元组
+
+现在我们了解了元组的基础知识，现在我们看看在小费计算器中如何使用它们来返回两个值。
+
+在你的playground中添加以下代码：
+
+let total = 21.19
+let taxPct = 0.06
+let subtotal = total / (taxPct + 1)
+func calcTipWithTipPct(tipPct:Double) -> (tipAmt:Double, total:Double) {
+  let tipAmt = subtotal * tipPct
+  let finalTotal = total + tipAmt
+  return (tipAmt, finalTotal)
+}
+calcTipWithTipPct(0.20)
+
+这是与我们已经接触过的calcTipWithTipPct相同的方法，不同的是它返回的是双精度型的值。它返回(tipAmt:Double, total:Double)。
+
+这里是到目前为止的[playground文件]（http://cdn1.raywenderlich.com/wp-content/uploads/2014/06/Prototype1.playground.zip）。
