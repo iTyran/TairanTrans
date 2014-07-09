@@ -4,9 +4,10 @@
 
 ###入门
 
-- [Swift教程：快速指南](swift tutorial a quick start.md)  译者：Verky
+- [Swift教程：快速指南](swift-tutorial-a-quick-start.md)-译者：Verky
+- [Swift常见问题解答](Swift-Language-FAQ.md)-译者：紫秀青衣， 数羊， NickYang
 
 ###系列教程
 
-- [如何快速做一个糖果消除类游戏：第一部分](How to Make a Game Like Candy Crush with Swift Tutorial: Part 1.md) 译者：紫秀青衣
+- [如何快速做一个糖果消除类游戏：第一部分](How-to-Make-a-Game-Like-Candy-Crush-with-Swift-Tutorial-Part1.md)-译者：紫秀青衣
 
