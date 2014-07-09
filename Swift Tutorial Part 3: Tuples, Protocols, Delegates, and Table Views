@@ -84,4 +84,5 @@ calcTipWithTipPct(0.20)
 
 这是与我们已经接触过的calcTipWithTipPct相同的方法，不同的是它返回的是双精度型的值。它返回(tipAmt:Double, total:Double)。
 
-这里是到目前为止的[playground文件]（http://cdn1.raywenderlich.com/wp-content/uploads/2014/06/Prototype1.playground.zip）。
+这里是到目前为止的[playground文件]（http://cdn1.raywenderlich.com/wp-content/uploads/2014/06/Prototype1.playground.zip）。现在清空playground来开始一个新的板块。
+
