@@ -60,4 +60,10 @@ tipAndTotalNamed.total
 
 正如你看到的这将会更加方便，并且这也是我们在以后的教程当中要用到的。
 
-最后我想要再一次指出
+最后我想要再一次指出你在声明tipAndTotalNamed方法的时候使用推断语法。如果你想要使用显式语法，那么代码会像以下这样：
+
+let tipAndTotalNamed:(tipAmt:Double, total:Double) = (4.00, 25.19)
+
+注意当你使用显式语法的时候，在右手边命名变量是可选的。
+
+##返回元组
