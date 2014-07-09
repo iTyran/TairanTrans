@@ -2,7 +2,7 @@
 
 ![image](http://cdn5.raywenderlich.com/wp-content/uploads/2014/02/Teaser-image.png)
 
-这段时间以来，我写了一个如何用Objective-c做一个糖果消除类的游戏教程，这是一款非常瘦欢迎的match-3休闲类游戏
+这段时间以来，我写了一个如何用Objective-c做一个糖果消除类的游戏教程，这是一款非常受欢迎的match-3休闲类游戏
 
 但是我选择的是Swift制作出来的版本,所以我写了这篇文章!
 
