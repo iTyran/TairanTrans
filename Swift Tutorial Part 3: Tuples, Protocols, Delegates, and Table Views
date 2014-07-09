@@ -40,5 +40,24 @@
 tipAndTotal.0
 tipAndTotal.1
 
-你将在Playground的侧边栏看到4.0和25.19两个值。
+你将在Playground的侧边栏看到4.0和25.19两个值。通过索引访问可以在必要时候用一下，但是不如通过名字分解来的清晰。可以在Playground中加上以下代码来试下第二种方案：
 
+let (theTipAmt, theTotal) = tipAndTotal
+theTipAmt
+theTotal
+
+这种语法允许你用一个特殊的名字创建一个新的常量来代表元组中的每个元素。
+
+##命名元组
+
+未命名元组可以使用，但是就像你看到的那样，它需要一些额外的代码来通过名字访问每一项。
+
+当你在声明时为你的元组命名的时候，通常用**命名元组**来代替它会更加方便。可以在Playground中加上以下代码来尝试一下：
+
+let tipAndTotalNamed = (tipAmt:4.00, total:25.19)
+tipAndTotalNamed.tipAmt
+tipAndTotalNamed.total
+
+正如你看到的这将会更加方便，并且这也是我们在以后的教程当中要用到的。
+
+最后我想要再一次指出
