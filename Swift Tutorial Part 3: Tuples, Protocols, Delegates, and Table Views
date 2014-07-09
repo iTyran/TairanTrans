@@ -23,4 +23,14 @@
 
 在Objective-C中，如果你要创建一个具有两个返回值的方法，你要么需要创建一个返回值有两个属性的Objective-C对象，要么你需要返回一个包含两个值的字典。在Swift中，还有一个可选的途径：元组。
 
+现在我们开始耍耍元组感受一下它是如何运作的。在Xcode中创建一个Playground（或者如果你采纳我在[第一篇Swift教程](http://www.raywenderlich.com/74438/swift-tutorial-a-quick-start)中的建议，就只要点击已经保存到dock上的Playground）。在你的Playground中删除所有东西以便我们从一个干净的环境下开始。
+
+##未命名元组
+
+让我们从创建一个叫做**未命名元组**的东西开始。在Playground中输入以下内容：
+
+`let tipAndTotal = (4.00, 25.19)`
+
+这里
+
 
