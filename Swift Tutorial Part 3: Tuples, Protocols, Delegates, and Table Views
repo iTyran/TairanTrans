@@ -1,0 +1,21 @@
+#Swift教程 第三部分：元组，协议，委托和表视图
+
+
+欢迎回到我们的Swift教程系列！
+
+在[第一篇Swift教程](http://www.raywenderlich.com/74438/swift-tutorial-a-quick-start)里,我们学习了Swift语言的基础，并且创建了属于我们自己的小费计算器类。
+
+在[第二篇Swift教程](http://www.raywenderlich.com/74904/swift-tutorial-part-2-simple-ios-app)里，我们为小费计算器工程创建了一个简单的用户界面。
+
+在这第三篇Swift教程中，我们将学习一个Swift引入的一个新的数据类型：元组。
+
+我们也将学习协议，委托，表视图，以及如何在Playgrounds中规范用户界面。
+
+这篇教程补充了[第二篇Swift教程](http://www.raywenderlich.com/74904/swift-tutorial-part-2-simple-ios-app)中遗漏的知识。如果你还没有学习过第二篇教程，请确保你已经下载了上次遗漏的工程案例。
+
+    注意: 在撰写这篇指南以前，我们的理解是我们不能张贴Xcode相关的截图，因为它还处于Beta阶段。因此，我们在确保不会引起相关问题之前，将不会提供截屏。
+
+##开始
+
+到现在为止，我们的小费计算器
+
