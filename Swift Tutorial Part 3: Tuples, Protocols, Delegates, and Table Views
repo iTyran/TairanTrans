@@ -141,3 +141,51 @@ let tipCalc = TipCalculatorModel(total: 21.19, taxPct: 0.06)
 tipCalc.returnPossibleTips()
 
 这里是到目前为止的[playground文件]（http://cdn1.raywenderlich.com/wp-content/uploads/2014/06/SwiftPlayground2.playground.zip）。
+
+这时候，保存这个文件并且重新启动一个新的空的playground。我们接下来将转到这个playground。
+
+##协议
+
+下一步是为你的应用建立一个表格视图的原型。但是在做这件事之前，你需要理解**协议**和**委托**的概念。让我们从协议开始学习。
+
+协议是指详细说明一个协议或者一个接口的方法的清单。在你的playground中加入以下几行代码来理解我所说的内容：
+
+protocol Speaker {
+  func Speak()
+}
+
+这个协议声明了一个叫做**Speaker**的单一的方法。
+
+遵守这个协议的任何一个类都必须实现这个方法。通过添加两个遵守这个协议的类来练习一下：
+
+class Vicki: Speaker {
+  func Speak() {
+    println("Hello, I am Vicki!")
+  }
+}
+ 
+class Ray: Speaker {
+  func Speak() {
+    println("Yo, I am Ray!")
+  }
+}
+
+将一个类标记为遵守一个协议，你必须在类名的后面加一个冒号，然后列出协议（当类的名称继承自其它类，如果有的话）。这些类不继承自任何一个其它类，所以你可以仅仅直接列出协议的名称。
+
+同时注意如果你没有引入Speak函数，将导致编译错误。
+
+现在我们尝试将一个类继承自其它类：
+
+class Animal {
+}
+class Dog : Animal, Speaker {
+  func Speak() {
+    println("Woof!")
+  }
+}
+
+在这个例子中，**Dog**继承自**Animal**，所以当你声明**Dog**类时候你在后面加了一个**:**,然后它继承了那个类，然后列出所有的协议。在Swift中你可以只继承一个类，但是你可以遵守任何数量的协议。
+
+
+
+
