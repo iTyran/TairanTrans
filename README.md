@@ -11,4 +11,5 @@
 ###系列教程
 
 - [如何快速做一个糖果消除类游戏：第一部分](How-to-Make-a-Game-Like-Candy-Crush-with-Swift-Tutorial-Part1.md)-译者：紫秀青衣
+- [如何快速做一个糖果消除类游戏：第二部分](How-to-Make-a-Game-Like-Candy-Crush-with-Swift-Tutorial-Part2.md)-译者：Stroustrup_Lee
 
