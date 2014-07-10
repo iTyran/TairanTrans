@@ -186,6 +186,17 @@ class Dog : Animal, Speaker {
 
 在这个例子中，**Dog**继承自**Animal**，所以当你声明**Dog**类时候你在后面加了一个**:**,然后它继承了那个类，然后列出所有的协议。在Swift中你可以只继承一个类，但是你可以遵守任何数量的协议。
 
+##可选的协议
+
+你可以在协议中标记一个方法是否是可选的。通过以下代码替换**Speaker**协议来尝试一下：
+
+@objc protocol Speaker {
+  func Speak()
+  @optional func TellJoke()
+}
+
+如果你想要有一个具有可选方法的协议，你必须给协议加上一个**@objc**标签作为前缀（即使你的类不能兼容objective-C）。然后，你给所有可选方法加上**@optional**标签作为前缀。
+
 
 
 
