@@ -353,7 +353,10 @@ class DateSimulator {
 
 这里是目前为止的[playground文件](http://www.raywenderlich.com/75289/swift-tutorial-part-3-tuples-protocols-delegates-table-views)。
 
-现在，保存这个文件并且回到playground文件
+现在，保存这个文件并且回到在这个教程先前保存的包含了新的改善了的**TipCalculatorModel**类的playground文件中。现在是时候把它放到一个表格视图中了！
+
+##表格视图，委托和数据源
+
 
 
 
