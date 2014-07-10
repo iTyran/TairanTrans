@@ -233,5 +233,33 @@ Q: Whats the object-oriented way to become wealthy? A: Inheritance!
 
 ##使用协议
 
+现在我们创建了一个协议和一些类并且实现了它们，让我们尝试使用它们。在你的playground中添加以下几行代码：
+
+var speaker:Speaker
+speaker = Ray()
+speaker.Speak()
+// speaker.WriteTutorial() // error!
+(speaker as Ray).WriteTutorial()
+speaker = Vicki()
+speaker.Speak()
+
+注意与其声明**speaker**为**Ray**,不如声明它为**speaker**。这意味着你只能当**Speaker**协议存在时调用**speaker**方法，所以调用**WriteTutorial**会导致错误即使**speaker**实际上是一个Ray类型。你可以调用**WriteTutorial**,如果你暂时将speaker投向**Ray**，就像你现在看到的。
+
+同时注意你也可以设置speaker为**Vicki**，因为**Vicki**也遵守**Speaker**协议。
+
+现在加上这几行代码来试验一下可选方法：
+
+speaker.TellJoke?()
+speaker = Dog()
+speaker.TellJoke?()
+
+要记住** TellJoke**是一个可选方法，所以当你调用它的时候要检查一下它是否存在。
+
+这些代码使用了一种叫做**可选链接**的技术来做这件事。
+
+
+
+
+
 
 
