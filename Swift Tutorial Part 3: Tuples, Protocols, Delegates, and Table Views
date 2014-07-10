@@ -261,6 +261,73 @@ speaker.TellJoke?()
 
 ##委托
 
+委托是一个简单的遵守协议的变量，是一个典型的用来通知事件或执行各种子任务的类。想象它像一个老板给他的下属状态更新，或者告诉他/她要做些什么事！
+
+现在看看我说的是什么意思，在你的playground添加一个叫**DateSimulator**的新类，允许遵守**Speaker**协议的两个类进行一次约会：
+
+class DateSimulator {
+ 
+  let a:Speaker
+  let b:Speaker
+ 
+  init(a:Speaker, b:Speaker) {
+    self.a = a
+    self.b = b
+  }
+ 
+  func simulate() {
+    println("Off to dinner...")
+    a.Speak()
+    b.Speak()
+    println("Walking back home...")
+    a.TellJoke?()
+    b.TellJoke?()
+  }
+}
+ 
+let sim = DateSimulator(a:Vicki(), b:Ray())
+sim.simulate()
+
+想象当约会开始或者结束的时候你想要通知另一个类，比如，如果你想要在你的应用中创建一个状态指示器在它发生的时候显示或者隐藏，这样是有帮助的。
+
+要这样做的话，首先为你想要通知的事件创建一个协议，像这样（在**DateSimulator**前加上这个）：
+
+protocol DateSimulatorDelegate {
+  func dateSimulatorDidStart(sim:DateSimulator, a:Speaker, b:Speaker)
+  func dateSimulatorDidEnd(sim:DateSimulator, a: Speaker, b:Speaker)
+}
+
+然后创建一个遵守这个协议的类（在**DateSimulatorDelegate**后加上这个）：
+
+class LoggingDateSimulator:DateSimulatorDelegate {
+  func dateSimulatorDidStart(sim:DateSimulator, a:Speaker, b:Speaker) {
+    println("Date started!")
+  }
+  func dateSimulatorDidEnd(sim:DateSimulator, a: Speaker, b: Speaker)  {
+    println("Date ended!")
+  }
+}
+
+为了简单起见，你将简单地注销这些事件。
+
+然后，为**DateSimulator**添加一个新的属性来获取一个遵守这个协议的类。
+
+var delegate:DateSimulatorDelegate?
+
+这是委托的一个例子。再重复一下，委托只是实现协议的一些类，你可能想要通知事件，或者通过它做某个代你方的任务。
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
