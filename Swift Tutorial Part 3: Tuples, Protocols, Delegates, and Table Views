@@ -197,6 +197,41 @@ class Dog : Animal, Speaker {
 
 如果你想要有一个具有可选方法的协议，你必须给协议加上一个**@objc**标签作为前缀（即使你的类不能兼容objective-C）。然后，你给所有可选方法加上**@optional**标签作为前缀。
 
+注意这里**Person**和**Dog**类没有编译错误，因为新函数是可选的。
+
+在这个例子中，**Ray**和**Vicki**可以说笑话，但很遗憾不是一个**Dog**。所以，实现这个方法只需要这两个类：
+
+class Vicki: Speaker {
+  func Speak() {
+    println("Hello, I am Vicki!")
+  }
+  func TellJoke() {
+    println("Q: What did Sushi A say to Sushi B?")
+  }
+}
+ 
+class Ray: Speaker {
+  func Speak() {
+    println("Yo, I am Ray!")
+  }
+  func TellJoke() {
+    println("Q: Whats the object-oriented way to become wealthy?")
+  }
+  func WriteTutorial() {
+    println("I'm on it!")
+  }
+}
+
+注意当你实现一个协议的时候，在协议里你的类当然可以有更多的方法，而不是只有一个，如果你需要的话。这里**Ray**类有一个额外的方法。
+
+噢，你能猜猜这些玩笑话的答案吗？
+
+这里面有解决方案：
+
+Q: What did Sushi A say to Sushi B? A: Wasabi!
+Q: Whats the object-oriented way to become wealthy? A: Inheritance!
+
+##使用协议
 
 
 
