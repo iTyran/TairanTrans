@@ -316,7 +316,44 @@ var delegate:DateSimulatorDelegate?
 
 这是委托的一个例子。再重复一下，委托只是实现协议的一些类，你可能想要通知事件，或者通过它做某个代你方的任务。
 
+注意你这里将它设为可选的，由于**DateSimulator**应该要正常运作，不管委托是否被设置。
 
+在行**sim.simulate()**之前，为**LoggingDateSimulator**方法设置这个变量：
+
+sim.delegate = LoggingDateSimulator()
+
+最后，修改**simulate()**函数的开头和结尾来适当地调用委托。
+
+尝试自己来做这一部分，因为这是最佳实践！注意在使用**委托**之前要检查它是否被设置——推荐你尝试用**可选链接**来解决这个问题。
+
+这里是解决方案：解决方案：完成DateSimulator类
+
+class DateSimulator {
+ 
+  let a:Speaker
+  let b:Speaker
+  var delegate:DateSimulatorDelegate?
+ 
+  init(a:Speaker, b:Speaker) {
+    self.a = a
+    self.b = b
+  }
+ 
+  func simulate() {
+    delegate?.dateSimulatorDidStart(self, a:a, b: b)
+    println("Off to dinner...")
+    a.Speak()
+    b.Speak()
+    println("Walking back home...")
+    a.TellJoke?()
+    b.TellJoke?()
+    delegate?.dateSimulatorDidEnd(self, a:a, b:b)
+  }
+}
+
+这里是目前为止的[playground文件](http://www.raywenderlich.com/75289/swift-tutorial-part-3-tuples-protocols-delegates-table-views)。
+
+现在，保存这个文件并且回到playground文件
 
 
 
