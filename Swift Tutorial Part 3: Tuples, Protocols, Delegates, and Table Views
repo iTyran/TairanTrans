@@ -357,9 +357,36 @@ class DateSimulator {
 
 ##表格视图，委托和数据源
 
+现在我们理解了协议和委托的概念，可以准备好在应用中使用表格视图。
 
+结果是表格视图有一个属性叫做**delegate**——你可以将它设置为一个遵守**UITableViewDelegate**的类。这是一个包含可选方法集的协议，它让你知道关于一些事件，例如一行被选中，或者表格视图进入编辑状态。
 
+表格视图也有另一个属性叫做**dataSource**——你可以将它设置为一个遵守**UITableViewDataSource**的类。不同于当事件发生时通知这个类，表格视图询问它关于数据——例如展示多少行，或者每一行要展示什么内容。
 
+委托是可选的，但是数据源的必须的。所以让我们尝试为你的小费计算器创建一个数据源。
+
+关于playground有一个很酷的东西就是你可以实际地为视图创建原型或者可视化视图（就像UITableView一样！）这是一个很好的方法来确定它在整合它到主工程之前已经运作）。
+
+再说一遍，确保你在playground里包含了新的改善的**TipCalculatorModel**类。然后在文件底部添加这些代码：
+
+// 1
+import UIKit
+// 2
+class TestDataSource : NSObject {
+ 
+  // 3
+  let tipCalc = TipCalculatorModel(total: 33.25, taxPct: 0.06)
+  var possibleTips = Dictionary<Int, (tipAmt:Double, total:Double)>()
+  var sortedKeys:Int[] = []
+ 
+  // 4
+  init() {
+    possibleTips = tipCalc.returnPossibleTips()
+    sortedKeys = sorted(Array(possibleTips.keys))
+    super.init()
+  }
+ 
+}
 
 
 
