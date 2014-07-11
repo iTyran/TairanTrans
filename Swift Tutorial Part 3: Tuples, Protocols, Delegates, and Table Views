@@ -450,6 +450,11 @@ tableView.reloadData()
 
 这创建了一个硬编码尺寸的表格视图，并且设置它的数据源到你的新类中。然后它调用**reloadData()**方法来更新表格视图。
 
-移动你的鼠标到playground的侧边栏，到最后一行，并且点击**UITableView**旁边的眼球。你应该会看到
+移动你的鼠标到playground的侧边栏，到最后一行，并且点击**UITableView**旁边的眼球。你应该会看到一个整洁的预览环境展示了包含你的小费计算器结果的表格视图！
+
+这里是到目前为止的[playground文件](http://cdn1.raywenderlich.com/wp-content/uploads/2014/06/SwiftPlayground4.playground.zip).
+
+你现在已经完成了为新的改善的**TipCalculatorModel**和新表格视图创建原型。是时候整合这些代码到你的主工程了！
+
 
 
