@@ -429,14 +429,27 @@ func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndex
   return cell
 }
 
+让我们一段一段地复习一遍：
 
+1.这个方法在表格视图的每一行被调用。你需要返回代表这一行的视图，它是一个**UITableViewCell**的子类。
 
+2.你可以通过一个内置的方式创建表格视图单元，或者以你自己的方式创建一个你自己自定义的子类。这里你以一个默认的方式创建一个表格视图单元——**UITableViewCellStyle**。尤其是**Value2**。注意推断类型允许你缩短它到刚刚好的程度。如果你想要**Value2**，但是我这里正明确地保持长格式。
 
+3.这个方法的其中一个参数是**indexPath**，它是这个区段和这个表格视图单元的行的一个简单集合。因为只有一个区段，你可以使用这行算出合适的小费百分比并从**sortedKeys**中显示出来。
 
+4.接下来你想要为小费百分比元组的每个元素创建一个变量。记得之前的教程，当你访问字典的一个项，你得到一个可选的值。因为可能这个特殊的键的字典中没有任何东西。不管怎样，你确保在这个案例中的键里面有东西所以使用“!”强制展开。
 
+5.最后，内置的**UITableViewCell**有两个属性给它的子标签：**textLable**和**detailTextLabel**。这里你设置这些并且返回这个单元。
 
+最后，在你的playground底部添加以下代码来测试你的表格视图：
 
+let testDataSource = TestDataSource()
+let tableView = UITableView(frame:CGRect(x: 0, y: 0, width: 320, height: 320), style:.Plain)
+tableView.dataSource = testDataSource
+tableView.reloadData()
 
+这创建了一个硬编码尺寸的表格视图，并且设置它的数据源到你的新类中。然后它调用**reloadData()**方法来更新表格视图。
 
+移动你的鼠标到playground的侧边栏，到最后一行，并且点击**UITableView**旁边的眼球。你应该会看到
 
 
