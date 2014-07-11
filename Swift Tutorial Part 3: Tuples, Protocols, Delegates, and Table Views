@@ -388,6 +388,25 @@ class TestDataSource : NSObject {
  
 }
 
+让我们一段一段地复习一遍。
+
+1.为了像**UITableView**一样使用UIKit类，你首先必须引入UIKit框架。如果在这行报了一个错误，提出**File Inspector** (View\Utilities\Show File Inspector) 并且设置**Platform**到**iOS**。
+
+2.实现**UITableViewDataSource**的一个必要条件是你的类继承了**NSObject**（要么直接继承要么通过中间类来继承）。
+
+3.这里我们初始化了小费计算器，并且为可能的小费和排序键创建了一个空数组。注意保持**possibleTips**和**sortedKeys**是变量（而不是常量）因为在实际的应用中你会希望这些可以随着时间产生变化。
+
+4.在初始化时，你为两个变量设置了初始值。
+
+现在我们有了一个基础，让我们将那个类设为遵守**UITableViewDataSource**。为了这样做，首先在类声明底部添加数据源：
+
+class TestDataSource: NSObject, UITableViewDataSource {
+
+然后添加两个新方法：
+
+func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+  return sortedKeys.count
+}
 
 
 
