@@ -571,3 +571,18 @@ class ViewController: UIKit.UIViewController, UITableViewDataSource {
 
 同时，如果你想要学习更多内容这里有一些精彩的资源可以查看：
 
+*苹果的[Swift语法书]（https://itunes.apple.com/us/book/swift-programming-language/id881256329?mt=11&uo=8&at=11ld4k&uo=8&at=11ld4k）
+
+*你还可以阅读书籍就像Xcode中交互的Playground（Help\Documentation and API Reference\New Features in Xcode 6 Beta\Swift Language\The Swift Programming Language\A Swift Tour\Open Playground）
+
+*[WWDC 2014](https://developer.apple.com/videos/wwdc/2014/)中的Swift视频
+
+*[Swift语言FAQ](http://www.raywenderlich.com/74138/swift-language-faq)
+
+*[Swift语言的精华：一个Objective-C开发者的观点]（http://www.raywenderlich.com/73997/swift-language-highlights）
+
+*[视频教程：Swift介绍第0部分：引言]（http://www.raywenderlich.com/74514/video-tutorial-introduction-swift-part-0-introduction）
+
+*检查你的[三本新Swift书](http://www.raywenderlich.com/store/swift-tutorials-bundle),包含了Swift，iOS 8和更多内容
+
+感谢阅读这篇教程，如果你有任何建议或者问题请加入下面论坛的讨论！
