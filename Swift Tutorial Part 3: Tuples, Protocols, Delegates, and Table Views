@@ -456,5 +456,41 @@ tableView.reloadData()
 
 你现在已经完成了为新的改善的**TipCalculatorModel**和新表格视图创建原型。是时候整合这些代码到你的主工程了！
 
+##收尾
 
+打开你的**TipCalculator**工程，拷贝新的改善的**TipCalculatorModel**，它优于你已存在的实现。
+
+接下来，打开**Main.storyboard**，选择文字视图（结果区域）并且删除它。从目标程序库，拖动表格视图（不是表格视图控制器）到你的视图控制器。设置X=0, Y=187, Width=580, Height=293。
+
+点击界面编辑器的右下角第四个按钮重新设置自动布局（看起来就像是一个钛战机）并且点击**Clear Constraints**然后再次**在视图控制器中添加缺少的约束**。
+
+最后，选中你的表格视图，然后选中第六个检查工具（连接检查工具）。你会看到**数据源**和**委托**的两个入口——拖动按钮到你的文档大纲里的视图控制器的右边。
+
+现在你的视图控制器被设置为包含了数据源和委托的视图控制器——与你通过编程方式设置表格视图的数据源到你的测试类的方法相同。
+
+最后，确保你的助手编辑器是打开的并且展示**ViewController.swift**。从表格视图控件拖动到你的最终出口的下面。这时候将出现一个弹窗——输入名字**tableView**，并且点击**Connect**。现在你可以在你的代码里涉及表格视图。
+
+现在谈谈代码的修订。打开**ViewController.swift**，并且标记你的类遵守**UITableViewDataSource**：
+
+class ViewController: UIKit.UIViewController, UITableViewDataSource {
+
+然后，在**tipCalc**下面添加两个新的变量：
+
+var possibleTips = Dictionary<Int, (tipAmt:Double, total:Double)>()
+var sortedKeys:[Int] = []
+
+用以下代码替换**calculateTapped()**：
+
+@IBAction func calculateTapped(sender : AnyObject) {
+  tipCalc.total = Double(totalTextField.text.bridgeToObjectiveC().doubleValue)
+  possibleTips = tipCalc.returnPossibleTips()
+  sortedKeys = sorted(Array(possibleTips.keys))
+  tableView.reloadData()
+}
+
+这建立了**possibleTips**和**sortedKeys**并且触发了表格视图的重新加载。
+
+删除在** refreshUI()**中设置**resultsTextView**的代码。
+
+从你的playground拷贝你的两个表格视图方法到你的类中，并且最后删除类的所有注释。
 
