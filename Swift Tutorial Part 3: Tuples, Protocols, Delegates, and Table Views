@@ -408,7 +408,26 @@ func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> I
   return sortedKeys.count
 }
 
+这是你必须实现遵守**UITableViewDataSource**的两个必需的方法之一。它询问你在表格视图的每一段有多少行。这个表格视图只有一段，所以返回了**sortedKeys**的值（也就是说可能的小费百分比的值）。
 
+接下来，添加另一个必需的方法：
+
+// 1
+func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+  // 2
+  let cell = UITableViewCell(style: UITableViewCellStyle.Value2, reuseIdentifier: nil)
+ 
+  // 3
+  let tipPct = sortedKeys[indexPath.row]
+  // 4
+  let tipAmt = possibleTips[tipPct]!.tipAmt
+  let total = possibleTips[tipPct]!.total
+ 
+  // 5
+  cell.textLabel.text = "\(tipPct)%:"
+  cell.detailTextLabel.text = String(format:"Tip: $%0.2f, Total: $%0.2f", tipAmt, total)
+  return cell
+}
 
 
 
