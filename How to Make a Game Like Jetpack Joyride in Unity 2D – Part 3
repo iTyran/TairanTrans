@@ -34,3 +34,6 @@
 
 4.添加**Box Collider 2D**要素。
 
+5.将**Box Collider 2D**要素的**Is Trigger**属性设为可用的。
+
+注意：
