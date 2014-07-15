@@ -1,5 +1,6 @@
-#Swift教程 第三部分：元组，协议，委托和表视图
+#Swift教程第三部分：元组，协议，委托和表格视图
 
+**更新于2014年7月7日：**为Xcode6-beta 3而更新。
 
 欢迎回到我们的Swift教程系列！
 
@@ -13,11 +14,11 @@
 
 这篇教程补充了[第二篇Swift教程](http://www.raywenderlich.com/74904/swift-tutorial-part-2-simple-ios-app)中遗漏的知识。如果你还没有学习过第二篇教程，请确保你已经下载了上次遗漏的工程案例。
 
-    注意: 在撰写这篇指南以前，我们的理解是我们不能张贴Xcode相关的截图，因为它还处于Beta阶段。因此，我们在确保不会引起相关问题之前，将不会提供截屏。
+    注意: 在写这篇教程的时候，我们的理解是我们不能张贴Xcode 6相关的截图，因为它还处于Beta阶段。因此，我们在确保不会引起相关问题之前，将不会提供截屏。
 
 ##开始
 
-到现在为止，我们的小费计算器为每个小费百分比提供了一个参考。然而，一旦你选择了你要付的小费，你必须在你脑中将小费加到账单总额——
+到现在为止，我们的小费计算器为每个小费百分比提供了一个参考。然而，一旦你选择了你要付的小费，你必须在你脑中将小费加到账单总额——这有点儿打败了这个点！
 
 你的**calcTipWithTipPct()**方法最好返回两个值：小费数额，包括小费的账单总额。
 
@@ -462,7 +463,7 @@ tableView.reloadData()
 
 接下来，打开**Main.storyboard**，选择文字视图（结果区域）并且删除它。从目标程序库，拖动表格视图（不是表格视图控制器）到你的视图控制器。设置X=0, Y=187, Width=580, Height=293。
 
-点击界面编辑器的右下角第四个按钮重新设置自动布局（看起来就像是一个钛战机）并且点击**Clear Constraints**然后再次**在视图控制器中添加缺少的约束**。
+点击界面编译器的右下角第四个按钮重新设置自动布局（看起来就像是一个钛战机）并且点击**Clear Constraints**然后再次**在视图控制器中添加缺少的约束**。
 
 最后，选中你的表格视图，然后选中第六个检查工具（连接检查工具）。你会看到**数据源**和**委托**的两个入口——拖动按钮到你的文档大纲里的视图控制器的右边。
 
@@ -494,3 +495,95 @@ var sortedKeys:[Int] = []
 
 从你的playground拷贝你的两个表格视图方法到你的类中，并且最后删除类的所有注释。
 
+我在这个已经完成的类下面附加一个破坏分子，以防你想要检查你的作品。
+
+这里面有解决方案：已经完成的ViewController.swift
+
+import UIKit
+ 
+class ViewController: UIKit.UIViewController, UITableViewDataSource {
+ 
+  @IBOutlet var totalTextField : UITextField
+  @IBOutlet var taxPctSlider : UISlider
+  @IBOutlet var taxPctLabel : UILabel
+  @IBOutlet var resultsTextView : UITextView
+  @IBOutlet var tableView: UITableView
+  let tipCalc = TipCalculatorModel(total: 33.25, taxPct: 0.06)
+  var possibleTips = Dictionary<Int, (tipAmt:Double, total:Double)>()
+  var sortedKeys:[Int] = []
+ 
+  func refreshUI() {
+    totalTextField.text = String(tipCalc.total)
+    taxPctSlider.value = Float(tipCalc.taxPct) * 100.0
+    taxPctLabel.text = "Tax Percentage (\(Int(taxPctSlider.value))%)"
+  }
+ 
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    refreshUI()
+  }
+ 
+  override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+  }
+ 
+  @IBAction func calculateTapped(sender : AnyObject) {
+    tipCalc.total = Double(totalTextField.text.bridgeToObjectiveC().doubleValue)
+    possibleTips = tipCalc.returnPossibleTips()
+    sortedKeys = sorted(Array(possibleTips.keys))
+    tableView.reloadData()
+  }
+ 
+  @IBAction func taxPercentageChanged(sender : AnyObject) {
+    tipCalc.taxPct = Double(taxPctSlider.value) / 100.0
+    refreshUI()
+  }
+  @IBAction func viewTapped(sender : AnyObject) {
+    totalTextField.resignFirstResponder()
+  }
+ 
+  func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+    return sortedKeys.count
+  }
+ 
+  func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+    let cell = UITableViewCell(style: UITableViewCellStyle.Value2, reuseIdentifier: nil)
+ 
+    let tipPct = sortedKeys[indexPath.row]
+    let tipAmt = possibleTips[tipPct]!.tipAmt
+    let total = possibleTips[tipPct]!.total
+ 
+    cell.textLabel.text = "\(tipPct)%:"
+    cell.detailTextLabel.text = String(format:"Tip: $%0.2f, Total: $%0.2f", tipAmt, total)
+    return cell
+  }
+ 
+}
+
+编译并且运行，然后享受你的小费计算器的新的外观！
+
+##接下来还有什么呢？
+
+这里是目前为止这个教程系列的[已经完成的Xcode工程]（http://cdn1.raywenderlich.com/wp-content/uploads/2014/06/TipCalculatorFinished21.zip）。
+
+恭喜你，在这个教程里你已经学习很多知识了！你已经学习了元组，协议和委托，还有表格视图，并且已经升级了外观界面还有你的小费计算器类的功能。
+
+请继续关注Swift教程的更多内容。我们将向你展示如何使用表格视图，精灵工具包，一些iOS 8 APIs还有更多其他内容！
+
+同时，如果你想要学习更多内容这里有一些精彩的资源可以查看：
+
+*苹果的[Swift语法书]（https://itunes.apple.com/us/book/swift-programming-language/id881256329?mt=11&uo=8&at=11ld4k&uo=8&at=11ld4k）
+
+*你还可以阅读书籍就像Xcode中交互的Playground（Help\Documentation and API Reference\New Features in Xcode 6 Beta\Swift Language\The Swift Programming Language\A Swift Tour\Open Playground）
+
+*[WWDC 2014](https://developer.apple.com/videos/wwdc/2014/)中的Swift视频
+
+*[Swift语言FAQ](http://www.raywenderlich.com/74138/swift-language-faq)
+
+*[Swift语言的精华：一个Objective-C开发者的观点]（http://www.raywenderlich.com/73997/swift-language-highlights）
+
+*[视频教程：Swift介绍第0部分：引言]（http://www.raywenderlich.com/74514/video-tutorial-introduction-swift-part-0-introduction）
+
+*检查你的[三本新Swift书](http://www.raywenderlich.com/store/swift-tutorials-bundle),包含了Swift，iOS 8和更多内容
+
+感谢阅读这篇教程，如果你有任何建议或者问题请加入下面论坛的讨论！
