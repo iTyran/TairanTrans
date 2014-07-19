@@ -155,12 +155,81 @@ void FixedUpdate () {
 
 ![img](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_42.png "rocket_mouse_unity_p3_42")
 
+现在设置激光**Position**为**(2, 0.25, 0)**。这是为了测试一切是否正常运作。
+
+运行这个场景。你需要看到激光能够很好地旋转。
+
+![img](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_43.png "rocket_mouse_unity_p3_43")
+
+现在，将激光转到活动房屋。
+
+这里面是解决方案：创建一个激光活动房屋是否需要帮助？
+
+只需在**工程**视图从分层视图拖动**laser**到**Prefabs**文件夹。
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_44.png "rocket_mouse_unity_p3_44")
+
+##杀死老鼠
+
+现在老鼠可以很轻松地在可用的激光中穿过，当没有很多弯曲的胡须的时候。这不是小孩的一个好榜样。小孩可以看到玩激光的结果。:)
+
+最好去修好它。
+
+打开**MouseController**脚本并且添加**dead**实例变量。
+
+```
+private bool dead = false;
+```
+
+这个实例变量代表一只死老鼠。一旦这个变量的值是true,你将不能激活喷气机，向前移动等等。
+
+现在在**MouseController**类中的某处添加以下两个方法：
+
+```
+void OnTriggerEnter2D(Collider2D collider)
+{
+    HitByLaser(collider);
+}
+ 
+void HitByLaser(Collider2D laserCollider)
+{
+    dead = true;
+}
+```
+
+当老鼠和任何一道激光相撞，**OnTriggerEnter2D**方法将被调用。现在，它只是标记老鼠的死亡。
+
+注意：这可能看起来有点奇怪为什么你需要为了一行代码创建一个单独的方法，但是你将添加更多的代码到**OnTriggerEnter2D**和**HitByLaser**，所以这只是将未来的变化变得更加方便的一种方法。
+
+现在，当老鼠死掉，它不能向前移动或者用喷气机飞行。你不能拍摄飞行的死去的老鼠，不是吗？:)
+
+在**FixedUpdate**中做以下变化来确保这种事不会发生：
 
 
-
-
-
-
+```
+void FixedUpdate () 
+{
+    bool jetpackActive = Input.GetButton("Fire1");
+ 
+    jetpackActive = jetpackActive && !dead;
+ 
+    if (jetpackActive)
+    {
+        rigidbody2D.AddForce(new Vector2(0, jetpackForce));
+    }
+ 
+    if (!dead)
+    {
+        Vector2 newVelocity = rigidbody2D.velocity;
+        newVelocity.x = forwardMovementSpeed;
+        rigidbody2D.velocity = newVelocity;
+    }
+ 
+    UpdateGroundedStatus();
+ 
+    AdjustJetpack(jetpackActive);
+}
+```
 
 
 
