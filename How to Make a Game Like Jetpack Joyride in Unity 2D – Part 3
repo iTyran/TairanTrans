@@ -249,6 +249,21 @@ void FixedUpdate ()
 
 ##添加掉落和死掉的老鼠动画
 
+在**Hierarchy**中选择**老鼠**GameObject，并且打开**动画**视图。
+
+创建新的动画叫做**die**。保存新的动画到**Animations**文件。
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_46.png "rocket_mouse_unity_p3_46")
+
+在这之后，跟着这些步骤来完成这个动画：
+
+1.在工程视图中打开**Sprites**文件夹。
+
+2.选中并且拖动**mouse_die_0**和**mouse_die_1**精灵到**Animation**视图的时间线。
+
+3.设置**Samples**到8来让动画变慢些。
+
+4.注意**记录方式**是打开的。最简单的方法
 
 
 
