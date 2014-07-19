@@ -86,6 +86,74 @@ private float timeUntilNextToggle;
 
 ![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_41.gif "rocket_mouse_unity_p3_41")
 
+在**Start**里添加以下代码：
+
+```
+timeUntilNextToggle = interval;
+```
+
+这将会设置时间直到第一次激光可以设置它的状态。
+
+用以下代码加上**FixedUpdate**来切换和旋转激光：
+
+```
+void FixedUpdate () {
+    //1
+    timeUntilNextToggle -= Time.fixedDeltaTime;
+ 
+    //2
+    if (timeUntilNextToggle <= 0) {
+ 
+        //3
+        isLaserOn = !isLaserOn;
+ 
+        //4
+        collider2D.enabled = isLaserOn;
+ 
+        //5
+        SpriteRenderer spriteRenderer = ((SpriteRenderer)this.renderer);
+        if (isLaserOn)
+            spriteRenderer.sprite = laserOnSprite;
+        else
+            spriteRenderer.sprite = laserOffSprite;
+ 
+        //6
+        timeUntilNextToggle = interval;
+    }
+ 
+    //7
+    transform.RotateAround(transform.position, Vector3.forward, rotationSpeed * Time. fixedDeltaTime);
+}
+```
+这里是这些代码做了什么：
+
+1.缩短到下一次切换剩下的时间。
+
+2.如果**timeUntilNextToggle**是零或者甚至小于零，那就到了切换激光状态的时间了。
+
+3.在私有变量中设置正确的激光状态。
+
+4.激光碰撞机只有在激光是开着的时候是可用的。这意味着老鼠可以在它关着的时候自由飞越激光。
+
+5.将更通用的**Renderer**类加到**SpriteRenderer**，因为你知道激光是一个**Sprite**。它也设置了正确的激光精灵。这将在激光开着的时候显示**laser_on**精灵，在激光关着的时候显示**laser_off**精灵。
+
+6.当激光刚刚切换的时候重置**timeUntilNextToggle**变量。
+
+7.通过激光的**rotationSpeed**让激光绕z轴旋转。
+
+注意：你可以仅仅通过设置rotationSpeed为零来让旋转不可用。
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
