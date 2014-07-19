@@ -54,3 +54,39 @@
 
 ![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_40-552x500.png "rocket_mouse_unity_p3_40")
 
+##通过脚本控制激光的开关
+
+在**MonoDevelop**上打开**LaserScript**并且加上以下实例变量：
+
+```
+//1
+public Sprite laserOnSprite;    
+public Sprite laserOffSprite;
+ 
+//2    
+public float interval = 0.5f;    
+public float rotationSpeed = 0.0f;
+ 
+//3
+private bool isLaserOn = true;    
+private float timeUntilNextToggle;
+```
+
+这可能看起来有很多变量，但是实际上每个变量都是相当不重要的。
+
+1.激光将可能是两个状态：**On**和**Off**。每个状态都有单独的图片。你可以仅在一瞬间就能详细说出每张状态图。
+
+2.这些属性允许你加上一些随机的波动。你可以设置不同的**interval*的激光在这个层面上不能运作。通过设置一个低的**interval**，你可以创建一个可以很快开关的激光，而通过设置一个高的**interval**你可以创建一个激光在它的状态持续很久，而且谁知道呢，也许那老鼠甚至可以在它关闭时候飞越激光。
+
+变量**rotationSpeed**提供相同的目的。它详细说明了激光旋转的速度。
+
+3.最后有两个私有变量用来切换激光状态。
+
+这里是激光的一个例子。每个激光都有一个不同的**interval**和**rotationSpeed**。
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_41.gif "rocket_mouse_unity_p3_41")
+
+
+
+
+
