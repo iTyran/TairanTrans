@@ -231,6 +231,26 @@ void FixedUpdate ()
 }
 ```
 
+注意现在**jetpackActive**总是false，当老鼠死亡的时候。这意味着没有向上的力施加于老鼠，并且，由于**jetpackActive**被传到**AdjustJetpack**,粒子系统将变成不可用的。
+
+还有，你不能设置老鼠**velocity**，如果它已经死去，这是相当明显的。
+
+切回到Unity并且运行场景。让老鼠飞进激光。
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_45.png "rocket_mouse_unity_p3_45")
+
+嗯..,看起来你不能再使用喷气机并且老鼠不能向前移动，但是为什么老鼠像疯了一样在跑？
+
+猜猜？任何人？Bueller？Bueller？
+
+这个怪异行为的原因是你的老鼠有两个状态：**跑**和**飞**，而且当老鼠掉落到地板它变成在地上的，所以**跑**的动画被激活了。
+
+由于游戏不能这样结束，你需要添加一些状态来显示老鼠已经死亡。
+
+##添加掉落和死掉的老鼠动画
+
+
+
 
 
 
