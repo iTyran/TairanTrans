@@ -143,7 +143,17 @@ void FixedUpdate () {
 
 注意：你可以仅仅通过设置rotationSpeed为零来让旋转不可用。
 
+##设置激光脚本参数
 
+切回到Unity并且在**Hierarchy**中选择**laser**。确保激光脚本组成是可见的。
+
+从工程视图将**laser_on**精灵拖到在检查工具中的激光脚本组成的**Laser On Sprite**属性中。
+
+然后将**laser_off**精灵拖到**Laser Off Sprite**属性中。
+
+设置**Rotation Speed**为30。
+
+![img](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_42.png "rocket_mouse_unity_p3_42")
 
 
 
