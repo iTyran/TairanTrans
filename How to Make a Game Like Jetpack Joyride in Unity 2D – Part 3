@@ -303,12 +303,41 @@ void FixedUpdate ()
 
 ![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_53.png "rocket_mouse_unity_p3_53")
 
+选中这个变换并且在**Conditions**中，设置**dead**为true并且点击**+**来加上第二个参数**grounded**。设置**grounded**的值为**false**。
 
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_54.png "rocket_mouse_unity_p3_54")
 
+选中这个变换并且在**Conditions**中，设置**dead**和**grounded**参数的值为**true**。
 
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_60.png "rocket_mouse_unity_p3_60")
 
+这个方法有两个可能的组合：
 
+1.dead但是**没有**grounded
 
+2.dead**并且**grounded
+
+![img](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_55.png "rocket_mouse_unity_p3_55")
+
+这样的话，如果老鼠死掉了，但是仍然在空中（没有触地），状态被切换到fall。然而，如果老鼠死掉了并且触地了，或者死掉了并且在落到地板后变成触地的了，状态切换到die。
+
+还剩唯一一件要做的事是从**MouseController**脚本更新dead参数。
+
+打开**MouseController**脚本并且添加以下这行代码到**HitByLaser**底部：
+
+```
+animator.SetBool("dead", true);
+```
+
+这将设置Animator组成的**dead**参数为**true**。
+
+运行场景并且飞入激光。
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_56.png "rocket_mouse_unity_p3_56")
+
+就像你看到的，当老鼠触到激光，脚本设置**dead**参数为**true**并且老鼠切换到fall状态（因为grounded还是false)。不管怎样，当老鼠到达地面时，脚本设置grounded参数为**true**。现在，所有条件指向切换到**die**状态。
+
+##使用Trigger来让老鼠死亡一次
 
 
 
