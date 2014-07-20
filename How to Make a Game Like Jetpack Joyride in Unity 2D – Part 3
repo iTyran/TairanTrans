@@ -339,5 +339,29 @@ animator.SetBool("dead", true);
 
 ##使用Trigger来让老鼠死亡一次
 
+古语有云，每个动物都只有一条命，但是这里老鼠却一直在死去。你可以通过在老鼠死亡后审查Animator视图来自己检查这个错误。
+
+![img](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_57.gif "rocket_mouse_unity_p3_57")
+
+这样的事情发生是因为从**Any State**变换到**die**一直在发生。从**Any State**触发animator的变换的**grounded**和**dead**参数总是true,
+
+为了修复这个bug，你可以使用一个特殊的参数类型叫做Trigger。Trigger参数类型非常类似于Bool，除了它们是在使用后自动重置。这是Unity 4.3新增的相对比较新的特性。
+
+打开**Animator**视图，添加一个新的**Trigger**参数叫做**dieOnceTrigger**。通过选中它旁边的复选框来设置它的状态为**On**。
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_58.png "rocket_mouse_unity_p3_58")
+
+接下来，切换**Any State**到**die**,并且在**Conditions**段中添加**dieOnceTrigger**。
+
+运行这个场景并且再一次飞向激光。
+
+![img](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_61.gif "rocket_mouse_unity_p3_61")
+
+我不能说这样把事情变得更好，但是幸运的是这非常容易修复。这件事发生仅仅因为**die**动画被设置为默认循环。
+
+在Project视图中打开**Animations**文件夹并且选中**animation**。在
+
+
+
 
 
