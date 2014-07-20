@@ -263,7 +263,47 @@ void FixedUpdate ()
 
 3.设置**Samples**到8来让动画变慢些。
 
-4.注意**记录方式**是打开的。最简单的方法
+4.注意**记录模式**是打开的。注意它的最简单的方法是看着已经变成红色的回放按钮。点击记录按钮来停止记录。这将使回放按钮变成正常颜色。
+
+![img](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_47.png "rocket_mouse_unity_p3_47")
+
+这是简单的。实际上我认为你可以自己创建**fall**动画。这次只要使用一个帧的**mouse_fall**精灵。但是，如果你遇到困难，随意展开以下段落来获取详细的介绍。
+
+这里面是解决方案：创建fall动画需要帮助吗？
+
+1.在**Hierarchy**中选中**mouse**。
+
+2.在**Animation**视图中展开动画下拉框并且选中**[Create New Clip]**。
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_48.png "rocket_mouse_unity_p3_48")
+
+3.创建一个叫做**fall**的新动画并且保存在**Animations**文件夹中。
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_49.png "rocket_mouse_unity_p3_49")
+
+4.在**Project**视图中确保**Sprites**文件夹是打开的并且**Animation**视图是可见的。将**mouse_fall**精灵拖到**Animation**视图时间线。
+
+![img](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_50.png "rocket_mouse_unity_p3_50")
+
+5.点击**record**按钮停止记录。
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_51.png "rocket_mouse_unity_p3_51")
+
+##变换到Fall和Die动画
+
+在创建动画之后，你需要适时将Animator切换到对应的动画。为了达到这个效果，你可以通过一个特殊的状态叫做**Any State**来进行变换，因为当老鼠触碰到激光时候它当前是处在什么状态是没有关系的。
+
+由于你创建了两个动画（**fall**和**die**），老鼠是在空中触到激光还是在地上跑时触到激光，两者是不一样的。对于前者来说，老鼠应该切换到fall动画状态并且仅在触到地面之后执行**die**动画。
+
+不管怎样，这两种可能性你都需要一个新的参数。打开Animator视图并且创建新的**Bool**参数叫做**dead**。
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_52.png "rocket_mouse_unity_p3_52")
+
+然后**Make Transition**从**Any State**到**fall**。
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_53.png "rocket_mouse_unity_p3_53")
+
+
 
 
 
