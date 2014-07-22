@@ -54,7 +54,7 @@
 
 ![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_40-552x500.png "rocket_mouse_unity_p3_40")
 
-##通过脚本控制激光的开关
+###通过脚本控制激光的开关
 
 在**MonoDevelop**上打开**LaserScript**并且加上以下实例变量：
 
@@ -143,7 +143,7 @@ void FixedUpdate () {
 
 注意：你可以仅仅通过设置rotationSpeed为零来让旋转不可用。
 
-##设置激光脚本参数
+###设置激光脚本参数
 
 切回到Unity并且在**Hierarchy**中选择**laser**。确保激光脚本组成是可见的。
 
@@ -247,7 +247,7 @@ void FixedUpdate ()
 
 由于游戏不能这样结束，你需要添加一些状态来显示老鼠已经死亡。
 
-##添加掉落和死掉的老鼠动画
+###添加掉落和死掉的老鼠动画
 
 在**Hierarchy**中选择**老鼠**GameObject，并且打开**动画**视图。
 
@@ -289,7 +289,7 @@ void FixedUpdate ()
 
 ![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_51.png "rocket_mouse_unity_p3_51")
 
-##变换到Fall和Die动画
+###变换到Fall和Die动画
 
 在创建动画之后，你需要适时将Animator切换到对应的动画。为了达到这个效果，你可以通过一个特殊的状态叫做**Any State**来进行变换，因为当老鼠触碰到激光时候它当前是处在什么状态是没有关系的。
 
@@ -337,7 +337,7 @@ animator.SetBool("dead", true);
 
 就像你看到的，当老鼠触到激光，脚本设置**dead**参数为**true**并且老鼠切换到fall状态（因为grounded还是false)。不管怎样，当老鼠到达地面时，脚本设置grounded参数为**true**。现在，所有条件指向切换到**die**状态。
 
-##使用Trigger来让老鼠死亡一次
+###使用Trigger来让老鼠死亡一次
 
 古语有云，每个动物都只有一条命，但是这里老鼠却一直在死去。你可以通过在老鼠死亡后审查Animator视图来自己检查这个错误。
 
@@ -359,7 +359,97 @@ animator.SetBool("dead", true);
 
 我不能说这样把事情变得更好，但是幸运的是这非常容易修复。这件事发生仅仅因为**die**动画被设置为默认循环。
 
-在Project视图中打开**Animations**文件夹并且选中**animation**。在
+在Project视图中打开**Animations**文件夹并且选中**animation**。在**Inspector**中取消选中**Loop Time**。这样可以阻止动画循环。
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_62.png "rocket_mouse_unity_p3_62")
+
+运行场景并且碰撞激光
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_63.png "rocket_mouse_unity_p3_63")
+
+这次老鼠在死亡后躺在地板上了。
+
+##添加硬币
+
+当致命的激光有趣地被实现，加上一些硬币给老鼠收集怎么样。
+
+###创建硬币活动房屋
+
+创建一个硬币活动房屋是很简单的，就和创建激光一样，所以你应该尝试自己动手。只需要使用硬币精灵并且跟着这些步骤来做：
+
+*不要为硬币创建任何脚本。
+
+*用**Circle Collider 2D**来代替Box Collider 2D。
+
+*Enable是碰撞机的**Trigger option**，因为你不想要硬币阻止老鼠的活动。
+
+如果你有任何问题只要看一看下方的展开的段落。
+
+这里面有解决方案：创建硬币活动房屋
+
+1.在**Project**视图打开**Sprites**文件夹
+
+2.将一个**coin**精灵到场景并且在**Hierarchy**中选中它。
+
+3.在**Inspector**中设置它的**Sorting Layer**到**Objects**。
+
+4.添加**Circle Collider 2D**组成。
+
+5.将碰撞机的**Is Trigger**属性设为可用的。
+
+6.设置碰撞机的**Radius**为**0.23**。
+
+这里是展示所有所需步骤的图片：
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_64-700x406.png "rocket_mouse_unity_p3_64")
+
+在创建硬币GameObject之后，将它从Hierarchy中拖到**Project**视图的**Prefabs**文件夹来创建一个硬币活动房屋。
+
+![img](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_65.png "rocket_mouse_unity_p3_65")
+
+现在通过拖曳**coin Prefabs**到**Scene**视图来添加一些硬币到场景。像这样创建一些东西：
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_66.png "rocket_mouse_unity_p3_66")
+
+运行场景。
+
+![img](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_67.png "rocket_mouse_unity_p3_67")
+
+等等——老鼠在它触到硬币的那一刻死亡了？它们是被毒死的吗？
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_68.png "rocket_mouse_unity_p3_68")
+
+不是的，硬币是正常的。老鼠死掉是因为**MouseController**脚本里的代码操作任何一个碰撞机就像一个含有激光的碰撞机。
+
+###用Tags来区分硬币和激光
+
+你可以使用**Tags**来区分硬币和激光，**Tags**专门为了这个目的而产生的。
+
+选中Project视图中的**Prefabs**文件夹右边的**coin Prefab**。这将打开Inspector中的Prefab属性。找到name字段的正下方的**Tag**下拉框，打开它，并且选择**Add Tag**...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
