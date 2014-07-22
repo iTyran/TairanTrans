@@ -1,0 +1,506 @@
+#如何用Unity 2D制作一个像疯狂喷气机的游戏——第三部分
+
+这是关于如何用Unity 2D制作一个像疯狂喷气机的游戏的系列教程的最后一个部分。如果你落下了教程之前的部分，你最好先去完成之前教程的学习。它们分别是：第一部分和第二部分。
+
+就像我在上个部分的结尾提到的那样，这个部分我们将享尽所有的乐趣。这将是走到这里的奖励。:)
+
+在这个部分你将添加激光，硬币，音效，音乐甚至是视差滚动。好了，聊了够多了，让我们开始享受乐趣吧！
+
+##开始
+
+你可以继续使用你在第二部分创建的工程或者你也可以下载这个部分的初始工程。它们几乎是相同的。
+
+如果你想要下载初始工程，请使用这个链接：[RocketMouse_Final_Part2](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/RocketMouse_Final_Part2.zip)
+
+当你已经准备好打开**RocketMouse.unity**场景，就让我们开始吧！
+
+##添加激光
+
+老鼠飞过房间是很棒的，但是这个游戏的挑战在哪里呢？是时候添加一些障碍物了，还有什么比激光更酷的呢？:)
+
+激光将被随机生成，以一个与生成房间的相同方式，所以你需要创建一个活动房屋。你还需要创建一个小脚本来控制激光。
+
+##创建激光
+
+这里是创建一个激光对象所需的步骤：
+
+1.在**Project**视图找到**laser_on**精灵并且拖动它到这个场景。
+
+注意:由于激光活动房屋将仅由激光它自己组成，你不需要将它放在原点或者类似于原点的其它地方。
+
+2.在**Hierarchy**中选中它并且将它重命名为**laser**。
+
+3.设置它的**Sorting Layer**为**Objects**。
+
+4.添加**Box Collider 2D**要素。
+
+5.将**Box Collider 2D**要素的**Is Trigger**属性设为可用的。
+
+注意：
+
+当Is Trigger属性是可用的，碰撞机将触发碰撞事件，但会被物理引擎忽视。换句话说，如果老鼠触碰到激光你将会被通知到。然而，激光不能阻止老鼠的移动。
+
+这是非常方便的，这里可以给出很多理由。举个例子，如果老鼠在激光的顶部挂了，它将躺在激光上悬挂在空中。或者那老鼠也可以在触碰到激光后因为惯性再向前移动一小段距离，而不是从激光那里反弹回去。
+
+除此之外，真的激光不是一些难的对象，所以通过将这个属性设置为可用的，你只是模仿真的激光。
+
+6.设置碰撞机的**尺寸**，**X**设为**0.18**，**Y**设为**3.1**。
+
+注意：这里创建了一个碰撞机仅当激光存在的时候，留下两端的发射器是完全安全的。
+
+7.创建一个新的**C# 脚本**命名为**LaserScript**，并且将它附加到**laser**。
+
+这里是完整的步骤清单的演示：
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_40-552x500.png "rocket_mouse_unity_p3_40")
+
+###通过脚本控制激光的开关
+
+在**MonoDevelop**上打开**LaserScript**并且加上以下实例变量：
+
+```
+//1
+public Sprite laserOnSprite;    
+public Sprite laserOffSprite;
+ 
+//2    
+public float interval = 0.5f;    
+public float rotationSpeed = 0.0f;
+ 
+//3
+private bool isLaserOn = true;    
+private float timeUntilNextToggle;
+```
+
+这可能看起来有很多变量，但是实际上每个变量都是相当不重要的。
+
+1.激光将可能是两个状态：**On**和**Off**。每个状态都有单独的图片。你可以仅在一瞬间就能详细说出每张状态图。
+
+2.这些属性允许你加上一些随机的波动。你可以设置不同的**interval*的激光在这个层面上不能运作。通过设置一个低的**interval**，你可以创建一个可以很快开关的激光，而通过设置一个高的**interval**你可以创建一个激光在它的状态持续很久，而且谁知道呢，也许那老鼠甚至可以在它关闭时候飞越激光。
+
+变量**rotationSpeed**提供相同的目的。它详细说明了激光旋转的速度。
+
+3.最后有两个私有变量用来切换激光状态。
+
+这里是激光的一个例子。每个激光都有一个不同的**interval**和**rotationSpeed**。
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_41.gif "rocket_mouse_unity_p3_41")
+
+在**Start**里添加以下代码：
+
+```
+timeUntilNextToggle = interval;
+```
+
+这将会设置时间直到第一次激光可以设置它的状态。
+
+用以下代码加上**FixedUpdate**来切换和旋转激光：
+
+```
+void FixedUpdate () {
+    //1
+    timeUntilNextToggle -= Time.fixedDeltaTime;
+ 
+    //2
+    if (timeUntilNextToggle <= 0) {
+ 
+        //3
+        isLaserOn = !isLaserOn;
+ 
+        //4
+        collider2D.enabled = isLaserOn;
+ 
+        //5
+        SpriteRenderer spriteRenderer = ((SpriteRenderer)this.renderer);
+        if (isLaserOn)
+            spriteRenderer.sprite = laserOnSprite;
+        else
+            spriteRenderer.sprite = laserOffSprite;
+ 
+        //6
+        timeUntilNextToggle = interval;
+    }
+ 
+    //7
+    transform.RotateAround(transform.position, Vector3.forward, rotationSpeed * Time. fixedDeltaTime);
+}
+```
+这里是这些代码做了什么：
+
+1.缩短到下一次切换剩下的时间。
+
+2.如果**timeUntilNextToggle**是零或者甚至小于零，那就到了切换激光状态的时间了。
+
+3.在私有变量中设置正确的激光状态。
+
+4.激光碰撞机只有在激光是开着的时候是可用的。这意味着老鼠可以在它关着的时候自由飞越激光。
+
+5.将更通用的**Renderer**类加到**SpriteRenderer**，因为你知道激光是一个**Sprite**。它也设置了正确的激光精灵。这将在激光开着的时候显示**laser_on**精灵，在激光关着的时候显示**laser_off**精灵。
+
+6.当激光刚刚切换的时候重置**timeUntilNextToggle**变量。
+
+7.通过激光的**rotationSpeed**让激光绕z轴旋转。
+
+注意：你可以仅仅通过设置rotationSpeed为零来让旋转不可用。
+
+###设置激光脚本参数
+
+切回到Unity并且在**Hierarchy**中选择**laser**。确保激光脚本组成是可见的。
+
+从工程视图将**laser_on**精灵拖到在检查工具中的激光脚本组成的**Laser On Sprite**属性中。
+
+然后将**laser_off**精灵拖到**Laser Off Sprite**属性中。
+
+设置**Rotation Speed**为30。
+
+![img](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_42.png "rocket_mouse_unity_p3_42")
+
+现在设置激光**Position**为**(2, 0.25, 0)**。这是为了测试一切是否正常运作。
+
+运行这个场景。你需要看到激光能够很好地旋转。
+
+![img](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_43.png "rocket_mouse_unity_p3_43")
+
+现在，将激光转到活动房屋。
+
+这里面是解决方案：创建一个激光活动房屋是否需要帮助？
+
+只需在**工程**视图从分层视图拖动**laser**到**Prefabs**文件夹。
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_44.png "rocket_mouse_unity_p3_44")
+
+##杀死老鼠
+
+现在老鼠可以很轻松地在可用的激光中穿过，当没有很多弯曲的胡须的时候。这不是小孩的一个好榜样。小孩可以看到玩激光的结果。:)
+
+最好去修好它。
+
+打开**MouseController**脚本并且添加**dead**实例变量。
+
+```
+private bool dead = false;
+```
+
+这个实例变量代表一只死老鼠。一旦这个变量的值是true,你将不能激活喷气机，向前移动等等。
+
+现在在**MouseController**类中的某处添加以下两个方法：
+
+```
+void OnTriggerEnter2D(Collider2D collider)
+{
+    HitByLaser(collider);
+}
+ 
+void HitByLaser(Collider2D laserCollider)
+{
+    dead = true;
+}
+```
+
+当老鼠和任何一道激光相撞，**OnTriggerEnter2D**方法将被调用。现在，它只是标记老鼠的死亡。
+
+注意：这可能看起来有点奇怪为什么你需要为了一行代码创建一个单独的方法，但是你将添加更多的代码到**OnTriggerEnter2D**和**HitByLaser**，所以这只是将未来的变化变得更加方便的一种方法。
+
+现在，当老鼠死掉，它不能向前移动或者用喷气机飞行。你不能拍摄飞行的死去的老鼠，不是吗？:)
+
+在**FixedUpdate**中做以下变化来确保这种事不会发生：
+
+
+```
+void FixedUpdate () 
+{
+    bool jetpackActive = Input.GetButton("Fire1");
+ 
+    jetpackActive = jetpackActive && !dead;
+ 
+    if (jetpackActive)
+    {
+        rigidbody2D.AddForce(new Vector2(0, jetpackForce));
+    }
+ 
+    if (!dead)
+    {
+        Vector2 newVelocity = rigidbody2D.velocity;
+        newVelocity.x = forwardMovementSpeed;
+        rigidbody2D.velocity = newVelocity;
+    }
+ 
+    UpdateGroundedStatus();
+ 
+    AdjustJetpack(jetpackActive);
+}
+```
+
+注意现在**jetpackActive**总是false，当老鼠死亡的时候。这意味着没有向上的力施加于老鼠，并且，由于**jetpackActive**被传到**AdjustJetpack**,粒子系统将变成不可用的。
+
+还有，你不能设置老鼠**velocity**，如果它已经死去，这是相当明显的。
+
+切回到Unity并且运行场景。让老鼠飞进激光。
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_45.png "rocket_mouse_unity_p3_45")
+
+嗯..,看起来你不能再使用喷气机并且老鼠不能向前移动，但是为什么老鼠像疯了一样在跑？
+
+猜猜？任何人？Bueller？Bueller？
+
+这个怪异行为的原因是你的老鼠有两个状态：**跑**和**飞**，而且当老鼠掉落到地板它变成在地上的，所以**跑**的动画被激活了。
+
+由于游戏不能这样结束，你需要添加一些状态来显示老鼠已经死亡。
+
+###添加掉落和死掉的老鼠动画
+
+在**Hierarchy**中选择**老鼠**GameObject，并且打开**动画**视图。
+
+创建新的动画叫做**die**。保存新的动画到**Animations**文件。
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_46.png "rocket_mouse_unity_p3_46")
+
+在这之后，跟着这些步骤来完成这个动画：
+
+1.在工程视图中打开**Sprites**文件夹。
+
+2.选中并且拖动**mouse_die_0**和**mouse_die_1**精灵到**Animation**视图的时间线。
+
+3.设置**Samples**到8来让动画变慢些。
+
+4.注意**记录模式**是打开的。注意它的最简单的方法是看着已经变成红色的回放按钮。点击记录按钮来停止记录。这将使回放按钮变成正常颜色。
+
+![img](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_47.png "rocket_mouse_unity_p3_47")
+
+这是简单的。实际上我认为你可以自己创建**fall**动画。这次只要使用一个帧的**mouse_fall**精灵。但是，如果你遇到困难，随意展开以下段落来获取详细的介绍。
+
+这里面是解决方案：创建fall动画需要帮助吗？
+
+1.在**Hierarchy**中选中**mouse**。
+
+2.在**Animation**视图中展开动画下拉框并且选中**[Create New Clip]**。
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_48.png "rocket_mouse_unity_p3_48")
+
+3.创建一个叫做**fall**的新动画并且保存在**Animations**文件夹中。
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_49.png "rocket_mouse_unity_p3_49")
+
+4.在**Project**视图中确保**Sprites**文件夹是打开的并且**Animation**视图是可见的。将**mouse_fall**精灵拖到**Animation**视图时间线。
+
+![img](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_50.png "rocket_mouse_unity_p3_50")
+
+5.点击**record**按钮停止记录。
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_51.png "rocket_mouse_unity_p3_51")
+
+###变换到Fall和Die动画
+
+在创建动画之后，你需要适时将Animator切换到对应的动画。为了达到这个效果，你可以通过一个特殊的状态叫做**Any State**来进行变换，因为当老鼠触碰到激光时候它当前是处在什么状态是没有关系的。
+
+由于你创建了两个动画（**fall**和**die**），老鼠是在空中触到激光还是在地上跑时触到激光，两者是不一样的。对于前者来说，老鼠应该切换到fall动画状态并且仅在触到地面之后执行**die**动画。
+
+不管怎样，这两种可能性你都需要一个新的参数。打开Animator视图并且创建新的**Bool**参数叫做**dead**。
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_52.png "rocket_mouse_unity_p3_52")
+
+然后**Make Transition**从**Any State**到**fall**。
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_53.png "rocket_mouse_unity_p3_53")
+
+选中这个变换并且在**Conditions**中，设置**dead**为true并且点击**+**来加上第二个参数**grounded**。设置**grounded**的值为**false**。
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_54.png "rocket_mouse_unity_p3_54")
+
+选中这个变换并且在**Conditions**中，设置**dead**和**grounded**参数的值为**true**。
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_60.png "rocket_mouse_unity_p3_60")
+
+这个方法有两个可能的组合：
+
+1.dead但是**没有**grounded
+
+2.dead**并且**grounded
+
+![img](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_55.png "rocket_mouse_unity_p3_55")
+
+这样的话，如果老鼠死掉了，但是仍然在空中（没有触地），状态被切换到fall。然而，如果老鼠死掉了并且触地了，或者死掉了并且在落到地板后变成触地的了，状态切换到die。
+
+还剩唯一一件要做的事是从**MouseController**脚本更新dead参数。
+
+打开**MouseController**脚本并且添加以下这行代码到**HitByLaser**底部：
+
+```
+animator.SetBool("dead", true);
+```
+
+这将设置Animator组成的**dead**参数为**true**。
+
+运行场景并且飞入激光。
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_56.png "rocket_mouse_unity_p3_56")
+
+就像你看到的，当老鼠触到激光，脚本设置**dead**参数为**true**并且老鼠切换到fall状态（因为grounded还是false)。不管怎样，当老鼠到达地面时，脚本设置grounded参数为**true**。现在，所有条件指向切换到**die**状态。
+
+###使用Trigger来让老鼠死亡一次
+
+古语有云，每个动物都只有一条命，但是这里老鼠却一直在死去。你可以通过在老鼠死亡后审查Animator视图来自己检查这个错误。
+
+![img](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_57.gif "rocket_mouse_unity_p3_57")
+
+这样的事情发生是因为从**Any State**变换到**die**一直在发生。从**Any State**触发animator的变换的**grounded**和**dead**参数总是true,
+
+为了修复这个bug，你可以使用一个特殊的参数类型叫做Trigger。Trigger参数类型非常类似于Bool，除了它们是在使用后自动重置。这是Unity 4.3新增的相对比较新的特性。
+
+打开**Animator**视图，添加一个新的**Trigger**参数叫做**dieOnceTrigger**。通过选中它旁边的复选框来设置它的状态为**On**。
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_58.png "rocket_mouse_unity_p3_58")
+
+接下来，切换**Any State**到**die**,并且在**Conditions**段中添加**dieOnceTrigger**。
+
+运行这个场景并且再一次飞向激光。
+
+![img](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_61.gif "rocket_mouse_unity_p3_61")
+
+我不能说这样把事情变得更好，但是幸运的是这非常容易修复。这件事发生仅仅因为**die**动画被设置为默认循环。
+
+在Project视图中打开**Animations**文件夹并且选中**animation**。在**Inspector**中取消选中**Loop Time**。这样可以阻止动画循环。
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_62.png "rocket_mouse_unity_p3_62")
+
+运行场景并且碰撞激光
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_63.png "rocket_mouse_unity_p3_63")
+
+这次老鼠在死亡后躺在地板上了。
+
+##添加硬币
+
+当致命的激光有趣地被实现，加上一些硬币给老鼠收集怎么样。
+
+###创建硬币活动房屋
+
+创建一个硬币活动房屋是很简单的，就和创建激光一样，所以你应该尝试自己动手。只需要使用硬币精灵并且跟着这些步骤来做：
+
+*不要为硬币创建任何脚本。
+
+*用**Circle Collider 2D**来代替Box Collider 2D。
+
+*Enable是碰撞机的**Trigger option**，因为你不想要硬币阻止老鼠的活动。
+
+如果你有任何问题只要看一看下方的展开的段落。
+
+这里面有解决方案：创建硬币活动房屋
+
+1.在**Project**视图打开**Sprites**文件夹
+
+2.将一个**coin**精灵到场景并且在**Hierarchy**中选中它。
+
+3.在**Inspector**中设置它的**Sorting Layer**到**Objects**。
+
+4.添加**Circle Collider 2D**组成。
+
+5.将碰撞机的**Is Trigger**属性设为可用的。
+
+6.设置碰撞机的**Radius**为**0.23**。
+
+这里是展示所有所需步骤的图片：
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_64-700x406.png "rocket_mouse_unity_p3_64")
+
+在创建硬币GameObject之后，将它从Hierarchy中拖到**Project**视图的**Prefabs**文件夹来创建一个硬币活动房屋。
+
+![img](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_65.png "rocket_mouse_unity_p3_65")
+
+现在通过拖曳**coin Prefabs**到**Scene**视图来添加一些硬币到场景。像这样创建一些东西：
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_66.png "rocket_mouse_unity_p3_66")
+
+运行场景。
+
+![img](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_67.png "rocket_mouse_unity_p3_67")
+
+等等——老鼠在它触到硬币的那一刻死亡了？它们是被毒死的吗？
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_68.png "rocket_mouse_unity_p3_68")
+
+不是的，硬币是正常的。老鼠死掉是因为**MouseController**脚本里的代码操作任何一个碰撞机就像一个含有激光的碰撞机。
+
+###用Tags来区分硬币和激光
+
+你可以使用**Tags**来区分硬币和激光，**Tags**专门为了这个目的而产生的。
+
+选中Project视图中的**Prefabs**文件夹右边的**coin Prefab**。这将打开Inspector中的Prefab属性。找到name字段的正下方的**Tag**下拉框，打开它，并且选择**Add Tag**...
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_69.png "rocket_mouse_unity_p3_69")
+
+这将打开已经熟悉的Inspector中的**Tags & Layers**编辑器。在**Tags**段中添加一个叫做**Coins**的标签。
+
+**注意：**它将Size自动增长到2并且添加Element 1,但是这些都是OK的。
+
+现在再次在**Project**视图选中**coin Prefab**并且设置它的**Tag**为Inspector中的**Coins**
+
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_71.png "rocket_mouse_unity_p3_71")
+
+当然，仅仅只是设置Tag属性不能让脚本区分硬币和激光，你仍然需要修改一些代码。
+
+###更新MouseController脚本来使用Tags
+
+打开**MouseController**脚本并且添加一个**coins**计数器变量：
+
+```
+private uint coins = 0;
+```
+
+这是我们存储硬币数量的地方。
+
+然后添加**CollectCoin**方法：
+
+```
+void CollectCoin(Collider2D coinCollider)
+{
+    coins++;
+ 
+    Destroy(coinCollider.gameObject);
+}
+```
+
+这个方法增加硬币数量并且从场景中移除硬币以致于你不能第二次碰撞到它。
+
+最后，在**OnTriggerEnter2D**中做以下变化：
+
+```
+void OnTriggerEnter2D(Collider2D collider)
+{
+    if (collider.gameObject.CompareTag("Coins"))
+        CollectCoin(collider);
+    else
+        HitByLaser(collider);
+}
+```
+
+有了这个变化，你调用**CollectCoin**以防硬币和其它情况下的**HitByLaser**。
+
+**注意：**在这个游戏里，只有两种类型的对象，所以为激光使用其它情况是OK的。在一个真正的游戏里，你应该将标签分配给所有对象类型并且暗中检查它们。
+
+运行场景。
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_72.png "rocket_mouse_unity_p3_72")
+
+现在好多了。老鼠收集硬币并且在它触碰到激光的时候死亡。看起来你已经准备好用脚本生成激光和硬币。
+
+##生成硬币和激光
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
