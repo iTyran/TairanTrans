@@ -427,15 +427,64 @@ animator.SetBool("dead", true);
 
 选中Project视图中的**Prefabs**文件夹右边的**coin Prefab**。这将打开Inspector中的Prefab属性。找到name字段的正下方的**Tag**下拉框，打开它，并且选择**Add Tag**...
 
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_69.png "rocket_mouse_unity_p3_69")
 
+这将打开已经熟悉的Inspector中的**Tags & Layers**编辑器。在**Tags**段中添加一个叫做**Coins**的标签。
 
+**注意：**它将Size自动增长到2并且添加Element 1,但是这些都是OK的。
 
+现在再次在**Project**视图选中**coin Prefab**并且设置它的**Tag**为Inspector中的**Coins**
 
+![img](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_71.png "rocket_mouse_unity_p3_71")
 
+当然，仅仅只是设置Tag属性不能让脚本区分硬币和激光，你仍然需要修改一些代码。
 
+###更新MouseController脚本来使用Tags
 
+打开**MouseController**脚本并且添加一个**coins**计数器变量：
 
+```
+private uint coins = 0;
+```
 
+这是我们存储硬币数量的地方。
+
+然后添加**CollectCoin**方法：
+
+```
+void CollectCoin(Collider2D coinCollider)
+{
+    coins++;
+ 
+    Destroy(coinCollider.gameObject);
+}
+```
+
+这个方法增加硬币数量并且从场景中移除硬币以致于你不能第二次碰撞到它。
+
+最后，在**OnTriggerEnter2D**中做以下变化：
+
+```
+void OnTriggerEnter2D(Collider2D collider)
+{
+    if (collider.gameObject.CompareTag("Coins"))
+        CollectCoin(collider);
+    else
+        HitByLaser(collider);
+}
+```
+
+有了这个变化，你调用**CollectCoin**以防硬币和其它情况下的**HitByLaser**。
+
+**注意：**在这个游戏里，只有两种类型的对象，所以为激光使用其它情况是OK的。在一个真正的游戏里，你应该将标签分配给所有对象类型并且暗中检查它们。
+
+运行场景。
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_72.png "rocket_mouse_unity_p3_72")
+
+现在好多了。老鼠收集硬币并且在它触碰到激光的时候死亡。看起来你已经准备好用脚本生成激光和硬币。
+
+##生成硬币和激光
 
 
 
