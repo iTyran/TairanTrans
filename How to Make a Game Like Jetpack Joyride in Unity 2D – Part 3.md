@@ -486,6 +486,90 @@ void OnTriggerEnter2D(Collider2D collider)
 
 ##生成硬币和激光
 
+生成硬币和激光和生成房间的做法类似。算法基本相同，但是在写这个代码之前，你需要改善下硬币的生成以便为玩家提供更多乐趣。
+
+现在你有一个只有一个硬币组成的活动房屋，所以如果你写生成代码你将在这个水平面的各个地方只简单地生成一个硬币。这是很无趣的！何不从硬币上创建不同的轮廓并且一下子生成一堆硬币呢？
+
+##创建一堆硬币的活动房屋
+
+在Project视图中打开**Prefabs**文件夹并且用硬币活动房屋在场景中创建**9个硬币**。它应该看起来像这样：
+
+![img](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_73.png "rocket_mouse_unity_p3_73")
+
+选中任何一个硬币并且设置它的**Position**为**(0, 0, 0)**。这将成为**中心硬币**。你将添加所有的硬币到**Empty GameObject**，所以你需要在原点周围建立你的轮廓。
+
+在放置中心硬币后，在硬币周围建立一个倒三角形的轮廓。别忘记你可以通过**V**键来使用Vertex Snapping。
+
+![img](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_74.png "rocket_mouse_unity_p3_74")
+
+现在通过选择**GameObject\Create Empty**创建一个**Empty GameObject**。在Hierarchy中选中它并且重命名为**coins_v**。
+
+设置它的**Position**为**(0, 0, 0)**使得它和中心硬币有相同的位置。然后在**Hierarchy**中选中**所有硬币**并且将他们添加到**coins_v**。你应该像这样在Hierarchy中获取一些东西：
+
+![img](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_75.png "rocket_mouse_unity_p3_75")
+
+在**Hierarchy**中选中**coins_v**并且将它拖到Project视图中的**Prefabs**文件夹来创建活动房屋。
+
+![img](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_76.png "rocket_mouse_unity_p3_76")
+
+**注意：**你可以创建你想要的任意多的不同的硬币组合，就像房间一样，生成脚本将提供一个属性，在这个属性里，你将指定所有可能的对象来生成。
+
+你已经完成了。现在从场景中移除所有的硬币和激光因为他们将在脚本中生成。
+
+##在生成脚本中添加新的参数
+
+打开**GeneratorScript**并且添加以下实例变量：
+
+```
+public GameObject[] availableObjects;    
+public List<GameObject> objects;
+ 
+public float objectsMinDistance = 5.0f;    
+public float objectsMaxDistance = 10.0f;
+ 
+public float objectsMinY = -1.4f;
+public float objectsMaxY = 1.4f;
+ 
+public float objectsMinRotation = -45.0f;
+public float objectsMaxRotation = 45.0f;
+```
+
+**availableObjects**数组存放了脚本生成的所有对象（也就是说不同硬币群和激光）。**对象**清单将存储创建的对象，所以你可以检查你是否需要添加更多player在前面或者当他们离开屏幕时候移除他们。
+
+**注意：**就像房间一样，你可以在这个层级的开始创建一些激光或者硬币，在这里你不想依赖于随机生成代码。只是不要忘记将他们添加到对象清单。
+
+变量**objectsMinDistance**和**objectsMaxDistance**被用来在最后一个对象和当前添加的对象中挑选一个随机距离，以致于对象在固定时间间隔中不显示。
+
+通过使用**objectsMinY**和**objectsMaxY**你可以在放置的每一个对象中配置最大高度和最小高度，并且通过使用**objectsMinRotation**和**objectsMaxRotation**你可以配置旋转角度。
+
+##添加方法到新添加的对象中
+
+新对象被添加到**AddObject**，和添加房间的方法相似。
+
+添加以下代码：
+
+```
+void AddObject(float lastObjectX)
+{
+    //1
+    int randomIndex = Random.Range(0, availableObjects.Length);
+ 
+    //2
+    GameObject obj = (GameObject)Instantiate(availableObjects[randomIndex]);
+ 
+    //3
+    float objectPositionX = lastObjectX + Random.Range(objectsMinDistance, objectsMaxDistance);
+    float randomY = Random.Range(objectsMinY, objectsMaxY);
+    obj.transform.position = new Vector3(objectPositionX,randomY,0); 
+ 
+    //4
+    float rotation = Random.Range(objectsMinRotation, objectsMaxRotation);
+    obj.transform.rotation = Quaternion.Euler(Vector3.forward * rotation);
+ 
+    //5
+    objects.Add(obj);            
+}
+```
 
 
 
