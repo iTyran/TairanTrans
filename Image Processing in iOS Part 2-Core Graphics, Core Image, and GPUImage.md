@@ -1,32 +1,32 @@
 ![Learn about image processing in iOS and create cool special effects!](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/Header-250x250.png)
 
-Learn about image processing in iOS and create cool special effects!
+学习在iOS中处理图像和创建酷炫的效果！
 
-Welcome to part two of this tutorial series about image processing in iOS!
-In the [first part of the series](http://www.raywenderlich.com/69855/image-processing-in-ios-part-1-raw-bitmap-modification), you learned how to access and modify the raw pixel values of an image.
+欢迎来到本系列教程的第二节，iOS中的图像！
+在[本系列的第一节](http://www.raywenderlich.com/69855/image-processing-in-ios-part-1-raw-bitmap-modification)，我们学会了如何访问和修改图像的原始像素值。
 
-In this second and final part of the series, you’ll learn how to perform this same task by using other libraries: Core Graphics, Core Image and GPUImage to be specific. You’ll learn about the pros and cons of each, so that you can make the best choice for your situation.
+在本系列的第二节和最终节中，你将学习如何使用其他的库来执行同样的任务：Core Graphics, Core Image 和GPUImage。你将学习它们各自的优点和缺点，这样你就可以针对你的情况做出更好的选择。
 
-This tutorial picks up where the previous one left off. If you don’t have the project already, you can download it [here](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-Pixel.zip).
+本教程从上一节结束的地方开始。如果你没有项目文件，你可以在[这里](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-Pixel.zip)下载它。
 
-If you fared well in part one, you’re going to thoroughly enjoy this part! Now that you understand the principles, you’ll fully appreciate how simple these libraries make image processing.
+如果你在第一节中表现得很好，你要好好享受这一节！既然你理解了工作原理，你将充分理解这些库进行图像处理是多么的简单。
 
 ##Super SpookCam, Core Graphics Edition
-**Core Graphics** is Apple’s API for drawing based on the Quartz 2D drawing engine. It provides a low-level API that may look familiar if you’re acquainted with OpenGL.
+**Core Graphics**是基于Quartz 2D绘图引擎的Apple的绘图API。它提供了底层API，如果你熟悉OpenGL可能会觉得它们很相似。
 
-If you’ve ever overridden the **-drawRect**: method for a view, you’ve interacted with Core Graphics, which provides several functions to draw objects, gradients and other cool stuff to your view.
+如果你曾经重写过**-drawRect**：视图的函数，你已经与Core Graphics交互过了，它提供了很多绘制对象、斜度和其他很酷的东西到你的视图中的函数。
 
-There are tons of Core Graphics tutorials on this site already, such as [this one](http://www.raywenderlich.com/32283/core-graphics-tutorial-lines-rectangles-and-gradients) and [this one](http://www.raywenderlich.com/33193/core-graphics-tutorial-arcs-and-paths). So, in this tutorial, you’re going to focus on how to use Core Graphics to do some basic image processing.
+这个网站已经有大量的Core Graphics教程，比如[这个](http://www.raywenderlich.com/32283/core-graphics-tutorial-lines-rectangles-and-gradients)和[这个](http://www.raywenderlich.com/33193/core-graphics-tutorial-arcs-and-paths)。所以，这本教程中，我们将关于于如何使用Core Graphics来做一些基本的图像处理。
 
-Before you get started, you need to get familiar with the concept of a **Graphics Context**.
+在开始之前，我们需要熟悉一个概念**Graphics Context**。
 
->**Concept**: Graphics Contexts are common to most types of rendering and a core concept in OpenGl and Core Graphics. Think of it as simply a **global state object** that holds all the information for drawing.
+>**概念**：Graphics Contexts是OpenGl和Core Graphics的核心概念，它是渲染中最常见的类型。它是一个持有所有关于绘制信息的**全局状态对象**。 
 
->In terms of Core Graphics, this includes the current fill color, stroke color, transforms, masks, where to draw and much more. In iOS, there are also other different types of contexts such as PDF contexts, which allow you to draw to a PDF file.
+>在Core Graphics中，包括了当前的填充颜色，描边颜色，变形，蒙版，在哪里绘制筓。在iOS中，还有其他不同类型的context比如PDF context，它可以让你绘制一个PDF文件。
 
->In this tutorial you’re only going to use a **Bitmap context**, which draws to a bitmap.
+>在本教程中，你只会使用到**Bitmap context**，它可以绘制位图。
 
->Inside the **-drawRect**: function, you’ll find a context that is ready for use. This is why you can directly call and draw to **UIGraphicsGetCurrentContext()**. The system has set this up so that you’re drawing directly to the view to be rendered.
+>在**-drawRect:**函数中，你将发现这里已经有一个context可以用了。你可以直接调用**UIGraphicsGetCurrentContext()**。系统被设置为你直接在视图中的绘制的已经被渲染了。
 
 >Outside of the **-drawRect**: function, there is usually no graphics context available. You can create one as you did in the first project using **CGContextCreate()**, or you can use **UIGraphicsBeginImageContext()** and grab the created context using **UIGraphicsGetCurrentContext()**.
 
