@@ -4,17 +4,17 @@
 
 欢迎回到我们的Swift教程系列！
 
-在[第一篇Swift教程](http://www.raywenderlich.com/74438/swift-tutorial-a-quick-start)里,我们学习了Swift语言的基础，并且创建了属于我们自己的小费计算器类。
+在[第一篇Swift教程](./Swift-Tutorial-A-Quick-Start.md)里,我们学习了Swift语言的基础，并且创建了属于我们自己的小费计算器类。
 
-在[第二篇Swift教程](http://www.raywenderlich.com/74904/swift-tutorial-part-2-simple-ios-app)里，我们为小费计算器工程创建了一个简单的用户界面。
+在[第二篇Swift教程](./Swift-Tutorial-Part2-A-Simple-iOS-App.md)里，我们为小费计算器工程创建了一个简单的用户界面。
 
 在这第三篇Swift教程中，我们将学习一个Swift引入的一个新的数据类型：元组。
 
 我们也将学习协议，委托，表视图，以及如何在Playgrounds中规范用户界面。
 
-这篇教程补充了[第二篇Swift教程](http://www.raywenderlich.com/74904/swift-tutorial-part-2-simple-ios-app)中遗漏的知识。如果你还没有学习过第二篇教程，请确保你已经下载了上次遗漏的工程案例。
+这篇教程补充了[第二篇Swift教程](./Swift-Tutorial-Part2-A-Simple-iOS-App.md)中遗漏的知识。如果你还没有学习过第二篇教程，请确保你已经下载了上次遗漏的工程案例。
 
-    注意: 在写这篇教程的时候，我们的理解是我们不能张贴Xcode 6相关的截图，因为它还处于Beta阶段。因此，我们在确保不会引起相关问题之前，将不会提供截屏。
+`注意:` 在写这篇教程的时候，我们的理解是我们不能张贴Xcode 6相关的截图，因为它还处于Beta阶段。因此，我们在确保不会引起相关问题之前，将不会提供截屏。
 
 ##开始
 
@@ -24,7 +24,7 @@
 
 在Objective-C中，如果你要创建一个具有两个返回值的方法，你要么需要创建一个返回值有两个属性的Objective-C对象，要么你需要返回一个包含两个值的字典。在Swift中，还有一个可选的途径：元组。
 
-现在我们开始耍耍元组感受一下它是如何运作的。在Xcode中创建一个Playground（或者如果你采纳我在[第一篇Swift教程](http://www.raywenderlich.com/74438/swift-tutorial-a-quick-start)中的建议，就只要点击已经保存到dock上的Playground）。在你的Playground中删除所有东西以便我们从一个干净的板块下开始。
+现在我们开始耍耍元组感受一下它是如何运作的。在Xcode中创建一个Playground（或者如果你采纳我在[第一篇Swift教程](./Swift-Tutorial-A-Quick-Start.md)中的建议，就只要点击已经保存到dock上的Playground）。在你的Playground中删除所有东西以便我们从一个干净的板块下开始。
 
 ##未命名元组
 
@@ -38,14 +38,18 @@
 
 如果要访问元组中的单个元素，有两种方案：通过索引访问，通过名字分解。可以在Playground中加上以下代码来试下第一种方案：
 
+```
 tipAndTotal.0
 tipAndTotal.1
+```
 
 你将在Playground的侧边栏看到4.0和25.19两个值。通过索引访问可以在必要时候用一下，但是不如通过名字分解来的清晰。可以在Playground中加上以下代码来试下第二种方案：
 
+```
 let (theTipAmt, theTotal) = tipAndTotal
 theTipAmt
 theTotal
+```
 
 这种语法允许你用一个特殊的名字创建一个新的常量来代表元组中的每个元素。
 
@@ -55,15 +59,19 @@ theTotal
 
 当你在声明时为你的元组命名的时候，通常用**命名元组**来代替它会更加方便。可以在Playground中加上以下代码来尝试一下：
 
+```
 let tipAndTotalNamed = (tipAmt:4.00, total:25.19)
 tipAndTotalNamed.tipAmt
 tipAndTotalNamed.total
+```
 
 正如你看到的这将会更加方便，并且这也是我们在以后的教程当中要用到的。
 
 最后我想要再一次指出你在声明tipAndTotalNamed方法的时候使用推断语法。如果你想要使用显式语法，那么代码会像以下这样：
 
+```
 let tipAndTotalNamed:(tipAmt:Double, total:Double) = (4.00, 25.19)
+```
 
 注意当你使用显式语法的时候，在右手边命名变量是可选的。
 
@@ -73,6 +81,7 @@ let tipAndTotalNamed:(tipAmt:Double, total:Double) = (4.00, 25.19)
 
 在你的playground中添加以下代码：
 
+```
 let total = 21.19
 let taxPct = 0.06
 let subtotal = total / (taxPct + 1)
@@ -82,10 +91,11 @@ func calcTipWithTipPct(tipPct:Double) -> (tipAmt:Double, total:Double) {
   return (tipAmt, finalTotal)
 }
 calcTipWithTipPct(0.20)
+```
 
 这是与我们已经接触过的calcTipWithTipPct相同的方法，不同的是它返回的是双精度型的值。它返回(tipAmt:Double, total:Double)。
 
-这里是到目前为止的[playground文件]（http://cdn1.raywenderlich.com/wp-content/uploads/2014/06/Prototype1.playground.zip）。现在清空playground来开始一个新的板块。
+这里是到目前为止的[playground文件](http://cdn1.raywenderlich.com/wp-content/uploads/2014/06/Prototype1.playground.zip)。现在清空playground来开始一个新的板块。
 
 ##一个完整的原型
 
@@ -99,6 +109,7 @@ calcTipWithTipPct(0.20)
 
 内部的解决方案： TipCalculatorModel - 修改后的
 
+```
 import Foundation
  
 class TipCalculatorModel {
@@ -140,8 +151,9 @@ class TipCalculatorModel {
  
 let tipCalc = TipCalculatorModel(total: 21.19, taxPct: 0.06)
 tipCalc.returnPossibleTips()
+```
 
-这里是到目前为止的[playground文件]（http://cdn1.raywenderlich.com/wp-content/uploads/2014/06/SwiftPlayground2.playground.zip）。
+这里是到目前为止的[playground文件](http://cdn1.raywenderlich.com/wp-content/uploads/2014/06/SwiftPlayground2.playground.zip)。
 
 这时候，保存这个文件并且重新启动一个新的空的playground。我们接下来将转到这个playground。
 
@@ -151,14 +163,17 @@ tipCalc.returnPossibleTips()
 
 协议是指详细说明一个协议或者一个接口的方法的清单。在你的playground中加入以下几行代码来理解我所说的内容：
 
+```
 protocol Speaker {
   func Speak()
 }
+```
 
 这个协议声明了一个叫做**Speaker**的单一的方法。
 
 遵守这个协议的任何一个类都必须实现这个方法。通过添加两个遵守这个协议的类来练习一下：
 
+```
 class Vicki: Speaker {
   func Speak() {
     println("Hello, I am Vicki!")
@@ -170,6 +185,7 @@ class Ray: Speaker {
     println("Yo, I am Ray!")
   }
 }
+```
 
 将一个类标记为遵守一个协议，你必须在类名的后面加一个冒号，然后列出协议（当类的名称继承自其它类，如果有的话）。这些类不继承自任何一个其它类，所以你可以仅仅直接列出协议的名称。
 
@@ -177,6 +193,7 @@ class Ray: Speaker {
 
 现在我们尝试将一个类继承自其它类：
 
+```
 class Animal {
 }
 class Dog : Animal, Speaker {
@@ -184,6 +201,7 @@ class Dog : Animal, Speaker {
     println("Woof!")
   }
 }
+```
 
 在这个例子中，**Dog**继承自**Animal**，所以当你声明**Dog**类时候你在后面加了一个**:**,然后它继承了那个类，然后列出所有的协议。在Swift中你可以只继承一个类，但是你可以遵守任何数量的协议。
 
@@ -191,10 +209,12 @@ class Dog : Animal, Speaker {
 
 你可以在协议中标记一个方法是否是可选的。通过以下代码替换**Speaker**协议来尝试一下：
 
+```
 @objc protocol Speaker {
   func Speak()
   @optional func TellJoke()
 }
+```
 
 如果你想要有一个具有可选方法的协议，你必须给协议加上一个**@objc**标签作为前缀（即使你的类不能兼容objective-C）。然后，你给所有可选方法加上**@optional**标签作为前缀。
 
@@ -202,6 +222,7 @@ class Dog : Animal, Speaker {
 
 在这个例子中，**Ray**和**Vicki**可以说笑话，但很遗憾不是一个**Dog**。所以，实现这个方法只需要这两个类：
 
+```
 class Vicki: Speaker {
   func Speak() {
     println("Hello, I am Vicki!")
@@ -222,6 +243,7 @@ class Ray: Speaker {
     println("I'm on it!")
   }
 }
+```
 
 注意当你实现一个协议的时候，在协议里你的类当然可以有更多的方法，而不是只有一个，如果你需要的话。这里**Ray**类有一个额外的方法。
 
@@ -229,13 +251,14 @@ class Ray: Speaker {
 
 这里面有解决方案：
 
-Q: What did Sushi A say to Sushi B? A: Wasabi!
-Q: Whats the object-oriented way to become wealthy? A: Inheritance!
+问：寿司A对寿司B说了什么？答：芥末！
+问：怎样的面向对象方法能让类变得更丰富？答：继承！
 
 ##使用协议
 
 现在我们创建了一个协议和一些类并且实现了它们，让我们尝试使用它们。在你的playground中添加以下几行代码：
 
+```
 var speaker:Speaker
 speaker = Ray()
 speaker.Speak()
@@ -243,6 +266,7 @@ speaker.Speak()
 (speaker as Ray).WriteTutorial()
 speaker = Vicki()
 speaker.Speak()
+```
 
 注意与其声明**speaker**为**Ray**,不如声明它为**speaker**。这意味着你只能当**Speaker**协议存在时调用**speaker**方法，所以调用**WriteTutorial**会导致错误即使**speaker**实际上是一个Ray类型。你可以调用**WriteTutorial**,如果你暂时将speaker投向**Ray**，就像你现在看到的。
 
@@ -250,9 +274,11 @@ speaker.Speak()
 
 现在加上这几行代码来试验一下可选方法：
 
+```
 speaker.TellJoke?()
 speaker = Dog()
 speaker.TellJoke?()
+```
 
 要记住** TellJoke**是一个可选方法，所以当你调用它的时候要检查一下它是否存在。
 
@@ -266,6 +292,7 @@ speaker.TellJoke?()
 
 现在看看我说的是什么意思，在你的playground添加一个叫**DateSimulator**的新类，允许遵守**Speaker**协议的两个类进行一次约会：
 
+```
 class DateSimulator {
  
   let a:Speaker
@@ -288,18 +315,22 @@ class DateSimulator {
  
 let sim = DateSimulator(a:Vicki(), b:Ray())
 sim.simulate()
+```
 
 想象当约会开始或者结束的时候你想要通知另一个类，比如，如果你想要在你的应用中创建一个状态指示器在它发生的时候显示或者隐藏，这样是有帮助的。
 
 要这样做的话，首先为你想要通知的事件创建一个协议，像这样（在**DateSimulator**前加上这个）：
 
+```
 protocol DateSimulatorDelegate {
   func dateSimulatorDidStart(sim:DateSimulator, a:Speaker, b:Speaker)
   func dateSimulatorDidEnd(sim:DateSimulator, a: Speaker, b:Speaker)
 }
+```
 
 然后创建一个遵守这个协议的类（在**DateSimulatorDelegate**后加上这个）：
 
+```
 class LoggingDateSimulator:DateSimulatorDelegate {
   func dateSimulatorDidStart(sim:DateSimulator, a:Speaker, b:Speaker) {
     println("Date started!")
@@ -308,6 +339,7 @@ class LoggingDateSimulator:DateSimulatorDelegate {
     println("Date ended!")
   }
 }
+```
 
 为了简单起见，你将简单地注销这些事件。
 
@@ -329,6 +361,7 @@ sim.delegate = LoggingDateSimulator()
 
 这里是解决方案：解决方案：完成DateSimulator类
 
+```
 class DateSimulator {
  
   let a:Speaker
@@ -351,6 +384,7 @@ class DateSimulator {
     delegate?.dateSimulatorDidEnd(self, a:a, b:b)
   }
 }
+```
 
 这里是目前为止的[playground文件](http://www.raywenderlich.com/75289/swift-tutorial-part-3-tuples-protocols-delegates-table-views)。
 
@@ -370,6 +404,7 @@ class DateSimulator {
 
 再说一遍，确保你在playground里包含了新的改善的**TipCalculatorModel**类。然后在文件底部添加这些代码：
 
+```
 // 1
 import UIKit
 // 2
@@ -388,6 +423,7 @@ class TestDataSource : NSObject {
   }
  
 }
+```
 
 让我们一段一段地复习一遍。
 
@@ -401,18 +437,23 @@ class TestDataSource : NSObject {
 
 现在我们有了一个基础，让我们将那个类设为遵守**UITableViewDataSource**。为了这样做，首先在类声明底部添加数据源：
 
+```
 class TestDataSource: NSObject, UITableViewDataSource {
+```
 
 然后添加两个新方法：
 
+```
 func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
   return sortedKeys.count
 }
+```
 
 这是你必须实现遵守**UITableViewDataSource**的两个必需的方法之一。它询问你在表格视图的每一段有多少行。这个表格视图只有一段，所以返回了**sortedKeys**的值（也就是说可能的小费百分比的值）。
 
 接下来，添加另一个必需的方法：
 
+```
 // 1
 func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
   // 2
@@ -429,6 +470,7 @@ func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndex
   cell.detailTextLabel.text = String(format:"Tip: $%0.2f, Total: $%0.2f", tipAmt, total)
   return cell
 }
+```
 
 让我们一段一段地复习一遍：
 
@@ -444,10 +486,12 @@ func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndex
 
 最后，在你的playground底部添加以下代码来测试你的表格视图：
 
+```
 let testDataSource = TestDataSource()
 let tableView = UITableView(frame:CGRect(x: 0, y: 0, width: 320, height: 320), style:.Plain)
 tableView.dataSource = testDataSource
 tableView.reloadData()
+```
 
 这创建了一个硬编码尺寸的表格视图，并且设置它的数据源到你的新类中。然后它调用**reloadData()**方法来更新表格视图。
 
@@ -473,21 +517,27 @@ tableView.reloadData()
 
 现在谈谈代码的修订。打开**ViewController.swift**，并且标记你的类遵守**UITableViewDataSource**：
 
+```
 class ViewController: UIKit.UIViewController, UITableViewDataSource {
+```
 
 然后，在**tipCalc**下面添加两个新的变量：
 
+```
 var possibleTips = Dictionary<Int, (tipAmt:Double, total:Double)>()
 var sortedKeys:[Int] = []
+```
 
 用以下代码替换**calculateTapped()**：
 
+```
 @IBAction func calculateTapped(sender : AnyObject) {
   tipCalc.total = Double(totalTextField.text.bridgeToObjectiveC().doubleValue)
   possibleTips = tipCalc.returnPossibleTips()
   sortedKeys = sorted(Array(possibleTips.keys))
   tableView.reloadData()
 }
+```
 
 这建立了**possibleTips**和**sortedKeys**并且触发了表格视图的重新加载。
 
@@ -499,6 +549,7 @@ var sortedKeys:[Int] = []
 
 这里面有解决方案：已经完成的ViewController.swift
 
+```
 import UIKit
  
 class ViewController: UIKit.UIViewController, UITableViewDataSource {
@@ -559,12 +610,13 @@ class ViewController: UIKit.UIViewController, UITableViewDataSource {
   }
  
 }
+```
 
 编译并且运行，然后享受你的小费计算器的新的外观！
 
 ##接下来还有什么呢？
 
-这里是目前为止这个教程系列的[已经完成的Xcode工程]（http://cdn1.raywenderlich.com/wp-content/uploads/2014/06/TipCalculatorFinished21.zip）。
+这里是目前为止这个教程系列的[已经完成的Xcode工程](http://cdn1.raywenderlich.com/wp-content/uploads/2014/06/TipCalculatorFinished21.zip)。
 
 恭喜你，在这个教程里你已经学习很多知识了！你已经学习了元组，协议和委托，还有表格视图，并且已经升级了外观界面还有你的小费计算器类的功能。
 
@@ -572,17 +624,17 @@ class ViewController: UIKit.UIViewController, UITableViewDataSource {
 
 同时，如果你想要学习更多内容这里有一些精彩的资源可以查看：
 
-*苹果的[Swift语法书]（https://itunes.apple.com/us/book/swift-programming-language/id881256329?mt=11&uo=8&at=11ld4k&uo=8&at=11ld4k）
+*苹果的[Swift语法书](https://itunes.apple.com/us/book/swift-programming-language/id881256329?mt=11&uo=8&at=11ld4k&uo=8&at=11ld4k)
 
-*你还可以阅读书籍就像Xcode中交互的Playground（Help\Documentation and API Reference\New Features in Xcode 6 Beta\Swift Language\The Swift Programming Language\A Swift Tour\Open Playground）
+*你还可以阅读书籍就像Xcode中交互的Playground(Help\Documentation and API Reference\New Features in Xcode 6 Beta\Swift Language\The Swift Programming Language\A Swift Tour\Open Playground)
 
 *[WWDC 2014](https://developer.apple.com/videos/wwdc/2014/)中的Swift视频
 
 *[Swift语言FAQ](http://www.raywenderlich.com/74138/swift-language-faq)
 
-*[Swift语言的精华：一个Objective-C开发者的观点]（http://www.raywenderlich.com/73997/swift-language-highlights）
+*[Swift语言的精华：一个Objective-C开发者的观点](http://www.raywenderlich.com/73997/swift-language-highlights)
 
-*[视频教程：Swift介绍第0部分：引言]（http://www.raywenderlich.com/74514/video-tutorial-introduction-swift-part-0-introduction）
+*[视频教程：Swift介绍第0部分：引言](http://www.raywenderlich.com/74514/video-tutorial-introduction-swift-part-0-introduction)
 
 *检查你的[三本新Swift书](http://www.raywenderlich.com/store/swift-tutorials-bundle),包含了Swift，iOS 8和更多内容
 
