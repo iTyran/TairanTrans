@@ -3,40 +3,41 @@
 学习在iOS中处理图像和创建酷炫的效果！
 
 欢迎来到本系列教程的第二节，iOS中的图像！
+
 在[本系列的第一节](http://www.raywenderlich.com/69855/image-processing-in-ios-part-1-raw-bitmap-modification)，我们学会了如何访问和修改图像的原始像素值。
 
-在本系列的第二节和最终节中，你将学习如何使用其他的库来执行同样的任务：Core Graphics, Core Image 和GPUImage。你将学习它们各自的优点和缺点，这样你就可以针对你的情况做出更好的选择。
+在本系列的第二节或者说最终节中，你将学习如何使用其他的库来执行同样的任务：Core Graphics, Core Image 和GPUImage。你将学习它们各自的优点和缺点，这样你就可以针对你的情况做出更好的选择。
 
 本教程从上一节结束的地方开始。如果你没有项目文件，你可以在[这里](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-Pixel.zip)下载它。
 
 如果你在第一节中表现得很好，你要好好享受这一节！既然你理解了工作原理，你将充分理解这些库进行图像处理是多么的简单。
 
-##Super SpookCam, Core Graphics Edition
-**Core Graphics**是基于Quartz 2D绘图引擎的Apple的绘图API。它提供了底层API，如果你熟悉OpenGL可能会觉得它们很相似。
+##超级SpookCam之Core Graphics版本
+**Core Graphics**是Apple基于Quartz 2D绘图引擎的绘图API。它提供了底层API，如果你熟悉OpenGL可能会觉得它们很相似。
 
-如果你曾经重写过**-drawRect**：视图的函数，你已经与Core Graphics交互过了，它提供了很多绘制对象、斜度和其他很酷的东西到你的视图中的函数。
+如果你曾经重写过视图的**-drawRect**：函数，你其实已经与Core Graphics交互过了，它提供了很多绘制对象、斜度和其他很酷的东西到你的视图中的函数。
 
-这个网站已经有大量的Core Graphics教程，比如[这个](http://www.raywenderlich.com/32283/core-graphics-tutorial-lines-rectangles-and-gradients)和[这个](http://www.raywenderlich.com/33193/core-graphics-tutorial-arcs-and-paths)。所以，这本教程中，我们将关于于如何使用Core Graphics来做一些基本的图像处理。
+这个网站已经有大量的Core Graphics教程，比如[这个](http://www.raywenderlich.com/32283/core-graphics-tutorial-lines-rectangles-and-gradients)和[这个](http://www.raywenderlich.com/33193/core-graphics-tutorial-arcs-and-paths)。所以，这本教程中，我们将关注于如何使用Core Graphics来做一些基本的图像处理。
 
 在开始之前，我们需要熟悉一个概念**Graphics Context**。
 
 >**概念**：Graphics Contexts是OpenGl和Core Graphics的核心概念，它是渲染中最常见的类型。它是一个持有所有关于绘制信息的**全局状态对象**。 
 
->在Core Graphics中，包括了当前的填充颜色，描边颜色，变形，蒙版，在哪里绘制筓。在iOS中，还有其他不同类型的context比如PDF context，它可以让你绘制一个PDF文件。
+>在Core Graphics中，包括了当前的填充颜色，描边颜色，变形，蒙版，在哪里绘制等。在iOS中，还有其他不同类型的context比如PDF context，它可以让你绘制一个PDF文件。
 
 >在本教程中，你只会使用到**Bitmap context**，它可以绘制位图。
 
->在**-drawRect:**函数中，你将发现这里已经有一个context可以用了。你可以直接调用**UIGraphicsGetCurrentContext()**。系统被设置为你直接在视图中的绘制的已经被渲染了。
+>在**-drawRect:**函数中，你会发现你可以直接调用**UIGraphicsGetCurrentContext()**来使用context。系统被设置为你可以直接在视图上绘制被渲染的图像。
 
->Outside of the **-drawRect**: function, there is usually no graphics context available. You can create one as you did in the first project using **CGContextCreate()**, or you can use **UIGraphicsBeginImageContext()** and grab the created context using **UIGraphicsGetCurrentContext()**.
+>在**-drawRect:**函数外，通常没有图形context可用。你可以像第一个项目中一样用**CGContextCreate()**创建，或者你可以使用**UIGraphicsBeginImageContext()**和**UIGraphicsGetCurrentContext()**抓取创建的context。
 
->This is called **offscreen-rendering**, as the graphics you’re drawing are not directly presented anywhere. Instead, they render to an off-screen buffer.
+>这叫做**离屏-渲染**，意思是你不是在任何地方直接绘制，而是在离屏缓冲区渲染。
 
->In Core Graphics, you can then get an **UIImage** of the context and show it on screen. With OpenGL, you can directly swap this buffer with the one currently rendered to screen and display it directly.
+>在Core Graphics中，你可以获得context中的**UIImage**然后把它显示在屏幕上。使用OpenGL，你可以直接把这个缓冲区与当前渲染在屏幕中的交换，然后直接显示它。
 
->Image processing using Core Graphics takes advantage of this off-screen rendering to render your image into a buffer, apply any effects you want and grab the image from the context once you’re done.
+>使用Core Graphics处理图像利用了在缓冲区渲染图像的离屏渲染，它从context抓取图像，并适用任何你想要的效果。
 
-All right, enough concepts, now it’s time to make some magic with code! Add this following new method to **ImageProcessor.m**:
+好了，概念介绍完了，是时候变一些代码的魔术了！添加下面的新函数到**ImageProcessor.m**中：
 
 	- (UIImage *)processUsingCoreGraphics:(UIImage*)input {
 	  CGRect imageRect = {CGPointZero,input.size};
@@ -90,9 +91,9 @@ All right, enough concepts, now it’s time to make some magic with code! Add th
 	  return finalImage;
 	}
 
-That’s quite a bit of stuff. Let’s go over it section by section.
+这个函数内容可真够多的，让我们一点一点分析它。
 
-###1) Calculate the location of Ghosty
+###1) 计算Ghosty的位置
 
 	UIImage * ghostImage = [UIImage imageNamed:@"ghost.png"];
 	CGFloat ghostImageAspectRatio = ghostImage.size.width / ghostImage.size.height;
@@ -103,15 +104,15 @@ That’s quite a bit of stuff. Let’s go over it section by section.
 	 
 	CGRect ghostRect = {ghostOrigin, ghostSize};
 
-Create a new **CGContext**.
+创建一个新的**CGContext**。
 
-As discussed before, this creates an “off-screen” context. Remember how the coordinate system for CGContext uses the bottom-left corner as the origin, as opposed to UIImage, which uses the top-left?
+像前面讨论的，这里创建了一个“离屏”（“off-screen”）的context。还记得吗？CGContext的坐标系以左下角为原点，相反的UIImage使用左上角为原点。
 
-Interestingly, if you use **UIGraphicsBeginImageContext()** to create a context, the system flips the coordinates for you, resulting in the origin being at the top-left. Thus, you’ll need to apply a transformation to your context to flip it back so your **CGImage** will draw properly.
+有趣的是，如果你使用**UIGraphicsBeginImageContext()**来创建一个context，系统会把坐标翻转，把原点设为左上角。因此，你需要变换你的context把它翻转回来，从而使**CGImage**能够进行正确的绘制。
 
-If you drew a **UIImage** directly to this context, you don’t need to perform this transformation, as the coordinate systems would match up. Setting the transform to the context will apply this transform to all the drawing you do afterwards.
+如果你直接在这个context中绘制**UIImage**，你不需要执行变换，坐标系统将会自动匹配。设置这个context的变换将影响所有你后面绘制的图像。
 
-###2) Draw your image into the context.
+###2) 把你的图像绘制到context中。
 
 	UIGraphicsBeginImageContext(input.size);
 	CGContextRef context = UIGraphicsGetCurrentContext();
@@ -127,22 +128,22 @@ If you drew a **UIImage** directly to this context, you don’t need to perform 
 	CGRect transformedGhostRect = CGRectApplyAffineTransform(ghostRect, flipThenShift);
 	CGContextDrawImage(context, transformedGhostRect, [ghostImage CGImage]);
 
-After drawing the image, you set the **alpha** of your context to **0.5**. This only affects future draws, so the input image drawing uses full alpha.
+在绘制完图像后，你context的**alpha**值设为了**0.5**。这只会影响后面绘制的图像，所以本次绘制的输入图像使用了全alpha。
 
-You also need to set the blend mode to **kCGBlendModeSourceAtop**.
+你也需要把混合模式设置为**kCGBlendModeSourceAtop**。
 
-This sets up the context so it uses the same alpha blending formula you used before. After setting up these parameters, flip Ghosty’s rect and draw him(it?) into the image.
+这里为context设置混合模式是为了让它使用之前的相同的alpha混合公式。在设置完这些参数之后，翻转幽灵的坐标然后把它绘制在图像中。
 
-###3) Retrieve your processed image
+###3) 取回你处理的图像
 
 	UIImage * imageWithGhost = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
 
-To convert your image to Black and White, you’re going to create a new **CGContext** that uses a **grayscale** colorspace. This will convert anything you draw in this context into grayscale.
+为了把你的图像转换成黑白的，你将创建一个使用**灰度（grayscale）**色彩的新的**CGContext**。它将把所有你在context中绘制的图像转换成灰度的。
 
-Since you’re using **CGBitmapContextCreate()** to create this context, the coordinate system has the origin in the bottom-left corner, and you don’t need to flip it to draw your **CGImage**.
+因为你使用**CGBitmapContextCreate()**来创建了这个context，坐标则是以左下角为原点，你不需要翻转它来绘制**CGImage**。
 
-###4) Draw your image into a grayscale context.
+###4) 绘制你的图像到一个灰度（grayscale）context中
 
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
 	context = CGBitmapContextCreate(nil, inputWidth, inputHeight,
@@ -153,13 +154,13 @@ Since you’re using **CGBitmapContextCreate()** to create this context, the coo
 	CGImageRef imageRef = CGBitmapContextCreateImage(context);
 	UIImage * finalImage = [UIImage imageWithCGImage:imageRef];
 
-Retrieve your final image.
+取回你最终的图像。
 
-See how you can’t use **UIGraphicsGetImageFromCurrentImageContext()** because you never set this grayscale context as the current graphics context?
+为什么你不可以使用**UIGraphicsGetImageFromCurrentImageContext()**呢，因为你没有把当前的图形context设置为灰度context。
 
-Instead, you created it yourself. Thus you’ll need to use **CGBitmapContextCreateImage()** to render the image from this context.
+因此，你需要自己创建它。你需要使用**CGBitmapContextCreateImage()**来渲染context中的图像。
 
-###5) Cleanup.
+###5) 清理。
 
 	CGColorSpaceRelease(colorSpace);
 	CGContextRelease(context);
@@ -167,48 +168,48 @@ Instead, you created it yourself. Thus you’ll need to use **CGBitmapContextCre
 	 
 	return finalImage;
 
-At the end, you have to release everything you created. And that’s it – you’re done!
+在最后，你需要释放所有你创建的对象。然后 – 完成了！
 
->**Memory Usage**: When performing image processing, pay close attention to memory usage. As discussed in part one, an 8 megapixel image takes a whopping 32 megabytes of memory. Try to avoid keeping several copies of the same image in memory at once.
+>**内存使用**：当执行图像处理时，密切关注内存使用情况。像在第一节中讨论的一样，一个8M像素的图像占用了高达32M的内存。尽量避免在内存中同一时间保持同一图像的多个复制。
 
->Notice how you need to release context the second time but not the first? In the first case, you got your context using **UIGraphicsGetCurrentImageContext()**. The key word here is ‘get’.
+>注意到为什么我们第二次需要释放context而第一次不需要了吗？这是因为第一次时，你使用**UIGraphicsGetCurrentImageContext()**获取了context。这里的关键词是‘get’。
 
->‘Get’ means that you’re getting a reference to the current context, but you don’t own it.
+>‘Get’意味着你获取了当前context的引用，你并不持有它。
 
->In the second case, you called **CGBitmapContextCreateImage()**, and **Create** means that you own the object and have to manage its life. This is also why you need to release the **imageRef**, because you created it using **CGBitmapContextCreateImage()**.
+>在第二次中，你调用了**CGBitmapContextCreateImage()**，**Create**意味着你持有这个对象，并需要管理它的生命周期。这也是你为什么需要释放**imageRef**的原因，因为你是通过**CGBitmapContextCreateImage()**创建它的。
 
-Good job! Now, replace the first line in processImage: to call this new method instead of **processUsingPixels:**:
+干得漂亮！现在，替换processImage中的第一行：调用这个新的函数替换掉**processUsingPixels:**：
 
 	UIImage * outputImage = [self processUsingCoreGraphics:inputImage];
 
-Build and run. You should see the exact same output as before.
+生成和运行一下。你应该能看到和之前一样的输出。
 
 ![BuildnRun-3](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/BuildnRun-3.png)
 
-Such spookiness! You can download a complete project with the code described in this section [here](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-CoreGraphics.zip).
+好灵异！你可以在[这里](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-CoreGraphics.zip)下载到本节中完整项目的代码。
 
-In this simple example, it doesn’t seem like using Core Graphics is that much easier to implement than directly manipulating the pixels.
+在这个简单的例子中，使用Core Graphics看起来好像不比直接操作像素更简单。
 
-However, imagine performing a more complex operation, such as rotating an image. In pixels, that would require some rather complicated math.
+然而，想象一个更复杂的操作，比如旋转图像。在像素操作中，这需要相当复杂的数学。
 
-However, by using Core Graphics, you just set a rotational transform to the context before drawing in the image. Hence, the more complicated your processing becomes, the more time Core Graphics saves.
+但是，使用Core Graphics，你只需要在绘制图像前给context设置一个旋转的变换就可以了。因为，你处理的内容越复杂，你使用Core Graphics则能节省更多的时间。
 
-Two methods down, and two to go. Next up: **Core Image**!
+介绍完了两种方法，下面还有两种方法。下一个：**Core Image**！
 
-##Ultra Super SpookCam, Core Image Edition
-There are also several great Core Image tutorials on this site already, such as [this one](http://www.raywenderlich.com/22167/beginning-core-image-in-ios-6), from the iOS 6 feast. We also have several chapters on Core Image in our [iOS by Tutorials series](http://www.raywenderlich.com/store/ios-by-tutorials-bundle).
+##超超SpookCam之Core Image版本
+这个网站也已经有大量好的Core Image教程，比如IOS 6中的[这个](http://www.raywenderlich.com/22167/beginning-core-image-in-ios-6)。我们也在我们的[iOS教程系列](http://www.raywenderlich.com/store/ios-by-tutorials-bundle)中有很多关于Core Image的章节。
 
-In this tutorial, you’ll see some discussion about how Core Image compares to the other methods in this tutorial.
+在本教程中，你将看到有很多关于Core Image与其他几种方法对比的讨论。
 
-**Core Image** is Apple’s solution to image processing. It absconds with all the low-level pixel manipulation methods, and replaces them with high-level filters.
+**Core Image**是Apple的图像处理的解决方案。它避免了所有底层的像素操作方法，转而使用高级别的滤镜替代了它们。
 
-The best part of Core Image is that it has crazy awesome performance when compared to raw pixel manipulation or Core Graphics. The library uses a mix of CPU and GPU processing to provide near-real-time performance.
+Core Image最好的部分在于它对比操作原始像素或Core Graphics有着极好的性能。这个库使用CPU和GPU混合处理提供接近实时的性能。
 
-Apple also provides a huge selection of pre-made filters. On OSX, you can even create your own filters by using **Core Image Kernel Language**, which is very similar to GLSL, the language for shaders in OpenGL. Note that at the time of writing this tutorial, you cannot write your own Core Image filters on iOS (only Mac OS X).
+Apple还提供了巨大的预先制作的滤镜库。在OSX中，你甚至可以使用**Core Image Kernel Language**创建你自己的滤镜，它跟OpenGL中的着色语言GLSL很相似。在写本教程时，你还不能在iOS中制作你自己的Core Image滤镜（只支持Mac OS X）。
 
-There are still some effects that are better to do with Core Graphics. As you’ll see in the code, you get the most out of Core Image by using Core Graphics alongside it.
+它还有一些比Core Graphics更好的效果。正如你在代码中看到的，你用Core Graphics来充分利用Core Image。
 
-Add this new method to **ImageProcessor.m**:
+添加这个新函数到**ImageProcessor.m**中：
 
 	- (UIImage *)processUsingCoreImage:(UIImage*)input {
 	  CIImage * inputCIImage = [[CIImage alloc] initWithImage:input];
@@ -251,23 +252,23 @@ Add this new method to **ImageProcessor.m**:
 	  return outputImage;
 	}
 
-Look at how different this code looks compared to the previous methods.
+我们看一下这个代码跟之前的函数有多大区别。
 
-With Core Image, you set up a variety of filters to process your images – here you use a **CIColorControls** filter for grayscale, **CIColorMatrix** and **CISourceAtopCompositing** for blending, and finally chain them all together.
+使用Core Image，你设置了大量的滤镜来处理你的图像 – 你使用了**CIColorControls**滤镜来设置灰度，**CIColorMatrix**和**CISourceAtopCompositing**来设置混合，最后把它们连接在一起。
 
-Now, take a walk through this function to learn more about each step.
+现在，让我们浏览一遍这个函数来学习它的每一个步骤。
 
-1. Create a **CIColorControls** filter and set its **inputSaturation** to 0. As you might recall, saturation is a channel in HSV color space that determines how much color there is. Here a value of 0 indicates grayscale.
-1. Create a padded ghost image that is the same size as the input image.
-1. Create an **CIColorMatrix** filter with its **alphaVector** set to **[0 0 0.5 0]**. This will multiply Ghosty’s alpha by **0.5**.
-1. Create a **CISourceAtopCompositing** filter to perform alpha blending.
-1. Chain up your filters to process the image.
-1. Render the output **CIImage** to a **CGImage** and create the final **UIImage**. Remember to free your memory afterwards.
+1. 创建**CIColorControls**滤镜，设置它的**inputSaturation**值为0。你可能记得，饱和度是HSV颜色空间的一个通道。这里的0表示了灰度。
+1. 创建一个和输入图像一样大小的填充的幽灵图像。
+1. 创建**CIColorMatrix**滤镜，设置它的**alphaVector**值为**[0 0 0.5 0]**。这将给幽灵的alpha值增加**0.5**。
+1. 创建**CISourceAtopCompositing**滤镜来进行alpha混合。
+1. 合并你的滤镜来处理图像。
+1. 渲染输出**CIImage**到**CGImage**，创建最终的**UIImage**。记得在后面释放你的内存。
 
-This method uses a helper function called **-createPaddedGhostImageWithSize**:, which uses Core Graphics to create a scaled version of Ghosty padded to be 25% the width of the input image. Can you implement this function by yourself?
-Give it a shot. If you are stuck, here is the solution:
+这个方法使用了一个叫做**-createPaddedGhostImageWithSize:**的帮助函数，它使用Core Graphics创建了输入图像25%大小缩小版的填充的幽灵。你自己能实现这个函数吗？
+自己试一下。如果你被卡住了，请看下面的解决方案：
 
-###Solution Inside: Solution
+###解决方案
 	- (UIImage *)createPaddedGhostImageWithSize:(CGSize)inputSize {
 	  UIImage * ghostImage = [UIImage imageNamed:@"ghost.png"];
 	  CGFloat ghostImageAspectRatio = ghostImage.size.width / ghostImage.size.height;
@@ -296,46 +297,46 @@ Give it a shot. If you are stuck, here is the solution:
 	  return paddedGhost;
 	}
 
-Finally, replace the first line in processImage: to call your new method:
+最后，替换掉processImage中的第一行: 来调用你的新的函数:
 
 	UIImage * outputImage = [self processUsingCoreImage:inputImage];
 
-Now build and run. Again, you should see the same spooky image.
+现在生成并运行。这次，你应该看到相同的幽灵图像。
 
 ![BuildnRun-3](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/BuildnRun-3.png)
 
-You can download a project with all the code in this section [here](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-CoreImage.zip).
+你可以在[这里](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-CoreImage.zip)下载到本节项目的所有代码。
 
-**Core Image** provides a large amount of filters you can use to create almost any effect you want. It’s a good friend to have when you’re processing images.
+**Core Image**提供了大量的滤镜，你可以使用它们来创建几乎任何你想要的效果。它是你处理图像时的好伙伴。
 
-Now onto the last solution, which is incidentally the only third-party option explored in this tutorial: **GPUImage**.
+现在到了最后一个解决方案，也是本教程中附带的唯一的第三方选项：**GPUImage**。
 
-##Mega Ultra Super SpookCam, GPUImage Edition
-**GPUImage** is a well-maintained library for GPU-based image processing on iOS. It won a place in the [top 10 best iOS libraries](http://www.raywenderlich.com/21987/top-10-most-useful-ios-libraries-to-know-and-love) on this site!
+##大型超超SpookCam之GPUImage版本
+**GPUImage**是一个活跃的iOS上基于GPU的图像处理库。它在这个网站中的[十佳iOS库](http://www.raywenderlich.com/21987/top-10-most-useful-ios-libraries-to-know-and-love)中赢得了一席之地！
 
-GPUImage hides all of the complex code required for using OpenGL ES on iOS, and presents you with an extremely simple interface to process images at blazing speeds. The performance of GPUImage even beats Core Image on many occasions, but Core Image still wins with a few functions.
+GPUImage隐藏了在iOS中所有需要使用OpenGL ES的复杂的代码，并用极其简单的接口以很快的速度处理图像。GPUImage的性能甚至在很多时候击败了Core Image，但是Core Image仍然在很多函数中有优势。
 
-To start with GPUImage, you’ll need to include it into your project. This can be done using **Cocoapods**, building the static library or by embedding the source code directly to your project.
+在开始学习GPUImage之前，你需要把它包含到你的项目中。这可以使用**Cocoapods**在项目中生成静态库或直接嵌入源码来完成。
 
-The project app already contains a static framework, which was built externally. It’s easy to copy into the project when you follow these steps:
+项目应用已经包含一个建立在外部的静态框架。你可以根据下面的步骤简单的把它复制到项目中：
 
->**Instructions:**
+>**说明:**
 
->Run **build.sh** at the command line. The resulting library and header files will go to **build/Release-iphone**.
+>在命令行中运行**build.sh**。生成的库和头文件将会被放在**build/Release-iphone**。
 
->You may also change the version of the iOS SDK by changing the IOSSDK_VER variable in build.sh (all available versions can be found using xcodebuild -showsdks).
+>你也可以通过修改build.sh中的IOSSDK_VER变量来修改iOS SDK的版本（你可以通过使用xcodebuild -showsdks来查看所有可用的版本）。
 
-To embed the source into your project, follow these instructions from the [Github repo](https://github.com/BradLarson/GPUImage):
+你可以通过下面来自[Github仓库](https://github.com/BradLarson/GPUImage)的说明把源代码嵌入你的项目：
 
->**Instructions:**
+>**说明:**
 
->- Drag the **GPUImage.xcodeproj** file into your application’s Xcode project to embed the framework in your project.
+>- 拖拽**GPUImage.xcodeproj**文件到你Xcode项目中来把框架嵌入到你的项目中。 
 
->- Next, go to your application’s target and add GPUImage as a Target Dependency.
+>- 然后，到应用程序的target添加GPUImage为一个target依赖。
 
->- Drag the **libGPUImage.a** library from the GPUImage framework’s Products folder to the **Link Binary With Librariesbuild phase** in your application’s target.
+>- 从GPUImage框架新产品文件夹中拖拽**libGPUImage.a**库到你应用程序target中的**Link Binary With Librariesbuild phase**。
 
->GPUImage needs a few other frameworks to link into your application, so you’ll need to add the following as linked libraries in your application target:
+>GPUImage需要链接一些其他框架到你的应用程序，所以你需要添加如下的相关库到你的应用程序target：
 >
 > CoreMedia
 > 
@@ -347,13 +348,13 @@ To embed the source into your project, follow these instructions from the [Githu
 > 
 > QuartzCore
 > 
->Then you need to find the framework headers. Within your project’s build settings, set the Header Search Paths to the relative path from your application to the framework/subdirectory within the GPUImage source directory. Make this header search path recursive.
+>然后你需要找到框架的头文件。在你项目的build设置中，设置**Header Search Paths**的相对路径为你应用程序中框架/子文件夹中的GPUImage源文件目录。使**Header Search Paths**是递归的。
 
-After you add GPUImage to your project, make sure to include the header file in **ImageProcessor.m**.
+添加GPUImage到你的项目中后，一定要在**ImageProcessor.m**中包含头文件。
 
-If you included the static framework, use **#import GPUImage/GPUImage.h**. If you included the project directly, use **#import "GPUImage.h"** instead.
+如果你想包含静态的框架，使用**#import GPUImage/GPUImage.h**。如果你想直接在项目中包含它，使用**#import "GPUImage.h"**。
 
-Add the new processing function to **ImageProcessor.m**:
+添加新的处理函数到**ImageProcessor.m**中:
 
 	- (UIImage *)processUsingGPUImage:(UIImage*)input {
 	 
@@ -384,32 +385,32 @@ Add the new processing function to **ImageProcessor.m**:
 	  return output;
 	}
 
-Hey! That looks straightforward. Here’s what’s going on:
+嘿！它看来很明确。这是它的具体内容：
 
-1. Create the **GPUImagePicture** objects; use **-createPaddedGhostImageWithSize:** as a helper again. GPUImage uploads the images into the GPU memory as textures when you do this.
-1. Create and chain the filters you’re going to use. This kind of chaining is quite different from the Core Image filter chaining, and resembles a pipeline. After you’re finished, it looks like this:
+1. 创建**GPUImagePicture**对象；再次使用**-createPaddedGhostImageWithSize:**为一个工具。这时GPUImage会把图像纹理上传到GPU内存。
+1. 创建和链接你将要使用的滤镜。这种链接与Core Image中的滤镜链接不同，它类似于管道。在你完成后，它看起来是这样的：
 
 	![GPUFilterChain](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/GPUFilterChain-283x320.png)
 
-	GPUImageAlphaBlendFilter takes two inputs, in this case the top image and bottom image, so that the texture locations matter. -addTarget:atTextureLocation: sets the textures to the correct inputs.
+	GPUImageAlphaBlendFilter接受两个输入，在这种情况下为顶部和底部的图像，纹理的位置很重要。-addTarget:atTextureLocation: 设置纹理为正确的输入（位置）。
 
-1. Call -useNextFrameForImageCapture on the last filter in the chain and then -processImage on both inputs. This makes sure the filter knows that you want to grab the image from it and retains it for you.
+1. 在链中的最后一个滤镜调用-useNextFrameForImageCapture然后对两个输入调用-processImage 。这可以确保滤镜知道你想要从中抓取图像然后持有它。
 
-Finally, replace the first line in processImage: to call this new method:
+最后，替换processImage的第一行代码: 来调用新的函数:
 
 	UIImage * outputImage = [self processUsingGPUImage:inputImage];
 
-And that’s it. Build and run. Ghosty is looking as good as ever!
+就是这样。生成并运行。幽灵看起来和往常一样好！
 
 ![BuildnRun-3](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/BuildnRun-3.png)
 
-As you can see, GPUImage is easy to work with. You can also create your own filters by writing your own shaders in GLSL. Check out the documentation for GPUImage [here](https://github.com/BradLarson/GPUImage) for more on how to use this framework.
+正如你看到的，GPUImage很容易操作。你也可以在GLSL里制作你自己的着色器并创建你自己的滤镜。查看[这里](https://github.com/BradLarson/GPUImage)的GPUImage文档来更多的学习如何使用本框架。
 
-Download a version of the project with all the code in this section [here](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-GPUImage.zip).
+在[这里](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-GPUImage.zip)下载本节项目中的所有代码。
 
-##Where to go from here?
+##下一步？
 
-Congratulations! You’ve implemented SpookCam in four different ways. Here are all the download links again for your convenience:
+恭喜！你已经用四种不同方式实现了SpookCam。这里是所有的下载链接：
 
 - [SpookCam-Starter](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-Starter.zip)
 - [SpookCam-Pixel](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-Pixel.zip)
@@ -417,19 +418,19 @@ Congratulations! You’ve implemented SpookCam in four different ways. Here are 
 - [SpookCam-CoreImage](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-CoreImage.zip)
 - [SpookCam-GPUImage](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-GPUImage.zip)
 
-Of course, there are a few other interesting image processing concepts aside from the solutions presented in this tutorial:
+当然，除本教程外还有很多其他有趣的图像处理概念：
 
-- Kernels and convolution. Kernels work with image-sampling filters. For example, blur filters use it.
-- Image analysis. Sometimes you need to conduct deep analysis on the image, such as when you want to perform **facial recognition**. Core Image provides the CIDetector class for this process.
+- 内核和卷积。内核与图像采样滤镜协同工作。例如，模糊滤镜。
+- 图像分析。有时候你需要对图像进行深入的分析，例如你想进行**人脸识别**。Core Image为这个过程提供了CIDetector类。
 
-Last but not least, no image processing tutorial is complete without mentioning **OpenCV**.
+最后但同样重要的，没有图像处理教程没有提及**OpenCV**就结束了。
 
-OpenCV is the de-facto library for all things image processing, and it has an iOS build! However, it is far from lightweight and best for more technical tasks, such as feature tracking. Learn all about OpenCV [here](http://opencv.org/).
+OpenCV是所有图像处理事实上的库，它还有一个iOS的build！然后，它还远远不是轻量级的。这更多用于技术领域，比如特性跟踪。在[这里](http://opencv.org/)学习更多的OpenCV知识。
 
-There is also a great [tutorial about using OpenCV](http://www.raywenderlich.com/59602/make-augmented-reality-target-shooter-game-opencv-part-1) right here on this site.
+这个网站也有[OpenCV教程](http://www.raywenderlich.com/59602/make-augmented-reality-target-shooter-game-opencv-part-1)。
 
-The true next step is to pick a method and start creating your very own revolutionary selfie app. Never stop learning!
+下一步是选择一种方法来开始创建你自己革命性的自拍app。不要停止学习！
 
-I really hope you enjoyed this tutorial. If you have any questions or comments, please let us know in the forum discussion below.
+我真心希望你能喜欢本教程。如果你有任何疑问或意见，请在下面的论坛留言告诉我们。
 
-**Attribution**: Photos courtesy of [Free Range Stock](http://www.freerangestock.com/), by Roxana Gonzalez.
+**注**: 图片出自于[Free Range Stock](http://www.freerangestock.com/)，由Roxana Gonzalez拍摄。
