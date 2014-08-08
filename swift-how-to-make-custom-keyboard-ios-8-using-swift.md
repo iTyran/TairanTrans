@@ -186,7 +186,7 @@ Hint: 如果你调用`textField.becomeFirstResponder()`在`viewDidLoad`，这个
 	
 接下来对于`dash`，`delete`和`hideKeyboard`，这个过程都比较类似。这个`deleteButton`会从proxy使用`deleteBackward`方法，然后`hideKeyboardButton`会通过`KeyboardViewController`使用`dismissKeyboard`方法。
 
-## Dash
+## 划
 
 与dash相关的代码几乎和`dotButton`代码一致。为了将`dashButton`按钮在水平方向与 点 按钮对称，只要将水平约束中的常量改变一下符号即可。
 
@@ -205,7 +205,7 @@ Hint: 如果你调用`textField.becomeFirstResponder()`在`viewDidLoad`，这个
     proxy.insertText("_")
 	}
 	
-## Delete
+## 回删
 
 当被按下时，这个删除按钮会通过`textDocumentProxy`，使用`deleteBackword`删除字符。这个布局约束会和`nextKeyboardButton`对称(`.Left` -> `.Right`, `.Bottom`->`.Top`)
 
