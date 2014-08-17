@@ -789,7 +789,7 @@ if (!dead)
    laserCollider.gameObject.audio.Play();
 ```
 
-> 注意：将这个方法放在开头很重要，必须要在你将dead设为true之前，否则这个音效将永远不会被播放。
+注意：将这个方法放在开头很重要，必须要在你将dead设为true之前，否则这个音效将永远不会被播放。
 
 当Mouse碰到激光，你会在OnTriggerEnter2D中或得激光的碰撞事件的引用。通过访问laserCollider的gameObject属性，我们可以获得laser对象自身。然后你就可以访问它的Auido Source组件，然后就可以播放音效了。
 
@@ -999,6 +999,7 @@ There are 2 audio listeners in the scene. Please ensure there is always exactly 
 
 ```
 注意：这次你设置了z轴的位置。因为你不能在quads上使用Sorting Layers，你需要将background quad放在foreground quad后面。
+```
 
 ### 设置Quad Textures
 
@@ -1163,6 +1164,4 @@ parallax.offset = transform.position.x;
 
 这个小猫的图片是由[Nicolas Suzor](http://www.flickr.com/people/85603833@N00)拍摄的，你可以在Flickr上看到这幅[图片](http://www.flickr.com/photos/nicsuzor/2554668884/)。
 
-谢谢你完整得阅读这篇教程。
-
-
+谢谢你完整的阅读这篇教程。
