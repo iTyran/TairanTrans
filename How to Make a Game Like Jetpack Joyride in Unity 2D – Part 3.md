@@ -571,20 +571,598 @@ void AddObject(float lastObjectX)
 }
 ```
 
+这个方法接收最后（最右边）一个对象的位置，然后在随机的位置（给定范围内）创建一个新的对象。通过调用此方法，每次当最后的一个对象要显示的时候-你创建一个新的对象消失在屏幕上，然后保持一个无尽的新硬币和镭射激光。
+
+以下为这段代码的详细说明：
+1. 创建一个随机索引，以创建这个对象。这个可能是一个激光或者一个硬币组。
+2. 创建一个被选择对象的实例。
+3. 设置这个对象的位置，在一定范围内随机与随机的高度。这个是由脚本参数控制的。
+4. 给这个新放置对象一个随机的旋转角度。
+5. 将这个新生成的对象放到跟踪对象列表中去，最后再移出（当它离开屏幕后）。
+
+代码已经好了，剩下的就是使用它了。
+
+## 在必要的时候生成并移除对象
+
+将下面的代码添加到***GeneratorScript***中：
+
+```
+void GenerateObjectsIfRequired()
+{
+    //1
+    float playerX = transform.position.x;        
+    float removeObjectsX = playerX - screenWidthInPoints;
+    float addObjectX = playerX + screenWidthInPoints;
+    float farthestObjectX = 0;
+ 
+    //2
+    List<GameObject> objectsToRemove = new List<GameObject>();
+ 
+    foreach (var obj in objects)
+    {
+        //3
+        float objX = obj.transform.position.x;
+ 
+        //4
+        farthestObjectX = Mathf.Max(farthestObjectX, objX);
+ 
+        //5
+        if (objX < removeObjectsX)            
+            objectsToRemove.Add(obj);
+    }
+ 
+    //6
+    foreach (var obj in objectsToRemove)
+    {
+        objects.Remove(obj);
+        Destroy(obj);
+    }
+ 
+    //7
+    if (farthestObjectX < addObjectX)
+        AddObject(farthestObjectX);
+}
+```
+
+这个在***GeneratorScript***类里德方法会检查对象是否应该添加或者移除。
+下面我们来一起剖析一下：
+
+1. 计算这个层的前后的关键点数。如果这个激光或者硬币组在 ***removeObjectsX*** 的左侧，那么它已经离开屏幕，并且已经很远，你必须将它移除。如果在 ***addObjectX*** 的右侧，没有对象，那么你需要添加更多对象，因为最后的一个生成对象进入屏幕。这个 ***farthestObjetX*** 变量是用来找到最后(最右侧)的对象，以便于 ***addObjectX*** 比较。
+2. 因为你不能从当前的序列中删除对象，你将需要删除的对象放入另一个数组，然后在循环结束之后进行删除。
+3. 这是对象的位置(硬币或者激光)。
+4. 通过对 ***objX*** 执行这段代码，在循环结束后，你获得一个farthestObjectX中的最大objX值（或者初始值0，如果所有的对象都在左侧，但是在这里不会）。
+5. 如果当前对象已经在后面了，那么标记它为即将删除，以便减少资源占用。
+6. 删除标记为需要删除的对象。
+7. 如果玩家即将看到最后一个物体，并且没有更多物体在前面，那么脚本会增加一些。
+
+为了让这个方法有效，在 ***FixedUpdate*** 的末尾增加一个对 ***GenerateObjectsIfRequires*** 的调用。
+
+```
+GenerateObejctsIfRequired()
+```
+
+这个方法会在每一次固定更新被调用，确保随时在玩家前面都会有新的物体出现。
+
+## 设置脚本的参数
+
+为了让 ***GeneratorScript*** 生效，你需要设置一些参数。 切换回Unity，然后在 ***Hierarchy*** 视图选择 ***mouse*** 游戏对象。
+
+在 ***Inspector*** 中找到 ***Generator Script*** 组件，然后确保 ***Prefabs*** 在Project视图中处于打开状态。
+
+从Project视图界面拖拽**coins_v** Prefab到**GeneratorScript**中的**Available Objects**列表。然后，从Project视图中拖拽laser Prefab同样到**GeneratorScript**中的**Available Objects**。
+![icon](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_78.png)
+就是这样，运行场景。
+
+```
+注意：在GIF动画中，镭射激光并不会选装，因为我把LaserScript中的rotationSpeed设置为0。如果激光旋转的话，我很难录到一个好的游戏演示视频了。
+```
+
+![icon](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_79.gif)
+
+现在，看上去它已经是一个完整的游戏了！
+
+## 增加GUI元素
+
+如果你看不到你当前收集了多少金币，那有什么意思？此外，玩家在他们死去后也无法重启这个游戏。现在是时候通过添加一些图形化组件来解决这些问题了。
+
+### 显示金币数量
+
+在**MonoDevelop**中打开MouseController脚本，然后添加以下实例变量：
+
+```
+public Texture2D coinIconTexture;
+```
+
+然后添加**DisplayConisCount**方法：
+
+```
+void DisplayCoinsCount()
+{
+    Rect coinIconRect = new Rect(10, 10, 32, 32);
+    GUI.DrawTexture(coinIconRect, coinIconTexture);                         
+ 
+    GUIStyle style = new GUIStyle();
+    style.fontSize = 30;
+    style.fontStyle = FontStyle.Bold;
+    style.normal.textColor = Color.yellow;
+ 
+    Rect labelRect = new Rect(coinIconRect.xMax, coinIconRect.y, 60, 32);
+    GUI.Label(labelRect, coins.ToString(), style);
+}
+```
+
+这个方法使用**GUI.DrawTexture**来在屏幕的左上角绘出金币的图标。然后它为标签撞见了一个**GUIStyle**来改变它的尺寸，设置粗体，然后改变字的颜色为黄色。还是我应该说是金色？：）
+
+最终，它使用**GUI.Label**来显示当前采集的金币数量在金币符号的右侧。
+
+所有用来显示GUI元素的代码都应该从被Unity调用的**OnGUI**方法中被调用，所以接下来添加一个**OnGU**方法，只是简单的调用以下**DisplayConsCount**。
+
+```
+void OnGUI()
+{
+    DisplayCoinsCount();
+}
+```
+
+切换回Unity，然后在Hierarchy视图中选择**mouse**。在**Project**视图中打开**Sprites**文件夹，然后拖拽coin片段到Inspector中Mouse Controller的Coin Icon Texture字段。
+
+![icon](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_80.png)
+
+运行这个场景。你应该可以在左上角看到金币的数量了。
+
+![icon](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_81.png)
+
+## 将死的复活
+
+再次打开MouseController脚本，这次我们添加一个DisplayRestartButon方法：
+
+```
+void DisplayRestartButton()
+{
+    if (dead && grounded)
+    {
+        Rect buttonRect = new Rect(Screen.width * 0.35f, Screen.height * 0.45f, Screen.width * 0.30f, Screen.height * 0.1f);
+        if (GUI.Button(buttonRect, "Tap to restart!"))
+        {
+            Application.LoadLevel (Application.loadedLevelName);
+        };
+    }
+}
+```
+
+这个方法的大部分只有在mouse对象是死的并且着地了。你不希望玩家错过这个老鼠坠地的动画，毕竟我们花了那么多心思在创造这些动画上。
+
+当这个老鼠死了，并且掉在地上后，你在屏幕中央现实一个写有“Tap to restart!”标签的按钮，如果玩家点击这个按钮，你只需简单的刷新一下当前加载的场景即可。
+
+现在只要在OnGUI的末尾增加一个对DisplayRestartButton的调用，你就做完了。
+```
+DisplayRestartButton();
+```
+
+切换到Unity，然后重新运行场景。撞上激光来自杀。当按钮出现时，点击一下，游戏就会重新开始。
+
+![icon](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_82.png)
 
 
+注意：你可以通过创建一个实例变量来自定义这个按钮的样式，如下所示：
 
+```
+public GUIStyle restartButtonStyle;
+```
 
+然后你可以自定义这个按钮的样子。
 
+![icon](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_83.png)
 
+关于自定义按钮的样子和感觉，你可以通过查看这个[Unity Documentation](http://docs.unity3d.com/Manual/class-GUISkin.html)文档了解更多信息。 记住，随着Unity 4.6的到来，新的GUI会提供一种全新的GUI工具互动方式，你可以从[这里](http://blogs.unity3d.com/2014/05/28/overview-of-the-new-ui-system/)了解更多的信息。
 
+## 添加音乐和音效
 
+当前的游戏很安静，当你添加完游戏音乐和音效后，你一定会它所带来的改善的效果惊讶到。
 
+### 触碰激光的声音
 
+在Project视图中打开**Prefabs**文件夹，然后选择**laser** Prefab。
 
+![icon](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_86.png)
 
+在Inspector中，通过点击**Add Component**，然后选择**Audio/Audio Source**来添加一个声音来源组件。 然后打开Project视图中的**Audio**文件夹，然后将**laser_zap**音效拖入**Audio Clip**字段。
 
+不要忘了去掉Play On Awake的勾选。否则激光的撞击声会在游戏一开始自动播放，就像老鼠从激光的地方开始一样。
 
+```
+噢，如果玩家一开始就死了，那将是一个过于残酷的游戏，对此玩家无能为力。或许它还能打破App Store的记录，因为这样应该比Flappy Bird还要难玩。
+```
 
+这是你应该得到的结果：
+
+![icon](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_85.png)
+
+```
+注意，确保你选择的是laser Prefab，而不是Hierarchy中的laser instance。否则你可能需要额外点击Apply按钮，以便将Instance中的改变应用到Prefab中去。
+```
+
+现在在MonoDevelop中打开MouseController，然后在HitByLaser的开头中添加以下代码：
+
+```
+if (!dead)
+   laserCollider.gameObject.audio.Play();
+```
+
+> 注意：将这个方法放在开头很重要，必须要在你将dead设为true之前，否则这个音效将永远不会被播放。
+
+当Mouse碰到激光，你会在OnTriggerEnter2D中或得激光的碰撞事件的引用。通过访问laserCollider的gameObject属性，我们可以获得laser对象自身。然后你就可以访问它的Auido Source组件，然后就可以播放音效了。
+
+运行场景。你会在老鼠触碰到任何激光器时发出嚓声。
+
+![icon](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_87.png)
+
+只是，这个嚓的一声太过于安静，并且如果你有一个立体声扬声器或者二级，你会发现这个声音有点偏左边。这是因为Audio Listener组件默认情况下被放在Main Camera。此外，Audio Source 组件放在激光上。幸运的是，这很容易解决。
+
+```
+注意：别忘了Unity最初被设计用来创建3D游戏。在3D游戏中，你需要3D的音效(例如，可以听出你是被正面袭击还是背面袭击的)。
+此外，尽管你可能依然想在2D游戏中使用3D音效，大部分情况下，你可能只是希望声音左右都一样，与音源无关。
+```
+
+## 禁用3D音效模式
+
+打开Project视图中的Auido文件夹，然后选择laser_zap文件。然后在Inspector的打开Import Settings。去掉3D Sound的勾选，然后点击应用。
+
+![icon](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_88.png)
+
+对接下来的声音文件应用同样的步骤。
+- coin_collect
+- footsteps
+- jetpack_sound
+- music
+
+## 收集金币的声音
+
+尽管你对于金币可以采取同样的方法，但是有些地方不太一样。
+
+打开MonoDevelop中的MouseController，然后添加下面的实例变量：
+
+```
+public AudioClip coinCollectSound;
+```
+
+滚动到Collection方法，然后在这个方法的末尾增加下面的这行代码：
+
+```
+AudioSource.PlayClipAtPoint(coinCollectSound, transform.position);
+```
+
+这样，你就可以在老鼠处于金币位置时，使用AudioSource类的静态方法来播放金币被采集的音效。
+
+切换回Unity，在Hierarchy中选择mouse GameObject。将coin_collect从Project视图中拖拽至MouseController脚本中的Coin Collect Sound字段。
+
+![icon](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_89.png)
+
+运行场景，你应该可以在采集金币的同时听到音效。
+
+![icon](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_90.png)
+
+## 飞行器和脚步声
+
+接下来你需要添加飞行器和脚步发出的声音。这会和之前有些不同，因为老鼠将会同时拥有两个Audio Source Component。
+
+### 添加Audio Sources
+
+从Hierarchy视图中选择mouse GameObject，然后添加两个Audio Source组件。将footsteps从Projects视图中拖拽至第一个Audio Source组件的Audio Clip字段。然后拖拽jetpack_sound到第二个Audio Source组件的Auido Clip字段。
+
+将两个Audio Source的启动就播放和循环属性都开启。
+
+![icon](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_91.png)
+
+如果你运行场景，你会听到两个声音同时播放，不管老鼠是在飞还是在地上跑。你可以通过代码来修正这个问题。
+
+### 在飞行器与脚步音效中切换
+
+在MonoDevelop中打开MouseController脚本，然后添加以下2个实体变量：
+
+```
+public AudioSource jetpackAudio; 
+public AudioSource footstepsAudio;
+```
+
+这些将用于引用你新创建的2个Audio Sources。
+
+现在添加AdjustFootstepsAndJetpackSound方法：
+
+```
+void AdjustFootstepsAndJetpackSound(bool jetpackActive)    
+{
+    footstepsAudio.enabled = !dead && grounded;
+ 
+    jetpackAudio.enabled =  !dead && !grounded;
+    jetpackAudio.volume = jetpackActive ? 1.0f : 0.5f;        
+}
+```
+
+这个方法控制脚步声与飞行器音效的开启和关闭。脚步声只有在老鼠处于非死状态并且在地上的时候开启，而飞行器的音效只有在老鼠非死且不在地上的时候开启。
+
+此外，这个方法调整飞行器音效的音量，以对应飞行器的例子特效。
+
+最后我们在FixedUpdate的末尾添加对AdjustFootstepsAndJetpackSound的调用。
+
+```
+AdjustFootstepsAndJetpackSound(jetpackActive);
+```
+
+现在你需要在mouse GameObject中分配Audio Source组件的到stepsAuido和jetpackAudio变量。
+
+### 设置FootSteps和Jetpack 脚本变量
+
+切换回Unity，然后在Hierarchy中选择mouse GameObject。你只需要在Inspector中做一些操作。折叠除了Mouse Controller的所有其他组件。
+
+![icon](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_92.png)
+
+现在将顶部的Audio Source组件拖拽到Mouse Controller脚本中的FootSteps Audio。
+
+注意：就我所知，在Inspector中的第一个Audio Source是footsteps声音剪辑，但是你可能想临时展开声音组件栏来确认。
+
+![icon](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_93.png)
+
+随后，再拖拽第二个Audio Source组件到Mouse Controller脚本中额Jetpack Auido。
+
+![icon](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_94.gif)
+
+运行场景。现在你应该可以在老鼠跑动在地板时听到脚步声，在飞行时，听到飞行器的轰鸣声。同样飞行器的声音会变得越来越大声，如果你一直按着左键的话。
+
+### 添加背景音乐
+
+为了添背景音乐，你需要以下几个简单的步骤：
+1. 在Hierarchy中选择Main Camera。
+2. 在Inspector中添加一个Audio Source组件。
+3. 从Project浏览器中拖拽music资源到Audio Clip 属性。
+4. 确保Play On Awake 和Loop属性处于开启状态。
+5. 降低音量到0.3，因为背景音乐相对于其他音效来说会已经大声了。
+
+![icon](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_96.png)
+
+就这样，运行场景，享受音乐吧！
+
+## 添加多层背景
+
+当前这个房间的景象很无聊。
+
+![icon](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_97.png)
+
+有2个解决方式：
+1. 在窗外创建一些可以展示的东西。
+2. 不要用窗户。
+
+当然，我们采用第一种办法，但是我们会采用一个动态背景，而不是一个一动不动的背景图。
+
+注意：为了实现视差滚动，我使用在[Mike Geig视频](http://www.youtube.com/watch?v=9bhkH7mtFNE)中提到技巧。
+
+首先你需要添加2个Quads，一个用来作为背景，一个用来作为前景。
+
+注意：你可以在[Unity文档](https://docs.unity3d.com/Documentation/Manual/PrimitiveObjects.html)中了解更多有关Quads的内容。为了简化，你可以将他们认为是一个矩形附带一个拉伸过的材质。至少这里可以这么认为。
+
+你可能会好奇为什么这里使用Quad，而不是典型的Sprite？是由于你不能改变Sprite的图像wrappinp模式。至少在这里不行。然后你需要改变wrapping模式来确保材质是无缝的进行连接，当我们图片不断向右移动时，一会你会更清楚这一点。
+
+你需要为每一个Quad设置一个材质，不用异动Quads来模拟异动，你只要在Quad内异动材质，对于北京和前景层采用不同的速度。
+
+### 准备背景图片
+
+为了在Quads上使用背景图片，你需要调整他们导入Unity的方式。
+
+打开Project视图中的Sprites文件夹，然后选择window_background。在Inspector中，将Texture Type从Sprite改为Texture。这会改变Inspector的样子。
+
+随后，将Wrap Mode属性设置为Repeat，点击应用。
+
+![icon](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_98.png)
+
+对于window_foreground图片，重复一遍。
+
+![icon](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_99.png)
+
+### 创建另一个Camera
+
+等一下，另一个Camera？主Camera被保留用来跟踪mouse。这个新的Camera将被用来渲染交差背景，并且不会移动。
+
+创建一个新的Camera，通过选择GameObject\Create Other\Camera。在Hierarchy中选择它，然后在Inspector中做一下改变：
+
+1. 重命名为ParallaxCamera.
+2. 将位置设置为(0,10,0)
+3. 将Projection设置为Orthographic
+4. 将尺寸设置为3.2，与主Camera同样的尺寸。
+
+![icon](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_100.png)
+
+既然你有了2个Cameras，那么你也会有2个声音监听器。禁用ParallaxCamera中的Audio Listener，否则你会得到以下警告。
+
+```
+There are 2 audio listeners in the scene. Please ensure there is always exactly one audio listener in the scene.
+```
+
+![icon](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_115.png)
+
+### 创建Quads
+
+创建两个Quad对象，通过选择GameObjet\Create Other\Quad。命名第一个Quad为parallaxBackground，然后第二个为ParallaxForeground。拖动两个Quads到ParallaxCamera，添加他们为子项。
+
+![icon](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_101.png)
+
+选择parallaxBackground，然后将它的Position设置为(0,0,10)，Scale为(11.36,4.92,0)。
+
+```
+注意：你使用这个scale，因为背景图的尺寸为1136*492px。
+```
+
+![icon](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_102.png)
+
+选择parallaxForeground，然后设置Position为(0,0,9),Scale为(11.36,4.92,0).
+
+![icon](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_103.png)
+
+```
+注意：这次你设置了z轴的位置。因为你不能在quads上使用Sorting Layers，你需要将background quad放在foreground quad后面。
+
+### 设置Quad Textures
+
+打开Project视图中的Sprite文件夹，在Hierarchy中，将window_background拖动至parallaxBackground， window_foreground至parallaxForeground。
+
+![icon](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_104.png)
+
+然后，在Hierarchy中选择parallaxForeground。你会看到一个Mesh Render的组件被添加了进来。点击Shader下拉框，选择Unlit\Transparent。
+
+![icon](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_105.png)
+
+在parallaxBackground上重复以上步骤.
+
+![icon](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_106.png)
+
+随后，你就可以看到如下图的效果：
+
+![icon](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_107.png)
+
+如果你禁用了2D模式，并且旋转了场景，你看到将会是这样：
+
+![icon](http://cdn1.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_108.png)
+
+运行场景，你会看到背景图片显示在了所有界面的最前面。这对于调试交叉滚动很有用，一旦你调试完毕，可以将它重新移回至背景。
+
+![icon](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_109.png)
+
+### 让Texture移动起来
+
+你不需要移动Quads。取而代之的是，你需要移动Quad所附加的Textures，通过改变材质的便宜量。因为你设置了WrapMode至Repeat属性，它会自动连接。
+
+```
+注意：并不是所有图片都适用这种情况，这些背景图片设计的时候就可以被用来相互连接。也就是说，如果你将背景图片水平串起来，图像的左边和右边会很自然的连接在一块。
+```
+
+创建一个命名为ParallaxScroll的C#脚本，并将它与ParallaxCamera关联起来。
+
+![icon](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_110.png)
+
+在MonoDevelop中打开该ParallaxScript，然后添加以下实例变量：
+
+```
+public Renderer background;
+public Renderer foreground;
+ 
+public float backgroundSpeed = 0.02f;
+public float foregroundSpeed = 0.06f;
+```
+
+这些Render变量会保持每个到Quads中Mesh Render组件的引用，这样你就可以调整他们的Texture属性。这个backgroundSpeed和foregroundSpeed定义了每个背景的速度。
+
+然后在Update中添加以下代码：
+
+```
+float backgroundOffset = Time.timeSinceLevelLoad * backgroundSpeed;
+float foregroundOffset = Time.timeSinceLevelLoad * foregroundSpeed;
+ 
+background.material.mainTextureOffset = new Vector2(backgroundOffset, 0);
+foreground.material.mainTextureOffset = new Vector2(foregroundOffset, 0);
+```
+
+这个代码会定期更新Quad中texture的偏移量，也就是移动它们。它们的速度将会不同，因为这个脚本中用了backgroundSpeed和foregroundSpeed作为参数去计算偏移量。
+
+切换回Unity，然后在Hierarchy中选择ParallaxCamera。拖拽ParallaxBackground Quad到ParallaxScroll脚本中的Background字段，以及ParallaxForeground到Foreground字段。
+
+![icon](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_111.png)
+
+运行场景，你会看到很漂亮的视差滚动的背景图。
+
+![icon](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_112.png)
+
+但是主背景呢，你看不到了？
+
+### 修正Camers的次序。
+
+在Hierarchy中选择ParallaxCamera，然后在Inspector中，寻找Camera组件，然后将Depth属性设置为-2.
+
+```
+注意：ParallaxCamera的Depth属性应该比Main Camera的Depth小，所以检查你的Main Camera Depth，然后据此保证Parallax Camera更小一些。
+```
+
+![icon](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_113.png)
+
+不过，随后运行游戏，你会发现你从窗户看不到视差滚动的背景。
+
+![icon](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_114.png)
+
+为了解决这个问题，在Hierarchy中选择Main Camera，然后将Clear Flags设置为Depth Only。这样它就不会清楚由Parallax Camera绘出的背景。
+
+![icon](http://cdn4.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_116.png)
+
+运行游戏，现在你可以从窗户中看到外面的风景了！
+
+### 一些改进
+
+尽管你可以看到从窗户看到树尖和云，但是最好将背景移动的更高一些，这样你就可以看到山了。
+
+另外一个事情就是背景在老鼠停止移动后，还在异动。
+
+### 当老鼠死后停止背景滚动
+
+在MonoDevelop中打开ParallaxScroll脚本，然后添加以下公共偏移变量：
+
+```
+public float offset = 0;
+```
+
+你会使用它，而不是Time.timeSinceLevelLoad，所以在Update中，使用以下代码替换掉你计算偏移量的代码。
+
+```
+float backgroundOffset = offset * backgroundSpeed;
+float foregroundOffset = offset * foregroundSpeed;
+```
+
+现在，打开MouseController脚本，然后添加以下公共变量：
+
+```
+public ParallaxScroll parallax;
+```
+
+然后添加以下代码到FixedUpdate的末尾:
+
+```
+parallax.offset = transform.position.x;
+```
+
+这样子，你就可以使用Mouse的Position来作为偏移量而不是时间。
+
+切换回Unity，然后选择Hierarchy中的Mouse GameObject。确保MouseController Script在Inspector可见。
+
+将ParallaxCamera从Hierarchy中拖动至Inspector里德Parallax字段。
+
+![icon](http://cdn2.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_119.png)
+
+这样就允许MouseController来控制ParallaxScroll脚本中的offset变量。
+
+### 将背景移的更高一些
+
+将parallaxBackground和parallaxForeground Quads的Position中的Y属性设置为0.7，这会让他们高一些，这样你就可以看到山了。
+
+![icon](http://cdn5.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_120.png)
+
+运行游戏，现在背景会在老鼠死后停止滚动，并且你也可以从窗看到更多外面的景色。
+
+```
+注意：事实上，老鼠不一定要死了才能停止背景滚动。只要老鼠停下了，背景就应该停止滚动，如果出于某种原因，老鼠往回飞了，背景也应该反过来滚动。
+```
+
+好吧，结束这个教程让我有一些忧伤，所以我决定添加一幅小猫的图片，：）
+
+![icon](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/rocket_mouse_unity_p3_121.jpg)
+
+## 接下来，还有什么
+
+我希望你会喜欢这个教程。
+
+你可以从[这里](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/RocketMouse_Final.zip)下载这个项目的完整代码。
+
+如果你想了解更多与真正制作Jetpack JoyRide游戏的内容，可以看一下[这个](http://www.gamasutra.com/view/news/173726/Video_Depth_in_simplicity_The_making_of_Jetpack_Joyride.php)视频。
+
+创建一个视差滚动的背景，很大程度上是由[Mike Gieg视频](http://www.youtube.com/watch?v=9bhkH7mtFNE)的启发。
+
+这个小猫的图片是由[Nicolas Suzor](http://www.flickr.com/people/85603833@N00)拍摄的，你可以在Flickr上看到这幅[图片](http://www.flickr.com/photos/nicsuzor/2554668884/)。
+
+谢谢你完整得阅读这篇教程。
 
 
