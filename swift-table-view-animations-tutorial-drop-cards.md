@@ -1,30 +1,30 @@
-**Update note:** This tutorial was updated for iOS 8 and Swift by Ray Fix. [Original post](http://www.raywenderlich.com/49311/advanced-table-view-animations-tutorial-drop-in-cards) by Tutorial Team member [Brian Broom](http://www.raywenderlich.com/u/bcbroom) and Code Team member [Orta Therox](http://www.raywenderlich.com/u/orta).
+**更新日志:** 本教程由Ray Fix为iOS 8和Swift更新。[原文地址](http://www.raywenderlich.com/49311/advanced-table-view-animations-tutorial-drop-in-cards)，由教程组成员[Brian Broom](http://www.raywenderlich.com/u/bcbroom)和代码组成员[Orta Therox](http://www.raywenderlich.com/u/orta)撰写。
 
-The standard **UITableView** is a powerful and flexible way to present data in your apps; chances are that most apps you write will use table views in some form. However, one downside is that without some level of customization, your apps will look bland and blend in with the thousands of apps just like it.
+在你的应用程序中标准**UITableView**是强大和灵活的展示数据的工具；在你大多数的应用程序中你会在很多表单中使用表格视图。然而，一个缺点是，没有某种程度的定制，你的应用程序将看来平淡无奇，并会和像它一样的成千上万的程序混在一起。
 
-To prevent boring table views, you can add some subtle animation to liven up the actions of your app. You may have seen this in the Google+ app where the cards fly in through the side with a cool animation. If you haven’t seen it yet, [download it here](https://itunes.apple.com/us/app/google+/id447119634?mt=8&uo=4) (it’s free)! You might also want to check out the [design guidelines](http://google.com/design/) that Google released at the 2014 I/O conference. It contains many tips and examples on how to use animation well.
+为了防止无聊的表格视图，你可以添加一些微妙的动画，使你的应用程序的行为生动起来。你可能在Google+应用程序中看到过卡片从侧面经过一个很酷的动画飞进来。如果你还没有看过，你可以[在这里下载它](https://itunes.apple.com/us/app/google+/id447119634?mt=8&uo=4) （免费的哦）！你可能还想查看Google在2014 I/O大会上发布的[设计指南](http://google.com/design/)。它包含了很多如何使用动画的技巧和实例。
 
-In this table view animations tutorial, you’ll be using Swift to enhance an existing app to rotate the cells of a table as you scroll. Along the way, you’ll learn about how transforms are achieved in UIKit, and how to use them in a subtle manner so as not to overwhelm your user with too much happening on-screen at once. You will also get some advice on how to organize your code to keep responsibilities clear and your view controllers slim.
+在这个表格视图动画的教程中，你将使用Swift增强一个已有应用程序，来旋转你滚动表格的卡片。在这个过程中，你将学到如何在UIKit中使用变换，和如何以微秒的方式使用它们，来防止你的用户淹没在同时在屏幕中出现的大量事件。你也会得到一些关于如何组织你的代码来保持职责明确和你的视图控制器简洁的建议。
 
-Before beginning, you should know how to work with **UITableView** and the basics of Swift. If you need an introduction to these topics, you might want to start with the [Swift Tutorial](http://www.raywenderlich.com/74438/swift-tutorial-a-quick-start) series that will teach you the basics of Swift in a table view app.
+在开始之前，你应该了解Swift的基础知识和如何使用**UITableView**。如果你需要这些主题的介绍，你可能需要从[Swift教程](http://www.raywenderlich.com/74438/swift-tutorial-a-quick-start)系列开始，它将在一个表格视图应用程序中指导你Swift的基础知识。
 
->At publication time, our understanding is we cannot post screenshots of iOS 8 while it’s in beta. Any screenshots shown are from iOS 7, which will be close to what you see in iOS 8.
+>在出版时，因为iOS 8还处在beta阶段，我们考虑到我们不能发iOS 8的截图。所以下面的所有截图都出自于iOS 7，这将接近于你在iOS 8中看到的。
 
-##Getting Started
-Download the [starter project](http://cdn4.raywenderlich.com/wp-content/uploads/2014/08/CardTilt-swift-starter.zip) and open it up in Xcode 6. You’ll find a simple storyboard project with a **UITableViewController** subclass (**MainViewController**) and a custom **UITableViewCell** (**CardTableViewCell**) for displaying team members. You will also find a model class called **Member** that encapsulates all of the information about a team member and knows how to fetch that information from a JSON file stored in the local bundle.
+##开始
+下载[开始项目](http://cdn4.raywenderlich.com/wp-content/uploads/2014/08/CardTilt-swift-starter.zip)然后在Xcode 6中打开它。你将找到一个简单的storyboard项目，包含**UITableViewController**的子类(**MainViewController**)和一个显示团队成员的自定义**UITableViewCell** (**CardTableViewCell**)。你也将看到一个叫做**Member**的model类，包含了团队成员的所有信息，并且它知道如何从存储在本地的JSON文件中获取信息。
 
-Build and run the project in the simulator; you’ll see the following:
+生成并在模拟器中运行项目；你将看到如下所示：
 
 ![Starter project](http://cdn3.raywenderlich.com/wp-content/uploads/2013/10/CardInitial-281x500.png)
 
-*A perfectly good design, ready to be spiced up.*
+*完美的设计*
 
-The app is off to a good start, but it could use a little more flair. That’s your job; you’ll use some Core Animation tricks to animate your cell.
+该应用程序是一个好的开始，但它还可以做得更好。那将是你需要做的；你将使用一些Core Animation技巧来给你的卡片加动画。
 
-##Define the Simplest Possible Animation
-To get the basic structure of the app going you’ll start by creating a super simple fade-in animation helper class. Go to **File\New\File…** and select type **iOS\Source\Swift File** for an empty Swift file. Click **Next**, name the file **TipInCellAnimator.swift** and then click **Create**.
+##定义一个最简单的动画
+你将由创建一个超级简单的淡入动画辅助类来开始接触基本的应用程序结构。转到**File\New\File…**选择类型**iOS\Source\Swift File**来创建一个空的Swift文件。点击**Next**，把文件命名为**TipInCellAnimator.swift**，然后点击**Create**。
 
-Replace the file contents with the following:
+把文件内容替换如下：
 
 	import UIKit
 	 
@@ -40,34 +40,35 @@ Replace the file contents with the following:
 	  }
 	}
 
-This simple class provides a method that takes a cell, gets its **contentView** and sets the layer’s initial opacity to 0.1. Then, over the space of 1.4 seconds, the code in the closure expression animates the layer’s opacity back to 1.0.
+这个简单的类提供了一个方法，接收一个卡片参数，获取它的**contentView**然后设置图层的不透明度初始值为0.1。然后在1.4秒内，闭包（closure）表达式中的代码慢慢将图层的不透明度设回1.0。
 
->**Note:** A Swift **closure** is just a block of code that can also capture external variables. For example, **{ }** is a simple closure. Functions declared with the **func** keyword are just examples of **named closures**. It is even perfectly legal to declare functions inside of other functions in Swift.
+>**注：**Swift中的**闭包（closure）**是可以获取外部的变量一个代码块。例如，**{ }**是一个简单的闭包。使用**func**关键字声明的函数是**named closures**的例子。Swift里在其他函数中定义函数甚至是完全合法的。
 
->If you pass a closure as the last argument of a function, you can use the special **trailing closure** syntax and move the closure outside of the function call. You can see this in the **UIView.animateWithDuration()** call.
+>如果你给函数传参时闭包是最后一个参数，则你可以使用特殊的**trailing closure**语法，把闭包移动到函数调用之外。你可以在**UIView.animateWithDuration()**的调用中看到这种情况。
 
->You can read more about closures in the [Swift Programming Language book](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Closures.html) or read about the [rich history of closures](http://en.wikipedia.org/wiki/Closure_(computer_programming)) on Wikipedia.
+>你可以在[Swift Programming Language book](https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Closures.html)中阅读更多关于闭包的内容或者在Wikipedia上阅读[rich history of closures](http://en.wikipedia.org/wiki/Closure_(computer_programming))
 
-Now that you have the animation code ready, you need the table view controller to trigger this new animation as the cells appear.
+现在你已经有了动画的代码，你需要表格视图控制器在卡片出现时触发这个新的动画。
 
-##Trigger the Animation
-To trigger your animation, open **MainViewController.swift** and add the following method to the class:
+##触发动画
+要触发你的动画，打开**MainViewController.swift**然后添加如下方法到类中：
 
 	override func tableView(tableView: UITableView!, willDisplayCell cell: UITableViewCell!,
 	    forRowAtIndexPath indexPath: NSIndexPath!) {
 	  TipInCellAnimator.animate(cell)
 	}
 
-This method is declared in the [UITableViewDelegate protocol](https://developer.apple.com/library/ios/documentation/uikit/reference/UITableViewDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITableViewDelegate/tableView:willDisplayCell:forRowAtIndexPath:) and gets called just before the cell is shown on the screen. It calls the **TipInCellAnimator**‘s class method **animate()** on each cell as it appears to trigger the animation.
+本方法在[UITableViewDelegate协议](https://developer.apple.com/library/ios/documentation/uikit/reference/UITableViewDelegate_Protocol/Reference/Reference.html#//apple_ref/occ/intfm/UITableViewDelegate/tableView:willDisplayCell:forRowAtIndexPath:)中声明，它会在卡片被显示在屏幕前调用。它在每个卡片出现时调用了**TipInCellAnimator**的类方法**animate()**来触发这个动画。
 
-Build and run your app. Scroll through the cards and watch the cells slowly fade in:
+生成并运行你的应用程序。滚动卡片来看卡片慢慢的淡入：
 
 ![SwiftDrop-InFadeAnimation](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/SwiftDrop-InFadeAnimation-281x500.png)
 
-##Getting Fancy with Rotation
-Now it’s time to make the app a little more fancy with some animated rotation. This works in the same way as the fade-in animation, except you are specifying both start and end transformations.
+##奇特的旋转
+现在是时候让应用程序加入一些旋转动画来显得更酷炫了。这部分和淡入动画使用的是同种方式，除非你指定了开始和结束的变换。
 
-Open **TipInCellAnimator.swift**, and replace its contents with:
+打开**TipInCellAnimator.swift**，替换它的内容如下：
+
 	import UIKit
 	import QuartzCore // 1
 	 
@@ -95,34 +96,34 @@ Open **TipInCellAnimator.swift**, and replace its contents with:
 	  }
 	}
 
-This time the animation is quicker (0.4 seconds), the fading in is more subtle, and you get a nice rotation effect. The key to the above animation is defining the **startTransform** matrix and animating the cell back to its natural identity transformation. Let’s dig into that and see how it was done:
+这次的动画很快（0.4秒），淡入得更微秒一些，现在你得到了一个很好的旋转效果。上述动画的关键在于定义了**startTransform**的矩阵，然后让卡片变换回它原来的身份。让我们深入看一下它是怎么做到的：
 
-1. This class now requires **QuartzCore** to be imported because it uses core animation transforms.
-2. Start with an identity transform, which is a fancy math term for “do nothing.” This is a view’s default transform.
-3. Call **CATransform3DRotate** to apply a rotation of -15 degrees (converted to radians), where the negative value indicates a counter-clockwise rotation. This rotation is around the axis **0.0, 0.0, 1.0;** this represents the z-axis, where x=0, y=0, and z=1.
-4. Applying just the rotation to the card isn’t enough, as this simply rotates the card about its center. To make it look like it’s tipped over on a corner, add a translation or shift where the negative values indicate a shift up and to the left.
-5. Set this rotated and translated transform as the view’s initial transform.
-6. Animate the view back to it’s original values.
+1. 这个类导入了**QuartzCore**，因为它需要使用Core Animation的变换。
+2. 开始一个身份变换，这是一个奇特的数学术语“什么都不做”。这是视图的默认变换。
+3. 调用**CATransform3DRotate**来应用一个-15度的旋转（转换为弧度），负值表示逆时针旋转。本次的旋转是围绕轴线**0.0, 0.0, 1.0**的；这表示z轴，其中x=0，y=0，z=1。
+4. 只给卡片添加旋转是不够的，这个简单的旋转只操作了卡片的中心。如果想让它看起来像从一个角落翻转，需要添加一个转换或移动，负值表示向左和向上移动。
+5. 设置旋转和转换变换为视图的初始变换。
+6. 变换视图回它原来的值。
 
-Notice how you were able to build up the final transformation one step at a time as shown in the image below:
+注意你是如何像下图所示一步一个脚印的建立最终的变换的：
 
 ![Building up transformations](http://cdn4.raywenderlich.com/wp-content/uploads/2013/08/GooglePlusTransformDiagram.png)
 
-*Building up transformations to produce the desired effect.*
+*建立变换产生预期的效果*
 
->**Note:** An arbitrary chain of transformations can ultimately be represented by one [matrix](http://en.wikipedia.org/wiki/Matrix_(mathematics)). If you studied matrix math in school, you may recognize this as [multiplication of matrices](http://en.wikipedia.org/wiki/Matrix_multiplication). Each step multiplies a new transformation until you end up with the final matrix.
+>**注：**任意连续的变换最终可以用一个[矩阵](http://en.wikipedia.org/wiki/Matrix_(mathematics))表示。如果你在学校里学过矩阵数学，你可以认出来这是[矩阵乘法](http://en.wikipedia.org/wiki/Matrix_multiplication)。每一步相乘一个新的变换，直到结束得到你最终的矩阵。
 
-You’ll also notice that you’re transforming a child view of the cell, and not the cell itself. Rotating the actual cell would cause part of it to cover the cell above and below it, which would cause some odd visual effects, such as flickering and clipping of the cell. A cell’s **contentView** contains all of its constituent parts.
+你也将注意到你是在变换卡片的子视图，而不是卡片本身。旋转实际的卡片会导致它的一部分覆盖到它上方和下方，这将导致一些奇怪的视觉效果，例如闪烁和被裁剪。卡片的**contentView**包含所有它的组成部分。
 
-Not all properties support animation; the [Core Animation Programming Guide](https://developer.apple.com/library/ios/DOCUMENTATION/Cocoa/Conceptual/CoreAnimation_guide/Introduction/Introduction.html) provides a [list of animatable properties](https://developer.apple.com/library/ios/DOCUMENTATION/Cocoa/Conceptual/CoreAnimation_guide/AnimatableProperties/AnimatableProperties.html#//apple_ref/doc/uid/TP40004514-CH11-SW1) for your reference.
+不是所有的属性支持动画；[Core Animation Programming Guide](https://developer.apple.com/library/ios/DOCUMENTATION/Cocoa/Conceptual/CoreAnimation_guide/Introduction/Introduction.html) 提供了[支持动画的属性列表](https://developer.apple.com/library/ios/DOCUMENTATION/Cocoa/Conceptual/CoreAnimation_guide/AnimatableProperties/AnimatableProperties.html#//apple_ref/doc/uid/TP40004514-CH11-SW1)供你参考。
 
-Build and run your application. Watch how the cells tilt into view as they appear!
+生成并运行你的应用程序。查看卡片出现时是如何倾斜的进入视图的！
 ![Rotation of card cell.](http://cdn4.raywenderlich.com/wp-content/uploads/2013/10/TransformationMontage.png)
 
-##A Swift Refactor
-The original Objective-C version of this tutorial made sure to compute the starting transform once. In the above version of the code it is computed each time **animate()** gets called. How might you do this in Swift?
+##Swift重构
+本教程的Objective-C原版中只在开始处计算了变换一次。在上述的代码版本中，它每次调用**animate()**计算一次。如何在Swift中像原版那样做？
 
-One way is to use an immutable stored property that is computed by calling a closure. Replace the contents of **TipInCellAnimator.swift** with:
+一种方法是通过调用闭包计算一个不变的存储属性。替换**TipInCellAnimator.swift**的内容如下：
 
 	import UIKit
 	import QuartzCore
@@ -154,26 +155,26 @@ One way is to use an immutable stored property that is computed by calling a clo
 	  }
 	}
 
-Notice the code that generates the **startTransform** is now in its own stored property **TipInCellAnimatorStartTransform**. Rather than defining this property with a getter to create the transform each time its called, you set its default property by assigning it a closure and following the assignment with the empty pair of parenthesis. The parenthesis force the closure to be called immediately and assign the return value to the property. This initialization idiom is discussed in Apple’s Swift book in the chapter on **initialization**. See “Setting a Default Property Value with a Closure or Function” for more information.
+注意生成**startTransform**的代码现在在它自己的存储属性**TipInCellAnimatorStartTransform**中。与其定义这个属性和调用getter来每一次创建变换，不如把它的默认属性分配给一个闭包函数，然后在闭包函数后面添加一对括号。括号强制立即调用闭包函数赋值返回值给属性。这个初始化风格在Apple的Swift书中**initialization**章节中讨论过。更多内容请查看“Setting a Default Property Value with a Closure or Function”。
 
->**Note:** It would have been nice to make **TipInCellAnimatorStartTransform** a class property of TipInCellAnimator but as of this writing, class properties are not yet implemented in Swift.
+>**注：**如果把**TipInCellAnimatorStartTransform**设为一个TipInCellAnimator的类属性就更好了。但在撰写本文时，Swift的类属性尚未实现。
 
-##Adding Some Limits to Your Transformation
-Although the animation effect is neat, you’ll want to use it sparingly. If you’ve ever suffered through a presentation that overused sound effects or animation effects, then you know what effect overload feels like!
+##给你的变换添加一些界限
+虽然动画效果是整洁的，但你也要有节制地使用它。如果你曾经经历了有过度的声音效果和动画效果的演示文稿，那么你就应该知道效果过度的感觉！
 
-In your project, you only want the animation to run the first time the cell appears — as it scrolls in from the bottom. When you scroll back toward the top, the cells should scroll without animating.
+在你的项目中，你只想要动画在卡片出现时运行一次 — 当它从底部滚动进入屏幕时。当你向顶部滚动时，卡片应该滚动而没有动画。
 
-You need a way to keep track of which cards have already been displayed so they won’t be animated again. To do this, you’ll use a Swift **Dictionary** collection that provides fast key lookup.
+你需要一种方法来追踪哪些卡片已经被显示了，他们不需要再一次的展示动画。完成它，你将需要使用Swift的**Dictionary**集合，它提供了快速的查找函数。
 
->**Note:** A set is an unordered collection of unique entries with no duplicates, while an array is an ordered collection that does allow duplicates. The Swift Standard Library does not currently include a **Set** type, but it can easily be simulated with a **Dictionary** of **Bool**s. The abstraction penalty for using a Dictionary in this way is very small, which is probably why the Swift team left it out of the initial release.
+>**注：**Set是无序的集合，唯一的key对应的值不存在重复，Array是有序的集合，它允许重复。Swift标准库当前并不包含**Set**类型，但它可以由**Bool**的**（字典）Dictionary**简单模拟而成。这样使用Dictionary的抽象害处是很小的，这也许也是Swift组没有在它的初始版本中加入它的原因。
 
->The general disadvantage of a set or dictionary keys is that they don’t guarantee an order, but the ordering of your cells is already handled by the data source, so it isn’t an issue in this case.
+>Set和Dictionary的key的主要缺点在于他们不是有序的，但是你卡片的排序已经由数据源持有了，所以在这种情况下它不是一个问题。
 
-Open **MainViewController.swift** and add the following property to the class:
+打开**MainViewController.swift**，添加如下属性到类中：
 
 	var didAnimateCell:[NSIndexPath: Bool] = [:]
 
-This declares an empty dictionary that takes **NSIndexPath**s as keys and **Bool**s as values. Next, replace the implementation of tableView(tableView:, willDisplayCell:, forRowAtIndexPath:) with the following:
+这声明了一个空的字典，**NSIndexPath**为key，**Bool**为value。下一步，替换tableView(tableView:, willDisplayCell:, forRowAtIndexPath:)的实现如下：
 
 	override func tableView(tableView: UITableView!, willDisplayCell cell: UITableViewCell!, 
 	                        forRowAtIndexPath indexPath: NSIndexPath!) {        
@@ -183,30 +184,30 @@ This declares an empty dictionary that takes **NSIndexPath**s as keys and **Bool
 	    }
 	}
 
-Instead of animating every cell each time it appears as you scroll up and down the table, you check to see if the cell’s index path is in the dictionary. If it isn’t, then this is the first time the cell has been displayed; therefore you run the animation and add the **indexPath** to your set. If it was already in the set, then you don’t need to do anything at all.
+把每次向上和向下滚动表格时每个卡片展示动画，替换为检查卡片的索引是否在字典中。如果不在，则卡片是第一次被显示；因此你运行动画并添加**indexPath**到你的Set中。如果它已经在Set中，你则不需要展示任何动画。
 
-Build and run your project; scroll up and down the tableview and you’ll only see the cards animate the first time they appear on-screen.
+生成并运行你的项目；向上和向下滚动表格视图，你将只会看到卡片在第一次进入屏幕时有动画。
 
 ![Drop-In-UpDownScroll](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/Drop-In-UpDownScroll-563x500.png)
 
-##Where To Go From Here?
-In this tutorial you added animation to a standard view controller. The implementation details of the animation were kept out of the **MainViewController** class and instead put into a small, focused, animation helper class. Keeping class responsibilities focused, particularly for view controllers, is one of the main challenges of iOS development.
+##下一步？
+在本教程中，你给标准的视图控制器添加了动画。实现细节远离了**MainViewController**类，放进了一个小的，集中的，动画辅助类中。保持类的职责集中，特别是视图控制器，是iOS开发中一个主要的挑战。
 
-You can download the final project for this tutorial [here](http://cdn3.raywenderlich.com/wp-content/uploads/2014/08/CardTilt-Swift-Final.zip).
+你可以从[这里](http://cdn3.raywenderlich.com/wp-content/uploads/2014/08/CardTilt-Swift-Final.zip)下载本教程的最终项目。
 
-Now that you’ve covered the basics of adding animation to cells, try changing the values of your transform to see what other effects you can achieve. Some suggestions are:
+现在你已经覆盖了添加动画到卡片的基础内容，请尝试修改你的变换值来看看你可以达到一些什么其他效果。这里有一些建议：
 
-1. Faster or slower animation
-2. Larger rotation angle
-3. Different offsets; if you change the rotation angle, you will likely need to change the offset to make the animation look right. What does the animation look like if you drop the offset entirely and use (0, 0) for the parameters?
-4. Go nuts and create some whacked-out transforms.
-5. **Advanced:** Can you get the card to rotate along the horizontal or vertical axis? Can you make it look like it flips over completely?
-6. **Advanced:** Add an **else** clause to **tableView(tableView:, willDisplayCell:, forRowAtIndexPath:)** and perform a different animation when cells are displayed a second time.
+1. 加快或放慢动画
+2. 加大旋转的角度
+3. 不同的偏移量；如果你修改了旋转角度，你将需要修改偏移量来使动画看起来正确。如果你完全不使用偏移量，而且使用(0, 0)做参数，动画看起来会是什么样呢？
+4. 创建一些发疯的变换。
+5. **高级：**你可以让卡片沿水平或垂直的轴旋转吗？你可以让它看下来像完全翻转了吗？
+6. **高级：**给**tableView(tableView:, willDisplayCell:, forRowAtIndexPath:)**添加一个**else**分支，当动画显示第二次时，展示一个不同的动画。
 
 ![Crazy Rotations](http://cdn3.raywenderlich.com/wp-content/uploads/2013/08/CrazyRotations.png)
 
-*Crazy rotations that you can (but maybe shouldn’t) apply to your cells. See if you can duplicate these!*
+*你可以（但可能不应该）应用到你的卡片上的疯狂旋转。看你能不能与这些相同！*
 
-A great exercise is to try and identify animations in your favorite apps. Even with the simple animation from this tutorial, there are countless variations you can produce on this basic theme. Animations can be a great addition to user actions, such as flipping a cell around when selected, or fading in or out when presenting or deleting a cell.)
+在你最喜欢的应用程序中尝试和识别动画是一个很好的锻炼。甚至在本教程中的简单动画中，你也可以在这个基础的主题中产生无数的变化。动画对用户的操作是一个很好的补充，例如选中卡片时翻转它，或者在展现或删除卡片时淡入或淡出它。
 
-If you have any questions about this table view animations tutorial or this technique in general, please join the forum discussion below!
+如果你对于这个表格视图动画教程有任何疑问或相关的技术问题，请加入论坛并在下面留言！
