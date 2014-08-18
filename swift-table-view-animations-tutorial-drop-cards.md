@@ -64,7 +64,7 @@
 
 ![SwiftDrop-InFadeAnimation](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/SwiftDrop-InFadeAnimation-281x500.png)
 
-##奇特的旋转
+##酷炫的旋转
 现在是时候让应用程序加入一些旋转动画来显得更酷炫了。这部分和淡入动画使用的是同种方式，除非你指定了开始和结束的变换。
 
 打开**TipInCellAnimator.swift**，替换它的内容如下：
