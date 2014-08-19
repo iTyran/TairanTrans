@@ -148,7 +148,7 @@ Unity提供了一个叫做Skin的来实现自定义 GUI 元素。
 
 我创建了两个skin文件，一个大小为480X320，另一个大小为960X640。下面是一张480X320 skin属性面板的截图。
 
-![skin.png](C:/Users/孟/Desktop/skin.png "")
+![skin.png](http://cdn4.raywenderlich.com/wp-content/uploads/2012/08/skin.png)
 
 在Skin的属性显示界面暴露出了许多可以让你创建出独一无二风格样式的属性。在本工程中你只需要设定字体。
 
@@ -263,11 +263,11 @@ Unity提供了一个叫做Skin的来实现自定义 GUI 元素。
 测试前，需要将GameMenuController脚本和GameController脚本关联到游戏对象上，然后将所有内容关联到适当的对象
 和属性中，就像下图这样：
 
-![skin.png](C:/Users/孟/Desktop/skin.png "")
+![skin.png](http://cdn5.raywenderlich.com/wp-content/uploads/2012/10/unity3d-gui-properties.png)
 
 现在运行游戏，点击开始，你将会看到一个按钮出现。点击它，在控制台会看到一条消息。
 
-![unity3d-ongui-test.png](C:/Users/孟/Desktop/unity3d-ongui-test.png "")
+![unity3d-ongui-test.png](http://cdn4.raywenderlich.com/wp-content/uploads/2012/10/unity3d-ongui-test.png)
 
 还不错吧？制作主菜单第一步，完成！
 
@@ -365,7 +365,7 @@ _gamesPlayedThisSession 是用来决定你可是第几次游戏，如果你是�
 ##测试时间
 
 在你完成GameMenuController前，让我们确定一下每一部分都能按预期效果工作。如果是一步一步走下来的话，开始游戏后会看到类似如下效果：
-![unity3d-ongui-test-2.png](C:/Users/孟/Desktop/unity3d-ongui-test-2.png "")
+![unity3d-ongui-test-2.png](http://cdn4.raywenderlich.com/wp-content/uploads/2012/10/unity3d-ongui-test-2.png)
 
 ##完成GameMenuController
 
@@ -473,13 +473,13 @@ _gamesPlayedThisSession 是用来决定你可是第几次游戏，如果你是�
 
 完成以上工作后，打开 Build对象框，打开File下的Build Setting，点击编译按钮完成游戏创建并运行！
 
-![build-dialog.png](C:/Users/孟/Desktop/build-dialog.png "")
+![build-dialog.png](http://cdn5.raywenderlich.com/wp-content/uploads/2012/08/build-dialog.png)
 
 
 编译并运行项目，你应该可以在设备上看到下面的画面！
 
 
-![photo-11-700x394.png](C:/Users/孟/Desktop/photo-11-700x394.png "")
+![photo-11-700x394.png](http://cdn1.raywenderlich.com/wp-content/uploads/2012/10/photo-11-700x394.png)
 
 
 很好，你已经完成了一个简单的Unity3D游戏。
@@ -507,7 +507,7 @@ _gamesPlayedThisSession 是用来决定你可是第几次游戏，如果你是�
 
 7：使用真实设备进行调试开发---当运行游戏的时候，把控制台打开，你就可以看到什么最占用时间周期。在XCODE中找到并打开iPhone_Profiler.h文件，把ENABLE_INTERNAL_PROFILER调协成1.然后，系统会以较高的优先级告知程序运行状况。你 果你用Unity 3d许可，那么你可以利用这一点对脚本代码中的每个时间方法进行运行评估。输出的结果应该类似于这样：
 
-![unity3d-internal-profiler.png](C:/Users/孟/Desktop/unity3d-internal-profiler.png "")
+![unity3d-internal-profiler.png](http://cdn5.raywenderlich.com/wp-content/uploads/2012/08/unity3d-internal-profiler.png)
 
 8：帧数
 
