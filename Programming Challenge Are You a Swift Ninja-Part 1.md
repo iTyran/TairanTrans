@@ -1,4 +1,4 @@
-#编程挑战：你是Swift忍者吗？第一节
+# 编程挑战：你是Swift忍者吗？第一节
 ![Are you a Swift Ninja?](http://cdn4.raywenderlich.com/wp-content/uploads/2014/07/ninja_swift-250x250.png)
 
 *你是Swift忍者吗?*
@@ -27,14 +27,14 @@
 
 >**注**: 这篇文章是为有Swift语言经验的程序员准备的。如果你感觉不那么轻松的话，查看[我们其余的Swift教程](http://www.raywenderlich.com/tutorials#swift).
 
-##挑战
+## 挑战
 这个系列跟我们之前在这个网站发表的文章风格上有一点的不同。它将提出一系列问题来不断增加复杂度。这里的许多问题用到了之前部分的技术，所以掌握它们是你成功的基本条件。
 
 每一个问题突出至少一个Swift的语言特征，奇怪的语法，或者聪明的Hack。
 
 不用担心，你不会被扔到狼堆里 – 这里会有提示。每一部分都有两个等级的提示，当然还有Apple的Swift和书，和你的好朋友Stack Overflow能帮助你。
 
-###如何对待每一个问题
+### 如何对待每一个问题
 每个问题的开始定义了你需要什么去完成代码，哪些Swift特性你是能用的，哪些是不能用的。我建议你使用Playground来完成每一个挑战。
 
 如果你遇到了困难就打开提示部分。虽然提示没有解决你当前的问题，但它们指明了方向。
@@ -55,8 +55,8 @@
 
 别添加你的得分来欺骗自己。这不是高尚的忍者的行事方法。即使你没有收集到每一个飞镖，在文章的最后你也会开阔你的思维，大胆得走向未来。
 
-##Swift忍者挑战
-###挑战 #1
+## Swift忍者挑战
+### 挑战 #1
 在Apple的Swift书中，有许多函数的例子来交换两个变量的值。里面的代码总是使用额外的变量来存储的“经典”的方案。但是你可以比它做得更好。
 
 你的第一个挑战是写一个具有两个参数（任何类型）的函数，它交换了两个变量的值。
@@ -66,12 +66,12 @@
 
 如果你没有打开*提示*或*教程*部分，给你自己![3shurikens](http://cdn5.raywenderlich.com/wp-content/uploads/2014/07/3shurikens.png) 
 
-####解决方法：提示
+#### 解决方法：提示
 Swift元组非常强大 – 你可以存储任何类型的变量到元组中。此外，如果它们是元组，你可以一次给很多变量赋值。一个元组，两个元组！:]
 
 记得你偷看了提示，现在你只能在这次的挑战中得到![2shurikens](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/2shurikens.png)。
 
-####解决方法：教程
+#### 解决方法：教程
 作为一个Swift忍者应该知道，Swift新特性中的**元组**可以存储变量。语法也很简单 – 用括号括住变量列表（或常量、表达式等）
 
 	var a = "Marin"
@@ -109,7 +109,7 @@ Swift元组非常强大 – 你可以存储任何类型的变量到元组中。�
 
 如果你在Playground中运行了代码，学会了如何用元组交换值，给你自己另外一个![1shuriken](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/1shuriken.png)！
 
-###挑战 #2
+### 挑战 #2
 Swift函数是非常灵活的 — 它们可以接受可变数量的参数，返回一个或多个值，返回其他的函数等等。
 
 在这次的挑战中，将测试你对Swift函数的语法的理解。写一个满足下列要求的，命名为**flexStrings**的函数：
@@ -127,12 +127,12 @@ Swift函数是非常灵活的 — 它们可以接受可变数量的参数，返�
 
 解决问题将获得![3shurikens](http://cdn5.raywenderlich.com/wp-content/uploads/2014/07/3shurikens.png)，如果你用一行代码完成了它并且完成了上面4个要求，你将获得一个额外的飞镖。
 
-####解决方法：提示
+#### 解决方法：提示
 Swift函数参数可以有默认值，因此你调用函数时，可以省略参数。
 
 记得现在在这次挑战中你只能获得![2shurikens](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/2shurikens.png)了 — 而且一行代码解决问题也没有额外的飞镖了！
 
-####解决方法：教程
+#### 解决方法：教程
 Swift函数参数可以有一个默认值，这是旧的Objective-C和Swift之间的一个差别。当参数有默认值时，你可以用它的名称调用这个函数。
 
 好处就在于如果你喜欢用它的默认值，你可以忽略参数。真棒！
@@ -155,7 +155,7 @@ Swift函数参数可以有一个默认值，这是旧的Objective-C和Swift之�
 
 试着在Playground中使用不同的参数调用这个函数 — 确定你理解了它是如何工作的。做完后给你自己一个![1shuriken](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/1shuriken.png)。
 
-###挑战 #3
+### 挑战 #3
 你已经在前面的挑战中掌握了使用可选参数的函数。相当有趣吧！
 
 但是根据之前的方法，你只能有一个固定最大数量的参数。如果你想*真的*得到一个可变数量的输入参数的函数，这还有一个更好的方法。
@@ -179,7 +179,7 @@ Swift函数参数可以有一个默认值，这是旧的Objective-C和Swift之�
 
 ![3shurikens](http://cdn5.raywenderlich.com/wp-content/uploads/2014/07/3shurikens.png)
 
-####解决方法：提示
+#### 解决方法：提示
 你可以把函数的最后一个参数定义为**name: Type...**，这样就定义一个接受可变数量参数的函数。然后，你就可以用一个普通的**Array**来操作**name**了。
 
 你可以用**Array.map((T)->(T))**来一个一个处理其中的元素。也可以用**Array.reduce(T, (T)->(T))**换算数组中的单个值。
@@ -188,7 +188,7 @@ Swift函数参数可以有一个默认值，这是旧的Objective-C和Swift之�
 
 ![2shurikens](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/2shurikens.png)
 
-####解决方法：教程
+#### 解决方法：教程
 这个问题涉及到了很多Swift内建的语言特性，所以在看最终的解决方案之前，让我们先来浏览一些概念。
 
 首先来看一下如何定义一个接受可变数量参数的函数：
@@ -283,7 +283,7 @@ Swift函数参数可以有一个默认值，这是旧的Objective-C和Swift之�
 
 ![1shuriken](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/1shuriken.png)
 
-###挑战 #4
+### 挑战 #4
 写一个命名为**countFrom(from:Int, #to:Int)**的函数，它将输出（比如通过**print()**或**println()**）从**from**到**to**的数值。你不可以使用任何循环、变量或者任何内建的数组函数。假定**from**的值小于**to**（输入是有效的）。
 
 下面是调用的示例和它的输出：
@@ -292,12 +292,12 @@ Swift函数参数可以有一个默认值，这是旧的Objective-C和Swift之�
 
 ![3shurikens](http://cdn5.raywenderlich.com/wp-content/uploads/2014/07/3shurikens.png)
 
-####解决方法：提示
+#### 解决方法：提示
 使用递归函数，每次调用增加**from**的值，直到它与**to**参数的值相等。
 
 ![2shurikens](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/2shurikens.png)
 
-####解决方法：教程
+#### 解决方法：教程
 本问题的解决方案将涉及递归。对于每一个从**from**开始的数值，你将递归调用**countFrom**同时每次给**from**的值增加1。当**from**与**to**相等时，你将停止递归。这将有效的把函数转换成一个简单的循环。
 
 下面我们来看一下完成的解决方案：
@@ -321,7 +321,7 @@ Swift函数参数可以有一个默认值，这是旧的Objective-C和Swift之�
 
 为你学习了如何在Swift中使用递归给你自己![1shuriken](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/1shuriken.png)。
 
-##下一步我们将去哪？
+## 下一步我们将去哪？
 ![Get your revenge in part 2!](http://cdn1.raywenderlich.com/wp-content/uploads/2014/07/Ninja_Swift2-250x250.png)
 
 *在第2节中得到复仇!*

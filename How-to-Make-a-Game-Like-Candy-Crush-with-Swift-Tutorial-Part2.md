@@ -1,4 +1,4 @@
-#如何使用Swift指南制作一个像Candy Crush的游戏：第二部分
+# 如何使用Swift指南制作一个像Candy Crush的游戏：第二部分
 
 欢迎回到我们的关于如何使用Swift指南制作一个像Candy Crush的游戏的系列教程。
 <img src="http://cdn5.raywenderlich.com/wp-content/uploads/2014/02/Teaser-image.png" />
@@ -13,7 +13,7 @@
 
 让我们碾碎cookie吧！
 
-###开始###
+### 开始 ###
 
 你原来所做的事情是允许玩家交换cookie。下面，就需要去处理交换之后的结果了。
 
@@ -24,7 +24,7 @@
 
 你已经完成了前三步：用cookie填充关卡，计算可能的交换，等待玩家交换。在Swift指南的这部分内容中，你将会完成剩下的步骤。
 
-###找到链表###
+### 找到链表 ###
 
 这个时候，玩家一般已经移动并交换了两个cookie。如果交换之后会形成一个有三个或者更多相同类型的cookie的链表--至少有一个，也可能有其他的链表，则游戏只允许玩家交换一次。
 
@@ -213,7 +213,7 @@ Chain类有一个存储cookie对象的数组和一个表示水平（行）或垂
 生成并运行，然后交换两个cookie形成链表。你在Xcode的debug窗口中应该可以看到下面的图形：
 <img src="http://cdn4.raywenderlich.com/wp-content/uploads/2014/06/List-of-matches.png" />
 
-###移除链表###
+### 移除链表 ###
 到目前为止，函数`removeMatches()`只能检测匹配的链表。现在你将会播放一个漂亮的动画并把满足条件的cookie从游戏中移除。
 
 首先，你需要更新一个数据模型--就是把cookie对象从二维网格数组中移除。这些完成之后，你可以告诉`GameScene`播放这些存在的cookie精灵的动画。
@@ -270,7 +270,7 @@ Chain类有一个存储cookie对象的数组和一个表示水平（行）或垂
 <img src="http://cdn5.raywenderlich.com/wp-content/uploads/2014/02/Match-animation.gif" />
 注意：当移除链表的动画正在播放的时候，你并不希望玩家能够点击任何东西。因此，在处理点击程序中，第一件事就是使`userInteractionEnabled`无效，当动画播放完成后，再次使它生效。
 
-###把cookie降到空格里###
+### 把cookie降到空格里 ###
 把链表中的cookie移除之后会在网格中留下空格。其他的cookie应该落下来填补这些空格。我们再一次分成两部来处理：
 
 1.更新模型。
@@ -393,7 +393,7 @@ Chain类有一个存储cookie对象的数组和一个表示水平（行）或垂
 <img src="http://cdn4.raywenderlich.com/wp-content/uploads/2014/02/Falling-animation.gif" />
 cookie正在下落！注意一下，cookie可以正确的掠过关卡设计中的缺口。
 
-###添加新的cookie###
+### 添加新的cookie ###
 还需要再做一件事情来完成游戏循环。下落的cookie会在每列的顶部留出空穴。
 <img src="http://cdn3.raywenderlich.com/wp-content/uploads/2014/02/Holes-at-top.png" />
 
@@ -517,7 +517,7 @@ cookie正在下落！注意一下，cookie可以正确的掠过关卡设计中�
 试试看！！！
 <img src="http://cdn4.raywenderlich.com/wp-content/uploads/2014/02/Adding-new-cookies.gif" />
 
-###不断下落的cookie###
+### 不断下落的cookie ###
 
 玩了一段时间之后你可能注意到有一些奇怪的问题。cookie从落下到空格里，新的cookie从顶部落下来，这些动作会形成新的有三个或者多个的满足条件的链表。但是然后会发生什么事情呢？
 
@@ -555,7 +555,7 @@ cookie正在下落！注意一下，cookie可以正确的掠过关卡设计中�
     }
 漂亮！现在完成了游戏的循环部分，并且可以补充无数个cookie！
 
-###得分###
+### 得分 ###
 
 在游戏 Cookie Crunch Adventure中，玩家的目标是用尽可能少的交换次数取得一个可观的分数。这些值都来自于 JSON文件。游戏中，应该把这些数字显示在屏幕上，让玩家知道自己玩的有多好。
 
@@ -616,7 +616,7 @@ cookie正在下落！注意一下，cookie可以正确的掠过关卡设计中�
 上面的内容会重置所有的数据。点击生成并运行，你的显示画面应该和下面的差不多：
 <img src="http://cdn1.raywenderlich.com/wp-content/uploads/2014/02/Game-with-labels.png" />
 
-###计算分值###
+### 计算分值 ###
 
 积分规则很简单：
 
@@ -658,7 +658,7 @@ cookie正在下落！注意一下，cookie可以正确的掠过关卡设计中�
 试试看！！！交换cookie，观察你增加的得分：
 <img src="http://cdn2.raywenderlich.com/wp-content/uploads/2014/02/Score.png" />
 
-###分值动画###
+### 分值动画 ###
 
 如果每一个链表的得分都会显示一个特别漂亮的动画会是很有趣的事情。在 **GameScene.swift**中，添加一个新的函数：
 
@@ -700,7 +700,7 @@ cookie正在下落！注意一下，cookie可以正确的掠过关卡设计中�
 现在试试看！！！点击生成和运行，然后获取一些得分。
 <img src="http://cdn4.raywenderlich.com/wp-content/uploads/2014/02/Floating-score.gif" />
 
-###连击###
+### 连击 ###
 
 使 **Candy Crush Saga**特别有趣的是有连击的功能，或者是一行中有多个可以匹配的cookie。
 
@@ -736,7 +736,7 @@ cookie正在下落！注意一下，cookie可以正确的掠过关卡设计中�
     问题：你应该怎么样检测L型的链表，并使每行的值加倍？
     解答：L型的链表由两个链表组成，一个水平的和一个竖直的，它们公用一个顶角上的cookie。你可以遍历水平方向的链表并查看该链表的第一个或者是最后一个cookie是不是也在其他的竖直方向的链表中。如果是的话，移除这两个链表，并把它们结合成一个新类型的链表。
 
-###输赢###
+### 输赢 ###
 
 玩家只有有限的移动次数来取得目标分数。如果没有实现的话，那么游戏结束。这部分的逻辑并不难添加。
 
@@ -757,7 +757,7 @@ cookie正在下落！注意一下，cookie可以正确的掠过关卡设计中�
 
 首先，故事板需要做一些工作。
 
-###胜利或失败的界面###
+### 胜利或失败的界面 ###
 
 打开Main.storyboard，然后往视图中拖进去一张图片。图片的大小为320×150像素，并且竖直方向居中。
 <img src="http://cdn1.raywenderlich.com/wp-content/uploads/2014/02/Image-view-in-storyboard.png" />
@@ -819,7 +819,7 @@ cookie正在下落！注意一下，cookie可以正确的掠过关卡设计中�
 <img src=" http://cdn2.raywenderlich.com/wp-content/uploads/2014/02/Level-complete.png" />
 同样，如果你的剩余移动次数为0，你就会看到游戏结束的信息。
 
-###转换动画###
+### 转换动画 ###
 
 在cookie的上面显示标题看起来就会有点混乱，因此也让我们添加一点动画。在GameScene.swift中添加下面的两个函数：
 
@@ -876,7 +876,7 @@ Whoops！出问题了，你好像没有把老的cookie精灵移除。
     scene.removeAllCookieSprites()
 问题解决了！点击生成和运行，现在你的游戏开始干净利落的重新启动了。
 
-###“手动洗牌”###
+### “手动洗牌” ###
 
 还有一种情况：可能会发生--尽管很少见--就是没有可以移动的cookie了。那样的话，玩家就被困住了。
 
@@ -937,7 +937,7 @@ Whoops！出问题了，你好像没有把老的cookie精灵移除。
 上面的内容给每个cookie一个短暂的、随机性延时，然后把他们渐渐的显示到屏幕中。效果看起来像下面这样：
 <img src="http://cdn4.raywenderlich.com/wp-content/uploads/2014/02/Shuffle-animation.gif" />
 
-###音乐###
+### 音乐 ###
 
 当玩家碾碎cookie的时候，我们可以播放一些舒缓的、放松的音乐。在GameViewController.swift 的顶部添加下面的内容来包含AVFoundation框架：
 
@@ -954,7 +954,7 @@ Whoops！出问题了，你好像没有把老的cookie精灵移除。
     backgroundMusic.play()
 上面的内容会加载背景音乐，并且循环播放。这样就给游戏添加了很多的旋律。
 
-###绘制更加漂亮的瓷砖###
+### 绘制更加漂亮的瓷砖 ###
 
 如果你把你的游戏和Candy Crush Saga仔细的对比，你就会注意到绘制的瓷砖有些许的不一样。Candy Crush中的边界画的更好一点。
 <img src="http://cdn5.raywenderlich.com/wp-content/uploads/2014/02/Border-comparison.png" />
@@ -1038,7 +1038,7 @@ Whoops！出问题了，你好像没有把老的cookie精灵移除。
 点击生成并运行，你现在应该有一个看起来和玩起来都和 Candy Crush Saga类型的游戏！
 <img src="http://cdn2.raywenderlich.com/wp-content/uploads/2014/02/Final-game.png" />
 
-###何去何从###
+### 何去何从 ###
 
 祝贺你完成了这部分内容！这是一个很长的Swift指南，现在你用了编写自己三消类游戏的全部基础模块。
 

@@ -1,10 +1,10 @@
-#如何在iOS 8下使用Swift设计一个自定义的输入法
+# 如何在iOS 8下使用Swift设计一个自定义的输入法
 
 by Andrei Puni
 
 我会复习一下有关键盘扩展的内容，然后通过使用iOS 8中的新应用扩展API的设计一个摩斯码的输入法。完成这个教程大约需要花费20分钟。[完整代码](https://github.com/WeHeartSwift/MorseCode)
 
-##概览
+## 概览
 
 通过使用自定义输入法替换系统输入法，用户可以实现一些特别的功能。例如一个特别新颖的输入方式，或输入iOS原生并不支持的语言。自定义输入法的基本功能很简单：通过点击、手势，或者其他输入事件，然后通过一个未分类的 `NSString` 对象在当前文本输入对象的文本插入点插入文字。
 
@@ -23,7 +23,7 @@ by Andrei Puni
 
 同样，自定义输入法不能在顶行之外显示任何内容（就像系统键盘当你在后面的行上长按一个键时）。
 
-##沙盒
+## 沙盒
 
 默认情况下，自定义输入法并没有网络访问，也不能和容纳它的应用共享文件。如果想实现这些功能，必须在`Info.plist`文件中将`RequestOpenAccess`布尔值至`YES`。做了这个之后，会扩展自定义输入法的沙盒，就像在[建立和维护用户信任](https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/ExtensibilityPG/Keyboard.html#//apple_ref/doc/uid/TP40014214-CH16-SW3)提到的那样。
 

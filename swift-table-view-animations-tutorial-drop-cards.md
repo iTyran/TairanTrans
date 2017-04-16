@@ -10,7 +10,7 @@
 
 >在出版时，因为iOS 8还处在beta阶段，我们考虑到我们不能发iOS 8的截图。所以下面的所有截图都出自于iOS 7，这将接近于你在iOS 8中看到的。
 
-##开始
+## 开始
 下载[开始项目](http://cdn4.raywenderlich.com/wp-content/uploads/2014/08/CardTilt-swift-starter.zip)然后在Xcode 6中打开它。你将找到一个简单的storyboard项目，包含**UITableViewController**的子类(**MainViewController**)和一个显示团队成员的自定义**UITableViewCell** (**CardTableViewCell**)。你也将看到一个叫做**Member**的model类，包含了团队成员的所有信息，并且它知道如何从存储在本地的JSON文件中获取信息。
 
 生成并在模拟器中运行项目；你将看到如下所示：
@@ -21,7 +21,7 @@
 
 该应用程序是一个好的开始，但它还可以做得更好。那将是你需要做的；你将使用一些Core Animation技巧来给你的卡片加动画。
 
-##定义一个最简单的动画
+## 定义一个最简单的动画
 你将由创建一个超级简单的淡入动画辅助类来开始接触基本的应用程序结构。转到**File\New\File…**选择类型**iOS\Source\Swift File**来创建一个空的Swift文件。点击**Next**，把文件命名为**TipInCellAnimator.swift**，然后点击**Create**。
 
 把文件内容替换如下：
@@ -50,7 +50,7 @@
 
 现在你已经有了动画的代码，你需要表格视图控制器在卡片出现时触发这个新的动画。
 
-##触发动画
+## 触发动画
 要触发你的动画，打开**MainViewController.swift**然后添加如下方法到类中：
 
 	override func tableView(tableView: UITableView!, willDisplayCell cell: UITableViewCell!,
@@ -64,7 +64,7 @@
 
 ![SwiftDrop-InFadeAnimation](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/SwiftDrop-InFadeAnimation-281x500.png)
 
-##酷炫的旋转
+## 酷炫的旋转
 现在是时候让应用程序加入一些旋转动画来显得更酷炫了。这部分和淡入动画使用的是同种方式，除非你指定了开始和结束的变换。
 
 打开**TipInCellAnimator.swift**，替换它的内容如下：
@@ -120,7 +120,7 @@
 生成并运行你的应用程序。查看卡片出现时是如何倾斜的进入视图的！
 ![Rotation of card cell.](http://cdn4.raywenderlich.com/wp-content/uploads/2013/10/TransformationMontage.png)
 
-##Swift重构
+## Swift重构
 本教程的Objective-C原版中只在开始处计算了变换一次。在上述的代码版本中，它每次调用**animate()**计算一次。如何在Swift中像原版那样做？
 
 一种方法是通过调用闭包计算一个不变的存储属性。替换**TipInCellAnimator.swift**的内容如下：
@@ -159,7 +159,7 @@
 
 >**注：**如果把**TipInCellAnimatorStartTransform**设为一个TipInCellAnimator的类属性就更好了。但在撰写本文时，Swift的类属性尚未实现。
 
-##给你的变换添加一些界限
+## 给你的变换添加一些界限
 虽然动画效果是整洁的，但你也要有节制地使用它。如果你曾经经历了有过度的声音效果和动画效果的演示文稿，那么你就应该知道效果过度的感觉！
 
 在你的项目中，你只想要动画在卡片出现时运行一次 — 当它从底部滚动进入屏幕时。当你向顶部滚动时，卡片应该滚动而没有动画。
@@ -190,7 +190,7 @@
 
 ![Drop-In-UpDownScroll](http://cdn2.raywenderlich.com/wp-content/uploads/2014/07/Drop-In-UpDownScroll-563x500.png)
 
-##下一步？
+## 下一步？
 在本教程中，你给标准的视图控制器添加了动画。实现细节远离了**MainViewController**类，放进了一个小的，集中的，动画辅助类中。保持类的职责集中，特别是视图控制器，是iOS开发中一个主要的挑战。
 
 你可以从[这里](http://cdn3.raywenderlich.com/wp-content/uploads/2014/08/CardTilt-Swift-Final.zip)下载本教程的最终项目。

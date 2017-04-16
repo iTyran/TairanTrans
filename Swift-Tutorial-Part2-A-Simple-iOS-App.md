@@ -1,4 +1,4 @@
-#Swift教程第二部分: 一个简单的iOS应用
+# Swift教程第二部分: 一个简单的iOS应用
 
 欢迎回到我们的Swift教程系列
 
@@ -16,7 +16,7 @@
 注意：在写本教程的时候，[我们不能发布Xcode6的截图](http://www.raywenderlich.com/74138/swift-language-faq)，因为它仍在测试阶段。因此，我们禁止在本教程截图直到我们知道它是允许的。
 
 
-#开始
+# 开始
 
 启动Xcode,接着步骤File\New\Project。选择iOS\Application\Single View Application，点击下一步。
 
@@ -28,7 +28,7 @@
 
 您应该看到一个空白屏幕出现。Xcode在你的应用程序创造了一个空白的屏幕,在本教程中你将把这个空白屏幕填充内容!
 
-#创建你的模板
+# 创建你的模板
 
 首先第一件事-在你为你的app创建用户界面之前，你要先创建你app的模板。一个模板就是一个类(或者几个类组成)描述你的类的数据，并且完成你的app的数据操作。
 
@@ -119,7 +119,7 @@ class TipCalculatorModel {
 
 现在你已经为你的app界面准备好模板了。
 
-#介绍 Storyboards和Interface Builder
+# 介绍 Storyboards和Interface Builder
 ```
 注意：如果你是一个经验丰富的iOS开发者，这一节和下一节可能是你的复习。为了加快速度，你可以想直接跳到一个视图控制器之旅。我们将有一个创建了用户界面的启动项目等着你。
 ```
@@ -153,7 +153,7 @@ class TipCalculatorModel {
 8.界面生成器的右下方是Libraries。这个有一个不同类型的视图或者视图控制器的库，你可以添加到你的app中。很快你就会从控件库中拖动控件到你的视图控制器来布局你的app。
 
 
-#创建你的视图
+# 创建你的视图
 
 记住，你的TipCalculatorModel类有两个输入参数：total（总数）和tax percentage（税收的百分比）。
 
@@ -181,7 +181,7 @@ class TipCalculatorModel {
 
 构建并在您的iPhone5的模拟器运行，你应该可以看到一个基本的用户界面了。
 
-#视图控制器之旅
+# 视图控制器之旅
 
 注意：如果你想跳过本节，这里是本节项目知识点的[项目压缩包](http://cdn4.raywenderlich.com/wp-content/uploads/2014/06/TipCalculatorStarter11.zip)。
 
@@ -236,7 +236,7 @@ class ViewController: UIKit.UIViewController {
 
 4.当设备运行时内存不足就调用此方法。这是清理一些不再使用的资源的好地方。
 
-#连接视图控制器和视图
+# 连接视图控制器和视图
 
 现在你对已经比较了解你的视图控制器类了，让我们为它的子视图添加一些属，并在Interface Builder中勾起来。
 
@@ -269,7 +269,7 @@ Main.storyboard打开，你将会打开你的辅助编辑器(View\Assistant Edit
 
 这两种方法，你可以在你们的项目中选择你喜欢的方式。
 ```
-#连接动作和视图控制器
+# 连接动作和视图控制器
 
 就好像你在视图控制器中连接你的变量和视图那样，你想在视图控制器中连接某一个动作到你的视图(如button的单击事件)方法。
 
@@ -312,7 +312,7 @@ Main.storyboard打开，你将会打开你的辅助编辑器(View\Assistant Edit
 
 这只要一步就能将在你的Swift文件中创建一个方法和把动作连接到你的方法。同样，这两种个工作，它只是为了方便你！
 ```
-#连接你的视图控制器和模板
+# 连接你的视图控制器和模板
 
 你要做的差不多完成了-现在你要把你的视图控制器和模板连接起来。
 
@@ -430,7 +430,7 @@ for tipPct in keys {
 我希望这对你有帮助!:]
 
 
-#接着要到哪里
+# 接着要到哪里
 这是这个Swift教程包含了所有代码的[最终Xcode项目](http://cdn4.raywenderlich.com/wp-content/uploads/2014/06/TipCalculatorFinished11.zip)。
 
 想要学习更多内容？继续阅读[下一章节](http://www.raywenderlich.com/75289/swift-tutorial-part-3-tuples-protocols-delegates-table-views)，你将会学习tuples,protocols和table views-或者看看我们的[Swift新书](http://www.raywenderlich.com/store/swift-tutorials-bundle)

@@ -12,7 +12,7 @@
 
 如果你在第一节中表现得很好，你要好好享受这一节！既然你理解了工作原理，你将充分理解这些库进行图像处理是多么的简单。
 
-##超级SpookCam之Core Graphics版本
+## 超级SpookCam之Core Graphics版本
 **Core Graphics**是Apple基于Quartz 2D绘图引擎的绘图API。它提供了底层API，如果你熟悉OpenGL可能会觉得它们很相似。
 
 如果你曾经重写过视图的**-drawRect**：函数，你其实已经与Core Graphics交互过了，它提供了很多绘制对象、斜度和其他很酷的东西到你的视图中的函数。
@@ -93,7 +93,7 @@
 
 这个函数内容可真够多的，让我们一点一点分析它。
 
-###1) 计算Ghosty的位置
+### 1) 计算Ghosty的位置
 
 	UIImage * ghostImage = [UIImage imageNamed:@"ghost.png"];
 	CGFloat ghostImageAspectRatio = ghostImage.size.width / ghostImage.size.height;
@@ -112,7 +112,7 @@
 
 如果你直接在这个context中绘制**UIImage**，你不需要执行变换，坐标系统将会自动匹配。设置这个context的变换将影响所有你后面绘制的图像。
 
-###2) 把你的图像绘制到context中。
+### 2) 把你的图像绘制到context中。
 
 	UIGraphicsBeginImageContext(input.size);
 	CGContextRef context = UIGraphicsGetCurrentContext();
@@ -134,7 +134,7 @@
 
 这里为context设置混合模式是为了让它使用之前的相同的alpha混合公式。在设置完这些参数之后，翻转幽灵的坐标然后把它绘制在图像中。
 
-###3) 取回你处理的图像
+### 3) 取回你处理的图像
 
 	UIImage * imageWithGhost = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
@@ -143,7 +143,7 @@
 
 因为你使用**CGBitmapContextCreate()**来创建了这个context，坐标则是以左下角为原点，你不需要翻转它来绘制**CGImage**。
 
-###4) 绘制你的图像到一个灰度（grayscale）context中
+### 4) 绘制你的图像到一个灰度（grayscale）context中
 
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
 	context = CGBitmapContextCreate(nil, inputWidth, inputHeight,
@@ -160,7 +160,7 @@
 
 因此，你需要自己创建它。你需要使用**CGBitmapContextCreateImage()**来渲染context中的图像。
 
-###5) 清理。
+### 5) 清理。
 
 	CGColorSpaceRelease(colorSpace);
 	CGContextRelease(context);
@@ -196,7 +196,7 @@
 
 介绍完了两种方法，下面还有两种方法。下一个：**Core Image**！
 
-##超超SpookCam之Core Image版本
+## 超超SpookCam之Core Image版本
 这个网站也已经有大量好的Core Image教程，比如IOS 6中的[这个](http://www.raywenderlich.com/22167/beginning-core-image-in-ios-6)。我们也在我们的[iOS教程系列](http://www.raywenderlich.com/store/ios-by-tutorials-bundle)中有很多关于Core Image的章节。
 
 在本教程中，你将看到有很多关于Core Image与其他几种方法对比的讨论。
@@ -268,7 +268,7 @@ Apple还提供了巨大的预先制作的滤镜库。在OSX中，你甚至可以
 这个方法使用了一个叫做**-createPaddedGhostImageWithSize:**的帮助函数，它使用Core Graphics创建了输入图像25%大小缩小版的填充的幽灵。你自己能实现这个函数吗？
 自己试一下。如果你被卡住了，请看下面的解决方案：
 
-###解决方案
+### 解决方案
 	- (UIImage *)createPaddedGhostImageWithSize:(CGSize)inputSize {
 	  UIImage * ghostImage = [UIImage imageNamed:@"ghost.png"];
 	  CGFloat ghostImageAspectRatio = ghostImage.size.width / ghostImage.size.height;
@@ -311,7 +311,7 @@ Apple还提供了巨大的预先制作的滤镜库。在OSX中，你甚至可以
 
 现在到了最后一个解决方案，也是本教程中附带的唯一的第三方选项：**GPUImage**。
 
-##大型超超SpookCam之GPUImage版本
+## 大型超超SpookCam之GPUImage版本
 **GPUImage**是一个活跃的iOS上基于GPU的图像处理库。它在这个网站中的[十佳iOS库](http://www.raywenderlich.com/21987/top-10-most-useful-ios-libraries-to-know-and-love)中赢得了一席之地！
 
 GPUImage隐藏了在iOS中所有需要使用OpenGL ES的复杂的代码，并用极其简单的接口以很快的速度处理图像。GPUImage的性能甚至在很多时候击败了Core Image，但是Core Image仍然在很多函数中有优势。
@@ -408,7 +408,7 @@ GPUImage隐藏了在iOS中所有需要使用OpenGL ES的复杂的代码，并用
 
 在[这里](http://cdn3.raywenderlich.com/wp-content/uploads/2014/03/SpookCam-GPUImage.zip)下载本节项目中的所有代码。
 
-##下一步？
+## 下一步？
 
 恭喜！你已经用四种不同方式实现了SpookCam。这里是所有的下载链接：
 

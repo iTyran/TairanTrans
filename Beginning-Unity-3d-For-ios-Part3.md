@@ -156,7 +156,7 @@ Unity提供了一个叫做Skin的来实现自定义 GUI 元素。
 
 下一步，是实现真正的菜单。
 
-##Main Menu
+## Main Menu
 
 这节将会提供GameMenuController的源代码，它用来绘制菜单界面并响应用户的输入。你将会看到该代码的重要部分，并很快将它应用到你的游戏中！
 
@@ -234,7 +234,7 @@ Unity提供了一个叫做Skin的来实现自定义 GUI 元素。
 		_scores = scores; 
 	}
 	
-##测试一下
+## 测试一下
 
 让我们先暂停一下，并测试一下现有内容。
 
@@ -271,7 +271,7 @@ Unity提供了一个叫做Skin的来实现自定义 GUI 元素。
 
 还不错吧？制作主菜单第一步，完成！
 
-##使用自定义界面
+## 使用自定义界面
 
 现在你已经有了正确的方向，让我们继续设计出一个适合屏幕大小的自定义界面。
 
@@ -284,7 +284,7 @@ Unity提供了一个叫做Skin的来实现自定义 GUI 元素。
 	}
 上面的代码可以确保你使用的是正确的字体大小（依懒于屏幕大小）；你之前计算的scale大小，决定了你使用哪一种自定义界面。如果该值小于1.0，那么 将会使用较小的，否则就会使用正常的。
 
-##显示和隐藏
+## 显示和隐藏
 
 收到用户请求后，与其立刻生硬的做出响应，不如让他逐渐的来显示 。为了达到该效果，你需要有技巧的处理这些颜色变量（这个会影响到所有GUI类的绘制）。
 
@@ -362,12 +362,12 @@ GUI.DrawTexture( new Rect( 0, 0, Screen.width, Screen.height ), backgroundTex );
 
 _gamesPlayedThisSession 是用来决定你可是第几次游戏，如果你是初次打开该游戏，那么_showInstructions 在游戏开始前会被设置为真。这时游戏在开始前会展示一些新手教程。
 
-##测试时间
+## 测试时间
 
 在你完成GameMenuController前，让我们确定一下每一部分都能按预期效果工作。如果是一步一步走下来的话，开始游戏后会看到类似如下效果：
 ![unity3d-ongui-test-2.png](http://cdn4.raywenderlich.com/wp-content/uploads/2012/10/unity3d-ongui-test-2.png)
 
-##完成GameMenuController
+## 完成GameMenuController
 
 最后没有的就差标题（title),指令（instructions)和分数（score).
 
@@ -468,7 +468,7 @@ _gamesPlayedThisSession 是用来决定你可是第几次游戏，如果你是�
 
 需要注意的是，该代码是基于单例模式的，为了正常工作，需要创建一个新的对象，把它设置成单独的脚本，然后 把对象拖到GameController中的对象面板。
 
-##编译运行
+## 编译运行
 
 
 完成以上工作后，打开 Build对象框，打开File下的Build Setting，点击编译按钮完成游戏创建并运行！
@@ -485,7 +485,7 @@ _gamesPlayedThisSession 是用来决定你可是第几次游戏，如果你是�
 很好，你已经完成了一个简单的Unity3D游戏。
 
 
-##优化：
+## 优化：
 
 
 这里讲一些优化的内容！虽然你可能认为现在的设备性能已经大大提升了，但考虑仍有大量较老的pad和iphone 3g设备在使用。你需要更努力的来优化游戏，不能让使用较老设备的人认为你的游戏太不好！
@@ -519,7 +519,7 @@ _gamesPlayedThisSession 是用来决定你可是第几次游戏，如果你是�
 
 11：player-detail 很清晰的给出了游戏中每一个组件处理的时间。
 
-##附录
+## 附录
 
 [这是](cdn1.raywenderlich.com/downloads/NBN_Part3.zip)本教程的一个简单工程样例。使用Unity打开 ，点击File下的Open Project，点击Open Other 打开文件中的工程文件。游戏的场景默认不会被加载，要打开场景请选择Scenes\GameScene.
 
