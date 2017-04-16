@@ -1,22 +1,22 @@
-#泰然翻译教程索引
+# 泰然翻译教程索引
 
-##Swift
+## Swift
 
-###入门
+### 入门
 
 - [Swift教程第一部分：快速指南](Swift-Tutorial-A-Quick-Start.md)-译者：Verky
 - [Swift教程第二部分: 一个简单的iOS应用](Swift-Tutorial-Part2-A-Simple-iOS-App.md)-译者：永远的微笑
 - [Swift教程第三部分：元组，协议，委托和表格视图](./Swift-Tutorial-Part3-Tuples-Protocols-Delegates-and-Table-Views.md)-译者：小荄
 - [Swift常见问题解答](Swift-Language-FAQ.md)-译者：紫秀青衣， 数羊， NickYang
 
-###系列教程
+### 系列教程
 
 - [如何快速做一个糖果消除类游戏：第一部分](How-to-Make-a-Game-Like-Candy-Crush-with-Swift-Tutorial-Part1.md)-译者：紫秀青衣
 - [如何快速做一个糖果消除类游戏：第二部分](How-to-Make-a-Game-Like-Candy-Crush-with-Swift-Tutorial-Part2.md)-译者：Stroustrup_Lee
 
-##Unity
+## Unity
 
-###系列教程
+### 系列教程
 
 - Unity 2D
 

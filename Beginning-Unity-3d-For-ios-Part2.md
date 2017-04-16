@@ -1,4 +1,4 @@
-#Unity 3D中级教程：iOS篇－第2/3篇
+# Unity 3D中级教程：iOS篇－第2/3篇
 
 欢迎回到我们的Unity 3D iOS中级系列教程。
 
@@ -20,7 +20,7 @@
 
 让我们开始吧！
 
-##确保所有人都很好的跟上节奏
+## 确保所有人都很好的跟上节奏
 在你深入研究代码之前，先很快的过一眼下面的图表，它标出了你将要加入到游戏中的每一个部件的功能与职责，以及这些部件之间的关系：
 ![Class diagram for app](res/class-diagram-1-678x500.png)
 
@@ -32,7 +32,7 @@
 
 最后，你的游戏没有**Ball**怎么行呢？这个对象负责在**Ball**穿过篮网以及落在地面时触发特定事件，表明玩家当前回合结束。
 
-##脚本，脚本，脚本
+## 脚本，脚本，脚本
 Unity提供了若干不同脚本语言可供选择；包括Boo（不，我不是在吓你，这[真是一种语言](http://boo.codehaus.org/)），Javascript（也就是UnityScript）以及C#。通常来说，如果你之前是做前端网页开发出身，那么UnityScript也许是最好的选择。
 
 不过，如果你更熟悉C++，Java，Objective-C或者C#，那么C#对你的脚本编写任务而言就更合适。考虑到本网站的大部分读者都有Objective-C的背景，在本教程中你将用C#来写脚本。
@@ -73,7 +73,7 @@ public class DummyScript : MonoBehaviour {
 注意：MonoBehaviour还有一个更新方法叫做FixedUpdate()。这个方法是被物理引擎调用的，并且应该只被用来更新刚体或者其他基于物理的属性。它被称为FixedUpdate是因为它保证在固定间隔时间后调用，而不像Update()方法那样，因为是每一个tick都被调用，两次调用中间相差的时间可能会不同。
 ```
 
-##ScoreBoard
+## ScoreBoard
 我们先从最简单的**ScoreBoard**脚本开始。你已经创建了脚本文件，所以只用将它改名成**ScoreBoard**，然后双击打开即可。
 
 啊哈，我打赌你还不知道Unity自带MonoDevelop！
@@ -129,7 +129,7 @@ public class ScoreBoard : MonoBehaviour
 
 这样就把**3D文本**子对象与脚本属性联系了起来。非常简单不是吗？
 
-##测试时间
+## 测试时间
 在继续下去之前，让我们确保所有的一切都正常工作。为了做到这一点，我们要创建一个新的脚本，用来更新你的记分牌上的时间和分数。创建一个叫**ScoreboardTest**的新脚本，并将以下代码复制进去：
 ```
 using UnityEngine;
@@ -154,7 +154,7 @@ public class ScoreBoardTest : MonoBehaviour
 
 可以工作了——你应该看到记分牌上的文本变成像上面这张截图一样。如果没有，从头检查每一个步骤看看哪里可能出了问题。
 
-##控制碰撞
+## 控制碰撞
 现在是时候来看看Unity是怎么处理对象碰撞的了。
 
 回忆一下，Ball对象是负责在自己入网并且/或者落地时通知**GameController**的。这个Ball对象是绑在一个**球状碰撞体(SphereCollider)**以及**刚体(Rigidbody)**上的，这让你可以检测碰撞并对此作出反应。在你的脚本里，你可以监听这些碰撞事件，并正确的通知**Game Controller**。
@@ -309,7 +309,7 @@ public void OnTriggerEnter( Collider collider ) {
 
 球相关的部分就告一段落——但是现在Player需要开始在这个游戏里出场了：）但在这以前，先让我们确认一切都进展顺利。
 
-##测试时间
+## 测试时间
 首先，你需要创建一个Ball脚本依赖的GameController脚本的占位符，这样才能让所有代码跑起来。创建一个新脚本取名为**GameController**，并将以下代码替换到内容里：
 ```
 using UnityEngine;
@@ -387,7 +387,7 @@ public class BallTest : MonoBehaviour {
 
 现在你知道碰撞在正常工作了，可以继续设置Player了！
 
-##Player框架
+## Player框架
 现在你会实现一个Player的占位符代码。稍后**GameController**完成后再回来继续完善。
 
 创建一个新脚本并命名为**Player**，在MonoDevelop里面输入以下内容：
@@ -494,7 +494,7 @@ public float MyProperty{
 
 Player对象目前就到这里，这个占位符的实现非常简单，我们可以昵称player为“Stubby”：）让我们先去继续完善GameController的其它内容！
 
-##GameController
+## GameController
 GameController负责协调游戏的各种活动，并处理用户输入。
 
 “协调活动”是什么意思呢？游戏通常内部是以状态机的形式运转。游戏的当前状态决定了当前需要跑哪部分代码，用户输入如何中断，以及台前幕后发生哪些事情。
@@ -503,7 +503,7 @@ GameController负责协调游戏的各种活动，并处理用户输入。
 
 你已经创建了**GameController**的起始脚本——让我们进一步充实它。
 
-#变量
+# 变量
 首先要声明需要的变量。因为GameController的主要工作是协调游戏里的所有实体，你需要通过变量对其中大部分对象进行引用，还需要通过变量来管理游戏数据（例如当前分数，剩余时间等）。
 
 加入以下代码来声明变量（作用在代码注释中标出）：
@@ -524,7 +524,7 @@ private Vector3 _orgPlayerPosition;
 
 将gameSessionTime（玩家需要在此时限内得分）以及throwRadius（你的篮球玩家可以从他的当前起始位置移动多远）暴露成公共变量意味着你可以在做测试时很方便的对他们的值进行调整。
 
-#游戏状态
+# 游戏状态
 你已经给你的Player对象增加了一些状态，现在给游戏也增加一些状态：
 ```
 public enum GameStateEnum
@@ -583,7 +583,7 @@ public GameStateEnum State {
 ```
 如上所示，在属性里存放状态使你可以轻松的感知状态变化，并根据需要执行相关必要逻辑。
 
-#辅助方法与属性
+# 辅助方法与属性
 接下来你将增加一些辅助方法与属性。
 
 首先如下增加StartNewGame（开始新游戏）方法：
@@ -644,7 +644,7 @@ public float TimeRemaining {
 
 辅助方法和属性就完成了，是时候搞定大块头Update了！
 
-#让一切实时更新
+# 让一切实时更新
 现在你需要将注意力转移到Update方法及其附属方法，是它们保证了GameController像钟表一样走时。在GameController中增加如下代码：
 ```
 void Update () {
@@ -730,7 +730,7 @@ if( (player.State == Player.PlayerStateEnum.Miss || player.State == Player.Playe
 
 然后检查是否还有剩余时间。如果没有，则更新状态为GameOver，否则让篮球玩家移到一个新位置继续投篮。
 
-#测试时间
+# 测试时间
 你已经在Hierarchy中创建了一个GameController对象，并在上面挂上了GameController脚本，所以你已经准备好了。
 
 在Hierarchy面板中选择GameController对象，注意GameController现在有player，scoreboard和basketball的公共属性。在Inspector里通过拖拽把这些属性设置为相应的对象。
@@ -739,7 +739,7 @@ if( (player.State == Player.PlayerStateEnum.Miss || player.State == Player.Playe
 现在当你点击play按钮，就可以看到随着GameController每秒递减时间，记分牌上的数值也在相应更新！
 ![game controller test](res/unity3d-game-controller-test-1.png)
 
-#处理用户输入
+# 处理用户输入
 在很多时候，越是接近项目完成，你就越会发现你忙于在桌面电脑开发以及移植到真实设备这两个状态之间切换。所以你需要同时处理两种输入：设备触摸屏，以及鼠标键盘。
 
 要做到这一点，首先在GameController里面加入一个帮助方法来检测app是否在移动设备上运行：
@@ -802,7 +802,7 @@ TouchCount和TouchDownCount的唯一区别是TouchCount返回的是正接触着�
 
 对于Unity的Input类的整体概述，可以参考[Unity官方站](http://docs.unity3d.com/Documentation/ScriptReference/Input.html)。
 
-#球的处理：和消息打交道
+# 球的处理：和消息打交道
 回忆Ball对象会在两种情况下给GameController发送消息：球过网时，以及球触地时。
 
 重写OnBallCollisionEnter方法来处理球触地的情况：
@@ -843,7 +843,7 @@ public void HandleBasketBallOnNet(){
 }
 ```
 
-#处理来自Player部件的消息
+# 处理来自Player部件的消息
 另一个和GameController交互的部件是Player。到目前为止这里还只有占位符，但你要在GameController里实现消息和事件的处理。Player在动画播完的时候抛出事件，GameController的游戏状态的update随之触发。
 
 在Start()的结束处增加如下代码来注册事件：
@@ -865,7 +865,7 @@ public void HandlePlayerOnPlayerAnimationFinished (string animationName)
 
 教程的下一部分会将这些事件都联系起来并让你最终进行若干次投篮！
 
-##Player：不再是占位符！
+## Player：不再是占位符！
 让我们快速回顾下Player的任务以及需要的功能：
 - 在Idle的时候，Player需要运球
 - 在Play的游戏状态，Player需要对用户输入进行反应，在这里当用户手指接触屏幕时，Player应该上好发条准备投篮。
@@ -876,7 +876,7 @@ public void HandlePlayerOnPlayerAnimationFinished (string animationName)
 
 回过头来打开Player脚本，让我们跟着代码慢慢前进。
 
-#角色动画
+# 角色动画
 Unity提供了丰富的类来处理3D动画的导入与使用。当你导入这个用Blender创建的player，就是导入了一套动画打成的包。如果在编辑器选择Player对象的Animation部件，能看到如下画面：
 ![player animations](res/player-animations.png)
 
@@ -981,7 +981,7 @@ private void OnAnimationFinished ()
 
 最后，OnAnimationFinished()负责抛出相关事件，从而通知GameController动画已完成，使其了解到Player GameObject的当前状态和动作。
 
-#测试时间
+# 测试时间
 让我们确保你的动画都正确的设置好并且可运行。为了做到这一点，在你的Player的start方法后面加上这一行：
 ```
 CurrentAnimation = animPrepareThrow;
@@ -996,7 +996,7 @@ CurrentAnimation = animPrepareThrow;
 注意：在继续之前，记得再次启用GameController，并且移除测试代码。
 ```
 
-#管理状态
+# 管理状态
 是时候充实你之前创建的State属性了；但是在此之前先让我们写好要用到的方法的占位符。
 ```
 private void AttachAndHoldBall(){
@@ -1059,7 +1059,7 @@ CancelInvoke("OnAnimationFinished");
 
 下一段有意思的代码是关于PlayerStateEnum.Walking的；在这段代码里，你根据目标（投球）位置与你当前位置的比较来判断玩家需要前进还是后退从而确定动画。
 
-#测试时间
+# 测试时间
 与上面类似，让我们进行个快速测试来检查你的状态和动画是否协调正确工作。在你的Player类的Start方法增加如下代码：
 ```
 State = PlayerStateEnum.Score;
@@ -1072,7 +1072,7 @@ State = PlayerStateEnum.Score;
 注意：在继续之前记得再次启用你的GameController并且移走测试代码。
 ```
 
-#运球
+# 运球
 篮球player的职责之一是在等待用户输入时运球。在这部分我们将看到如何实现这个功能。
 
 首先在你的Player类的开头声明以下变量：
@@ -1234,7 +1234,7 @@ public class PlayerBallHand : MonoBehaviour
 
 最后，选中BallPhyMat并将bounciness设成1，以保证篮球弹起时有足够的动力。
 
-#测试时间
+# 测试时间
 你已经写了很多代码，现在是时候测试是否一切都在正常工作了。就像以前做过的那样，如下修改Start方法对状态进行设置以测试弹球：
 ```
 State = PlayerStateEnum.BouncingBall;
@@ -1250,7 +1250,7 @@ State = PlayerStateEnum.BouncingBall;
 注意：在继续之前记得重新启用GameController并且移除测试代码。
 ```
 
-#投球
+# 投球
 首先在Player类的开头声明以下变量：
 ```
 public float maxThrowForce = 5000f; 
@@ -1297,7 +1297,7 @@ if (_state == PlayerStateEnum.Throwing ) {
 
 当播放完毕（没投中并且球落地或者入网并且球落地），GameController随机选择一个新的投球位置，并通知玩家移动到那个位置。
 
-#请就位
+# 请就位
 增加以下变量到Player类的开头：
 ```
 public float walkSpeed = 5.0f;
@@ -1362,7 +1362,7 @@ if (_state == PlayerStateEnum.Walking) {
 
 就是这样——你终于都写完了，是时候测起来了：）
 
-#测起来！
+# 测起来！
 终于可以全跑起来了！点击play按钮来开始你的游戏。有好几个细节需要根据你的设置进行调整：
 - 你可以通过在游戏区域按下手指并保持，然后放手来投篮。如果效果不对，可以修改Player的ThrowDirection变量——我的调整为了X=1，Y=0.75，Z=0。
 
@@ -1378,7 +1378,7 @@ if (_state == PlayerStateEnum.Walking) {
 
 再花点时间来看代码——这个教程的目的是帮助你对Unity的脚本入门，并了解事件处理机制。
 
-#接下来？
+# 接下来？
 这里有本教程到此完成的[示例项目](http://cdn3.raywenderlich.com/downloads/NBN_Part2.zip)。菜单选择File\Open Project，点击Open Other，然后通过文件夹定位，就可以在Unity打开。注意场景不会被默认加载——需要选择Scenes\GameScene来打开它。
 
 请关注教程的第三部分，你将学到如何给主菜单做简单的UI！

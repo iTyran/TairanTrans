@@ -1,4 +1,4 @@
-#Swift教程：快速指南
+# Swift教程：快速指南
 
 
 Swift是苹果今年在WWDC发布的一门新语言。
@@ -15,7 +15,7 @@ Swift是苹果今年在WWDC发布的一门新语言。
 
     注意: 在撰写这篇指南以前，我们的理解是我们不能张贴Xcode相关的截图，因为它还处于Beta阶段。因此，我们在确保不会引起相关问题之前，将不会提供截屏。
 
-##有关Playgrounds的介绍
+## 有关Playgrounds的介绍
 
 
 启动**Xcode6**，然后进入**File\New\Fil**e。选择**iOS\Source\Playground**,然后点击下一步。
@@ -37,7 +37,7 @@ Playgrounds是了解Swfit的一种很好的方式（就像你在这份Swift的�
     注意：在这个阶段，我同样推荐，你把你的playground文件(SwiftTurorial.playground)拖到你的OS X Dock上。
 这样，你就可以在任何你想要尝试一些Swift代码的时候，随时把这个文件当做一个快速的实验场地。
 
-##Swift中的变量和常量
+## Swift中的变量和常量
 尝试把下面这行加到你playground的最后一行：
 
 `totalTeam +=1`
@@ -54,7 +54,7 @@ Playgrounds是了解Swfit的一种很好的方式（就像你在这份Swift的�
 
 嗯，最佳实践是在所有适用的地方，都用let去声明，因为这样就可以让编译器更好的去做一些优化。所以记住：尽可能适用let。
 
-##显式与隐式类型
+## 显式与隐式类型
 
 目前为止，因为编译器有足够的信息来推测出数据的类型，你可能还没有显式的设置任何常量或者变量的类型。
 
@@ -70,7 +70,7 @@ Playgrounds是了解Swfit的一种很好的方式（就像你在这份Swift的�
 
 `let tutorialTeam = 56`
 
-##Swift中的基本数据类型和流控制
+## Swift中的基本数据类型和流控制
 到目前为止，你已经看了一个Int类型的例子，在Swift中，这是用来存储整型的值，但是还有很多其他类型。
 
 **浮点数和双精度浮点数**
@@ -111,7 +111,7 @@ if语句和字符串生成
 
 这里是目前为止这份教程中涉及到的[playground文件]（http://cdn3.raywenderlich.com/wp-content/uploads/2014/06/SwiftTutorial-Demo1.playground.zip）
 
-##类和方法
+## 类和方法
 
 一个你在Swift开发过程中最常做的，就是创建类以及他的方法，所以我们现在就开始吧。
 
@@ -234,7 +234,7 @@ if语句和字符串生成
 
 你可以通过检查Assistant Editor来确认一下结果。
 
-##数组和For循环
+## 数组和For循环
 
 当前，上面的代码存在一些重复，因为你调用calcTipWithTotal了很多次，以计算不同的小费比例。你可以在这里通过使用数组来降低重复。
 
@@ -264,7 +264,7 @@ if语句和字符串生成
 
 数组有一个count属性，用来保存数组内的成员个数。同样你也可以通过arrayName[index]的格式来访问数组成员的内容。
 
-##词典
+## 词典
 
 我们来对小费计算器做最后一点改进。不用只是打印出小费数字，你可以返回一个包含结果的词典。这会使得在应用界面中可以很方便的显示这一类数据结果。
 
@@ -303,7 +303,7 @@ if语句和字符串生成
 
 就这些---恭喜你！你已经有一个Swift代码构建的小费计算器。
 
-##接下来还有什么？
+## 接下来还有什么？
 
 这里是[完整的playground文件](http://cdn3.raywenderlich.com/wp-content/uploads/2014/06/SwiftTutorial-Demo2.playground2.zip)包括所有教程中提到的Swift代码。
 
